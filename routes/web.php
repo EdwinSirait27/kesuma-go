@@ -229,7 +229,13 @@ Route::post('/daftar-update', [nonsiswaController::class, 'update']);
 // Route::post('/check-username', [nonsiswaController::class, 'checkUsernameAvailability'])->name('check.username.availability');
 Route::post('/check-username', [nonsiswaController::class, 'checkUsername'])->name('check-username');
 
-Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah,Siswa,Guru,Kurikulum'])->group(function () {
+Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah,Siswa,Guru,Kurikulum,NonSiswa'])->group(function () {
+    Route::get('AdminBeranda/download/{dokumen}', [BerandaController::class, 'download'])->name('AdminBeranda.download');
+    Route::get('KepalaSekolahBeranda/download/{dokumen}', [BerandaControllerKepalaSekolah::class, 'download'])->name('KepalaSekolahBeranda.download');
+    Route::get('GuruBeranda/download/{dokumen}', [BerandaControllerGuru::class, 'download'])->name('GuruBeranda.download');
+    Route::get('KurikulumBeranda/download/{dokumen}', [BerandaControllerKurikulum::class, 'download'])->name('KurikulumBeranda.download');
+    Route::get('SiswaBeranda/download/{dokumen}', [BerandaControllerSiswa::class, 'download'])->name('SiswaBeranda.download');
+    Route::get('NonSiswaBeranda/download/{dokumen}', [BerandaControllerNonSiswa::class, 'download'])->name('NonSiswaBeranda.download');
 
     // Route::get('/pemilihan', [osisController::class, 'index'])->name('pemilihan.index');
     Route::get('/pemilihan', [osisController::class, 'index'])->name('pemilihan.index');

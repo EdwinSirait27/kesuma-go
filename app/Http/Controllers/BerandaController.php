@@ -99,8 +99,8 @@ class BerandaController extends Controller
              return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
 
-                    $button = '<a href="dokumen/' . $data->dokumen . '" class="edit btn btn-primary btn-sm">Download</a>';
-
+                    $button = '<a href="' . route('AdminBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
+               
                     return $button;
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$id}}" />')
@@ -111,6 +111,16 @@ class BerandaController extends Controller
         return view('AdminBeranda.beranda',  compact('data'));
     }
 
+    public function download($dokumen)
+    {
+        $file = storage_path('app/public/pengumuman/' . $dokumen);
+        if (file_exists($file)) {
+            return response()->download($file);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+        
+    }
     public function simpan(Request $request)
     {
         if (!$request->hasFile('dokumen')) {

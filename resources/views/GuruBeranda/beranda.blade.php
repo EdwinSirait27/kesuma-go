@@ -80,68 +80,73 @@
             </div>
         </div>
         <hr>
-        <div class="col-md-12 col-sm-12">
-            <div class="x_panel tile fixed_height_320 overflow_hidden" style="height: 450px;">
-                <div class="x_title">
-                    <h2><i class="fa fa-archive" style="margin-right: 10px;"></i>Grafik Siswa Menurut Agama Tahun Ajaran |   
-                        @forelse($tahunAkademikAktif as $tahun)
-                            <h2>{{$tahun->tahunakademik}} Semester {{$tahun->semester}}.</h2>
-                    @empty
-                        <h2>Tidak ada Tahun Akademik aktif.</h2>
-                    @endforelse
-                     <div class="clearfix"></div>
-                </div>
-                <div class="x_content" style="height: 450px;">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <canvas id="grafikAgama" style="height: 400px;"></canvas>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="x_panel tile fixed_height_320 overflow_hidden" style="height: auto;">
+                        <div class="x_title">
+                            <h2><i class="fa fa-archive" style="margin-right: 10px;"></i>Grafik Siswa Menurut Agama Tahun Ajaran |   
+                                @forelse($tahunAkademikAktif as $tahun)
+                                    <h2>{{$tahun->tahunakademik}} Semester {{$tahun->semester}}.</h2>
+                                @empty
+                                    <h2>Tidak ada Tahun Akademik aktif.</h2>
+                                @endforelse 
+                            </h2>
+                            <div class="clearfix"></div>
                         </div>
-                        <div class="col-md-5 offset-md-1">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered data" style="width: 100%;">
-                                    <thead>
-                                        <tr>
-                                            <th>Agama</th>
-                                            <th>Presentase</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Katolik</td>
-                                            <td>{{ $persentaseAgamaKatolik }}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Kristen Protestan</td>
-                                            <td>{{ $persentaseAgamaKristenProtestan }}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Islam</td>
-                                            <td>{{ $persentaseAgamaIslam }}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hindu</td>
-                                            <td>{{ $persentaseAgamaHindu }}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Buddha</td>
-                                            <td>{{ $persentaseAgamaBuddha }}%</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Konghucu</td>
-                                            <td>{{ $persentaseAgamaKonghucu }}%</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                        
+                        <div class="x_content">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12">
+                                    <canvas id="grafikAgama" style="height: 400px;"></canvas>
+                                </div>
+                                <div class="col-lg-6 col-md-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-bordered data" style="width: 100%;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Agama</th>
+                                                    <th>Presentase</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Katolik</td>
+                                                    <td>{{ $persentaseAgamaKatolik }}%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Kristen Protestan</td>
+                                                    <td>{{ $persentaseAgamaKristenProtestan }}%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Islam</td>
+                                                    <td>{{ $persentaseAgamaIslam }}%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Hindu</td>
+                                                    <td>{{ $persentaseAgamaHindu }}%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Buddha</td>
+                                                    <td>{{ $persentaseAgamaBuddha }}%</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Konghucu</td>
+                                                    <td>{{ $persentaseAgamaKonghucu }}%</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
                             </div>
+                            <hr> 
                         </div>
                     </div>
                     <hr> 
                 </div>
-            </div>
-            <hr> 
-        </div>
-        </div>
-    
+                </div>
+                </div>
+                </div>
         <div class="row">
             <br>
             <br>

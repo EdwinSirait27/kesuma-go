@@ -86,8 +86,8 @@ class BerandaControllerKurikulum extends Controller
             $data = tbadmin::select('id', 'dokumen', 'created_at','oleh')->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
-                    $button = '<a href="dokumen/' . $data->dokumen . '" class="edit btn btn-primary btn-sm">Download</a>';
-
+                    $button = '<a href="' . route('KurikulumBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
+        
                     return $button;
                 })
                 ->rawColumns(['action'])
@@ -97,7 +97,17 @@ class BerandaControllerKurikulum extends Controller
     }
 
     
-
+    public function download($dokumen)
+    {
+        
+        $file = storage_path('app/public/pengumuman/' . $dokumen);
+        if (file_exists($file)) {
+            return response()->download($file);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
+               
+    }
 }
 
 

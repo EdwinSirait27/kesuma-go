@@ -104,14 +104,14 @@
                                 <label for="username">Username</label>
                                 <input type="text" class="form-control" name="username" placeholder="Username"
                                     value="{{ old('username', auth()->user()->akunsiswa->username) }}" maxlength="50"
-                                    readonly>
+                                    disabled>
                             </div>
 
 
                             <div class="form-group col-md-6">
                                 <label for="NamaLengkap">Nama Lengkap</label>
                                 <input type="text" class="form-control" name="NamaLengkap" placeholder="Nama Lengkap"
-                                    value="{{ old('NamaLengkap', $siswa->NamaLengkap) }}" maxlength="50" readonly>
+                                    value="{{ old('NamaLengkap', $siswa->NamaLengkap) }}" maxlength="50" disabled>
                             </div>
 
                             <!-- Continue for other fields similarly -->
@@ -128,12 +128,12 @@
                             <div class="form-group col-md-6">
                                 <label for="Email">Email</label>
                                 <input type="text" class="form-control" name="Email" placeholder="Email" maxlength="30"
-                                    value="{{ old('Email', auth()->user()->siswa->Email) }}" readonly>
+                                    value="{{ old('Email', auth()->user()->siswa->Email) }}" disabled>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <label for="JenisKelamin">Jenis Kelamin</label>
-                                <select class="form-control" id="JenisKelamin" name="JenisKelamin" readonly>
+                                <select class="form-control" id="JenisKelamin" name="JenisKelamin" disabled>
                                     <option value="Laki-Laki"
                                         {{ old('JenisKelamin', auth()->user()->siswa->JenisKelamin) == 'Laki-Laki' ? 'selected' : '' }}>
                                         Laki-Laki</option>
@@ -172,7 +172,7 @@
                                 <input type="text" class="form-control" name="NomorTelephone"
                                     oninput="this.value = this.value.replace(/[^0-9]/g, '');"maxlength="13"
                                     placeholder="Nomor Telephone"value="{{ old('NomorTelephone', auth()->user()->siswa->NomorTelephone) }}"
-                                    readonly>
+                                    disabled>
 
 
                             </div>
@@ -181,7 +181,7 @@
 
                             <div class="form-group col-md-6">
                                 <label for="Agama">Agama</label>
-                                <select class="form-control" id="Agama" name="Agama" readonly>
+                                <select class="form-control" id="Agama" name="Agama" disabled>
                                     <option value="Katolik"
                                         {{ old('Agama', auth()->user()->siswa->Agama) == 'Katolik' ? 'selected' : '' }}>
                                         Katolik</option>

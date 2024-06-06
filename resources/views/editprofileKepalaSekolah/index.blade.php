@@ -179,7 +179,7 @@ color: #333; /* Warna teks label */
 
                         <div class="form-group col-md-6">
                             <label for="text">NIK</label>
-                            <  <input type="Nik" class="form-control" name="Nik" placeholder="NIK"
+                              <input type="Nik" class="form-control" name="Nik" placeholder="NIK"
                             maxlength="16"value="{{ old('Nik', auth()->user()->guru->Nik) }}"
                             oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                         </div>
