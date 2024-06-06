@@ -19,6 +19,10 @@ class prestasi extends Model
     {
         return $this->belongsto(tbsiswa::class, 'siswa_id');
     }
+    public function siswaa()
+    {
+        return $this->belongsTo(tbsiswa::class, 'siswa_id', 'siswa_id');
+    }
 }
 
 

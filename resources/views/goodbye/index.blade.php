@@ -1,7 +1,6 @@
 @extends('index')
-@section('title', 'Kesuma-GO | Data PPDB')
+@section('title', 'Kesuma-GO | Daftar Siswa Lulus')
 @section('content')
-@include('ppdb.create')
     <style>
         .table th,
         .table td {
@@ -41,10 +40,10 @@
             /* Sudut bulat untuk estetika */
         }
     </style>
-
+    @if (auth()->user()->hakakses == 'Admin' || auth()->user()->hakakses == 'KepalaSekolah')
         <div class="row" id="hal_index">
             <div class="col-md-12 col-sm-12">
-                <h3><i class="fa fa-male" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>PPDB</small></h3>
+                <h3><i class="fa fa-male" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Siswa</small></h3>
                 <hr>
             </div>
         </div>
@@ -53,10 +52,10 @@
                 <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Data Diri<small>Siswa</small></h2>
                 <div class="clearfix"></div>
             </div>
+          
             <div class="x_content">
                 <div class="row">
                     <div class="col-sm-12">
-
                         <div class="card-box table-responsive">
                             <table id="myDataTable"
                                 class="table table-striped table-bordered dt-responsive nowrap user_datatable"
@@ -67,8 +66,8 @@
                                         No.
                                     </th>
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="150">
-                                        Foto
+                                        width="60">
+                                        Foto Siswa
                                     </th>
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="150">
@@ -76,67 +75,45 @@
                                     </th>
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
-                                        NISN
+                                        Nomor Induk
                                     </th>
+
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
                                         Jenis Kelamin
                                     </th>
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
-                                        Tanggal Lahir
+                                        NISN
                                     </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        Agama
-                                    </th>
+                                   
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
                                         Nomor Telephone
                                     </th>
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
-                                        Email
+                                        Tahun Meninggalkan Sekolah
                                     </th>
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
-                                        Alamat
+                                        Tamat Belajar Tahun
                                     </th>
+
+                                  
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
-                                        Asal SMP
+                                        Status Aktif
                                     </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        Nomor Telephone Orang Tua / Wali
-                                    </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        Nama Orang Tua / Wali
-                                    </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        Username
-                                    </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        Tanggal Pendaftaran D-M-Y
-                                    </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        No Pdf
-                                    </th>
+                                 
+
+
 
                                     <th scope="col" style="text-align: center; font-size: 13px;"
                                         class="lebar-kolom"width="60" ;>
                                         Action
                                     </th>
-
-
-                                    <th width="50px" style="text-align: center; font-size: 15px;">
-                                        <button type="button" name="bulk_delete" id="bulk_delete"
-                                            class="btn btn-danger btn-xs">Delete</button>
-                                    </th>
+                                  
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -144,11 +121,7 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10">
-                                <button type="button" name="bulk_update" id="bulk_update"
-                                    class="btn btn-success btn-xs">Ubah Hak Akses</button>
-
-                                    <button type="button" class="btn btn-primary" id="checkAll">Check All</button>
-                                    <button type="button" class="btn btn-secondary" id="uncheckAll">Uncheck All</button>
+                               
                                     @if (auth()->user()->hakakses == 'Admin')
                                     <button type="button" onclick="window.location.href = '/AdminBeranda'"
                                     class="btn btn-danger">Kembali</button>
@@ -157,6 +130,7 @@
                                     <button type="button" onclick="window.location.href = '/KepalaSekolahBeranda'"
                                     class="btn btn-danger">Kembali</button>
                                     @endif
+
 
                             </div>
                         </div>
@@ -170,7 +144,6 @@
         </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             iForm('hal_index');
 
@@ -180,29 +153,117 @@
                 $('#hal_eksten').hide();
                 $('#' + iv).show();
             }
-           
-    document.getElementById('checkAll').addEventListener('click', function() {
-        var checkboxes = document.getElementsByClassName('users_checkbox');
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = true;
-        }
-    });
+     
 
-    document.getElementById('uncheckAll').addEventListener('click', function() {
-        var checkboxes = document.getElementsByClassName('users_checkbox');
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].checked = false;
-        }
-    });
+            function tambah() {
+                $('#txt_id').val(0);
+                $('#NOPDF').val('');
+                $('#NamaLengkap').val('');
+                $('#NomorInduk').val('');
 
+                $('#NamaPanggilan').val('');
+                $('#JenisKelamin').val('');
+                $('#NISN').val('');
+                $('#TempatLahir').val('');
+                $('#TanggalLahir').val('');
+                $('#Agama').val('');
+                $('#Alamat').val('');
+                $('#RT').val('');
+                $('#RW').val('');
+                $('#Kelurahan').val('');
+                $('#Kecamatan').val('');
+                $('#KabKota').val('');
+                $('#Provinsi').val('');
+                $('#KodePos').val('');
+                $('#Email').val('');
+                $('#NomorTelephone').val('');
+                $('#Kewarganegaraan').val('');
+                $('#NIK').val('');
+                $('#GolDarah').val('');
+                $('#TinggalDengan').val('');
 
-            
+                $('#StatusSiswa').val('');
+                $('#AnakKe').val('');
+                $('#SaudaraKandung').val('');
+                $('#SaudaraTiri').val('');
+
+                $('#Tinggicm').val('');
+                $('#Beratkg').val('');
+                $('#RiwayatPenyakit').val('');
+
+                $('#AsalSMP').val('');
+                $('#AlamatSMP').val('');
+                $('#NPSNSMP').val('');
+                $('#KabKotaSMP').val('');
+                $('#ProvinsiSMP').val('');
+                $('#NoIjasah').val('');
+                $('#NoSKHUN').val('');
+                $('#LamaBelajarSMP').val('');
+                $('#DiterimaTanggal').val('');
+                $('#DiterimaDiKelas').val('');
+                $('#DiterimaSemester').val('');
+                $('#MutasiAsalSMA').val('');
+                $('#AlasanPindah').val('');
+                $('#NoPesertaUNSMP').val('');
+                $('#TglIjasah').val('');
+                $('#NamaOrangTuaPadaIjasah').val('');
+                $('#NamaAyah').val('');
+                $('#TahunLahirAyah').val('');
+
+                $('#AlamatAyah').val('');
+                $('#NomorTelephoneAyah').val('');
+                $('#AgamaAyah').val('');
+                $('#KebangsaanAyah').val('');
+                $('#PendidikanTerakhirAyah').val('');
+                $('#PekerjaanAyah').val('');
+                $('#PenghasilanAyah').val('');
+                $('#AyahMasihHidupMeninggal').val('');
+                $('#NIKAyah').val('');
+                $('#NamaIbu').val('');
+                $('#TahunLahirIbu').val('');
+                $('#AlamatIbu').val('');
+                $('#NomorTelephoneIbu').val('');
+                $('#AgamaIbu').val('');
+
+                $('#PendidikanTerakhirIbu').val('');
+                $('#PekerjaanIbu').val('');
+                $('#PenghasilanIbu').val('');
+
+                $('#NamaWali').val('');
+                $('#TahunLahirWali').val('');
+                $('#AlamatWali').val('');
+                $('#NomorTelephoneWali').val('');
+                $('#AgamaWali').val('');
+
+                $('#PendidikanTerakhirWali').val('');
+                $('#PekerjaanWali').val('');
+                $('#WaliPenghasilan').val('');
+                $('#StatusHubunganWali').val('');
+
+                $('#MenerimaBeasiswaDari').val('');
+                $('#TahunMeninggalkanSekolah').val('');
+                $('#AlasanSebab').val('');
+                $('#TamatBelajarTahun').val('');
+                $('#TanggalNomorSTTB').val('');
+                $('#MelanjutkanKe').val('');
+                $('#BekerjaPada').val('');
+                $('#InformasiLain').val('');
+                $('#cita').val('');
+                $('#status').val('');
+
+                $('#foto').val('');
+                $('#username').val('');
+                $('#password').val('');
+                $('#hakakses').val('');
+
+                iForm('hal_edit');
+            }
 
 
 
             function editAndShow(iv, id) {
                 $.ajax({
-                    url: "/ppdb-edit/" + id,
+                    url: "/siswaall-edit/" + id,
                     type: "GET",
                     success: function(data) {
                         // Mengisi nilai input dengan data yang ada
@@ -320,77 +381,12 @@
             
         </script>
         <script type="text/javascript">
-            $(document).on('click', '#bulk_update', function() {
-                // Menampilkan peringatan menggunakan SweetAlert
-                Swal.fire({
-                    title: "Apakah Anda yakin?",
-                    text: "Ini akan mengubah hak akses siswa yang dipilih menjadi 'Siswa'.",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Lanjutkan",
-                    cancelButtonText: "Tidak, Batal",
-                }).then((result) => {
-                    // Jika pengguna menekan tombol "Ya"
-                    if (result.isConfirmed) {
-                        // Lakukan pembaruan hak akses
-                        performBulkUpdate();
-                    }
-                });
-            });
-
-            // Fungsi untuk melakukan pembaruan hak akses
-            function performBulkUpdate() {
-                var id = [];
-                $('.users_checkbox:checked').each(function() {
-                    id.push($(this).val());
-                });
-
-                if (id.length > 0) {
-                    $.ajax({
-                        url: "{{ route('ppdb.update') }}",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        method: "POST",
-                        data: {
-                            siswa_id: id
-                        },
-                        success: function(data) {
-                            console.log(data);
-                            Swal.fire({
-                                title: "Hak Akses Berhasil Diubah!",
-                                text: "Hak akses siswa telah diubah menjadi Siswa.",
-                                icon: "success",
-                            });
-                            // Refresh data tabel setelah perubahan
-                            $('.user_datatable').DataTable().ajax.reload();
-                        },
-                        error: function(data) {
-                            var errors = data.responseJSON;
-                            console.log(errors);
-                        }
-                    });
-                } else {
-                    Swal.fire({
-                        title: "Tidak Ada Data Yang Tercentang",
-                        text: "Dicentang Dulu Baru Bisa Diubah Hak Aksesnya.",
-                        icon: "warning",
-                    });
-                }
-            }
-        </script>
-
-
-
-        <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('.user_datatable').DataTable({
                     processing: true,
                     serverSide: true,
                     ajax: {
-                        url: "{{ route('ppdb.index') }}",
+                        url: "{{ route('goodbye.index') }}",
                         method: "GET"
                     },
                     columns: [{
@@ -400,175 +396,96 @@
                                 return meta.row + meta.settings._iDisplayStart + 1;
                             }
                         },
-                        {
-                            data: 'foto',
-                            name: 'foto',
-                            render: function(data, type, full, meta) {
-                                if (data) {
-                                    return '<img src="{{ asset('storage/fotosiswa/') }}/' + data +
-                                        '" width="100" />';
-                                } else {
-                                    return 'Tidak Ada Foto';
-                                }
-                            }
-                        },
                         
+                        {
+    data: 'foto',
+    name: 'foto',
+    render: function(data, type, full, meta) {
+        if (data) {
+            return '<img src="{{ asset('storage/fotosiswa/') }}/' + data + '" width="100" />';
+        } else {
+            return 'Tidak Ada Foto';
+        }
+    }
+},
+
+
+
                         {
                             data: 'NamaLengkap',
                             name: 'NamaLengkap'
                         },
                         {
-                            data: 'NISN',
-                            name: 'NISN'
+                            data: 'NomorInduk',
+                            name: 'NomorInduk'
                         },
+
+
+
                         {
                             data: 'JenisKelamin',
                             name: 'JenisKelamin'
                         },
                         {
-                            data: 'TanggalLahir',
-                            name: 'TanggalLahir'
+                            data: 'NISN',
+                            name: 'NISN'
                         },
-                        {
-                            data: 'Agama',
-                            name: 'Agama'
-                        },
-                        {
+
+                       {
                             data: 'NomorTelephone',
                             name: 'NomorTelephone'
                         },
-                        {
-                            data: 'Email',
-                            name: 'Email'
+                       {
+                            data: 'TahunMeninggalkanSekolah',
+                            name: 'TahunMeninggalkanSekolah'
                         },
-                        {
-                            data: 'Alamat',
-                            name: 'Alamat'
+                       {
+                            data: 'TamatBelajarTahun',
+                            name: 'TamatBelajarTahun'
                         },
-                        {
-                            data: 'AsalSMP',
-                            name: 'AsalSMP'
-                        },
-                        {
-                            data: 'NomorTelephoneAyah',
-                            name: 'NomorTelephoneAyah'
-                        },
-                        {
-                            data: 'NamaAyah',
-                            name: 'NamaAyah'
-                        },
-                        {
-                            data: 'listakunsiswa.username',
-                            name: 'listakunsiswa.username'
-                        },
-                        
-                        {
-    data: 'listakunsiswa.created_at',
-    name: 'listakunsiswa.created_at',
-    render: function(data, type, row) {
-        // Ubah string ISO 8601 menjadi objek Date
-        var date = new Date(data);
+                       
 
-        // Ambil komponen tanggal yang diinginkan
-        var day = date.getDate();
-        var month = date.getMonth() + 1; // Perhatikan bahwa bulan dimulai dari 0 (Januari) hingga 11 (Desember)
-        var year = date.getFullYear();
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
-
-        // Format tanggal dan waktu sesuai keinginan Anda
-        var formattedDate = day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
-
-        return formattedDate;
-    }
-},
                         {
-                            data: 'listakunsiswa.no_pdf',
-                            name: 'listakunsiswa.no_pdf'
+                            data: 'status',
+                            name: 'status',
+                            render: function(data, type, full, meta) {
+                                // Logika untuk memberikan warna
+                                var colorClass = data === 'Aktif' ? 'text-success' : 'text-danger';
+                                return '<span class="' + colorClass + '">' + data + '</span>';
+                            }
                         },
+                      
+
 
                         {
                             data: 'action',
                             name: 'action',
                             orderable: false,
                             searchable: false
-                        },
-                        {
-                            data: 'checkbox',
-                            name: 'checkbox',
-                            orderable: false,
-                            searchable: false
                         }
                     ]
                 });
             });
-
-
-            $(document).on('click', '#bulk_delete', function() {
-                var id = [];
-                Swal.fire({
-                    title: "Apakah Yakin?",
-                    text: "Data Tidak Bisa Kembali",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Hapus",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var id = [];
-                        $('.users_checkbox:checked').each(function() {
-                            id.push($(this).val());
-                        });
-                        if (id.length > 0) {
-                            $.ajax({
-                                url: "{{ route('ppdb.removeall') }}",
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                method: "get",
-                                data: {
-                                    siswa_id: id
-                                },
-                                success: function(data) {
-                                    console.log(data);
-                                    Swal.fire({
-                                        title: "Deleted!",
-                                        text: "Your data has been deleted.",
-                                        icon: "success",
-                                    });
-                                    window.location.assign("ppdb");
-                                },
-                                error: function(data) {
-                                    var errors = data.responseJSON;
-                                    console.log(errors);
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Tidak Ada Data Yang Tercentang",
-                                text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
-                                icon: "warning",
-                            });
-                        }
-                    }
-                });
-            });
+            
         </script>
-
-
+        
         <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('myDataTable').DataTable({
-                    "pageLength": 10,
+                    "pageLength": 10, // Menampilkan 10 data per halaman secara default
                     "lengthMenu": [
                         [10, 25, 50, 100, -1],
                         [10, 25, 50, 100, "Semua"]
                     ]
                 });
+
+                // Menambahkan opsi "Semua" ke dalam dropdown "Show entries"
                 $('.dataTables_length select').append('<option value="-1">Semua</option>');
+
+                // Mengubah tampilan "Semua" menjadi teks yang lebih jelas
                 $('.dataTables_length select option[value="-1"]').text('Semua');
+
+                // Mengatur agar tabel menampilkan semua entri saat "Semua" dipilih
                 $('.dataTables_length select').change(function() {
                     var selectedValue = $(this).val();
                     if (selectedValue == -1) {
@@ -578,7 +495,12 @@
                     }
                 });
             });
-            
-        </script>
+           
+
+
+</script>
+
+
+@endif
 
 @endsection

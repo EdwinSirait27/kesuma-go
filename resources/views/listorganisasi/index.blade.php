@@ -51,7 +51,13 @@
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $siswa->siswa->NamaLengkap }}</td>
-                                                <td>{{ $siswa->siswa->kelas->namakelas }}</td>
+                                                <td>
+                                                    @if(isset($siswa->siswa->kelas->namakelas))
+                                                        {{ $siswa->siswa->kelas->namakelas }}
+                                                    @else
+                                                        Tidak ada data disini
+                                                    @endif
+                                                </td>
                                                 
                                                     <td><input type="checkbox" name="siswa_ids[]" value="{{ $siswa->siswa_organisasi_guru_id }}"></td>
                                             </tr>

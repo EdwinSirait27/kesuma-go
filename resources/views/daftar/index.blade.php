@@ -208,7 +208,8 @@
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="email" class="form-control" name="Email" id="Email"
-                                                placeholder="Email" maxlength="40"required>
+                                            placeholder="Email" maxlength="40" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                                     
 
 
                                             <div class="input-group-append">

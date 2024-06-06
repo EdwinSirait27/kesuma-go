@@ -97,7 +97,7 @@ Route::middleware(['auth', hakakses::class . ':Admin'])->group(function () {
     Route::post('/simpan', [BerandaController::class, 'simpan'])->name('simpan');
 
     // Route::get('/guruall', [tbguruallController::class, 'index1'])->name('guruall.index1');
-    Route::get('/guruall/removeall', [tbguruallController::class, 'removeall'])->name('guruall.removeall');
+    // Route::post('/guruall/removeall', [tbguruallController::class, 'removeall'])->name('guruall.removeall');
     Route::get('/guruall-edit/{id}', [tbguruallController::class, 'edit']);
     Route::post('/guruall-update', [tbguruallController::class, 'update']);
     Route::post('/guruall-save', [tbguruallController::class, 'save']);
@@ -207,6 +207,8 @@ Route::middleware(['auth', hakakses::class . ':KepalaSekolah'])->group(function 
     Route::get('/kepsek', [kepsekController::class, 'index'])->name('kepsek.index');
     Route::get('/kepsek/removeall', [kepsekController::class, 'removeall'])->name('kepsek.removeall');
     Route::post('/simpan-kep', [kepsekController::class, 'simpan'])->name('simpan-kep');
+    Route::get('kepsek/download/{dokumen}', [kepsekController::class, 'download'])->name('kepsek.download');
+
 });
 Route::get('/', [loginController::class, 'index'])->name('login');
 Route::get('/about', function () {
@@ -270,8 +272,7 @@ Route::get('/tugas', [DatakelasDatamengajarController::class, 'index'])->name('t
    
 });
 Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah,Guru,Kurikulum'])->group(function () {
-    Route::get('/inputnilaispc', [DatakelasController::class, 'indexadmin'])->name('inputnilaispc.index');
-    
+   
     Route::get('siswaaa/{siswa_id}/downloadddd', [datakelascontroller::class, 'downloadddd'])->name('siswaa.downloadddd');
     Route::put('/simpan-nilai/{siswa_id}', [datakelasController::class, 'simpanNilai'])->name('simpan.nilai');
     // Route::put('/simpan-nilai-matpel/{datamengajar_id}', [datakelasController::class, 'simpanNilaimatpel'])->name('simpan.nilai.matpel');
@@ -302,11 +303,19 @@ Route::post('/mata-update', [tbmatpelController::class, 'update']);
 Route::post('/mata-save', [tbmatpelController::class, 'save']);
 // Route::get('/inputnilai/{siswa_id?}', [DatakelasController::class, 'showSiswa'])->name('inputnilai.index')->middleware('check.inputnilai_token');
    
-Route::get('/inputnilaiall/{encodedId}', [DatakelasController::class, 'viewSiswaBySiswa'])->name('inputnilaiall.index');
+
+});
+
+Route::middleware(['auth', 'hakakses:Kurikulum,KepalaSekolah'])->group(function () {
+    Route::get('/inputnilaispc', [DatakelasController::class, 'indexadmin'])->name('inputnilaispc.index');
+    Route::get('/inputnilaiall/{encodedId}', [DatakelasController::class, 'viewSiswaBySiswa'])->name('inputnilaiall.index');
 
 });
 
 Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah'])->group(function () {
+    Route::get('/goodbye/{encodedId}', [tbsiswaallController::class, 'show'])->name('goodbye.show');
+    Route::put('/goodbye/{encodedId}', [tbsiswaallController::class, 'lulus'])->name('goodbye.lulus');
+    Route::get('/goodbye', [tbsiswaallController::class, 'indexlulus'])->name('goodbye.index');
     Route::get('/datamengajar/{encodedId}', [datamengajarController::class, 'show1'])->name('datamengajar.show');
     
     Route::get('/prestasi/create/{siswa_id}/', [tbsiswaallController::class, 'create'])->name('prestasi.create');
@@ -340,12 +349,16 @@ Route::post('/identitas', [identitasController::class, 'storeOrUpdate'])->name('
     Route::get('siswaex', [tbsiswaallController::class, 'index'])->name('siswaex.index');
 
     Route::post('/siswaall-update', [tbsiswaallController::class, 'update']);
+    Route::post('/siswaall/updatesiswa', [tbsiswaallController::class, 'updatesiswa'])->name('siswaall.updatesiswa');
+    
     Route::put('/siswaall/{encodedId}', [tbsiswaallController::class, 'updatee'])->name('siswaall.updatee');
     Route::delete('/siswaall-del/{id}', [tbsiswaallController::class, 'hapus'])->name('siswaall.hapus');
-    Route::get('/siswaall/removeall', [tbsiswaallController::class, 'removeall'])->name('siswaall.removeall');
+    // Route::get('/siswaall/removeall', [tbsiswaallController::class, 'removeall'])->name('siswaall.removeall');
+    Route::post('/siswaall/removeall', [tbsiswaallController::class, 'removeall'])->name('siswaall.removeall');
+
     Route::get('/siswaall-save', [tbsiswaallController::class, 'save']);
     //tabel guruall
-    Route::get('/guruall/removeall', [tbguruallController::class, 'removeall'])->name('guruall.removeall');
+    Route::post('/guruall/removeall', [tbguruallController::class, 'removeall'])->name('guruall.removeall');
     Route::get('/guruall-edit/{id}', [tbguruallController::class, 'edit']);
     Route::post('/guruall-update', [tbguruallController::class, 'update']);
     Route::put('/guruall/{encodedId}', [tbguruallController::class, 'updatee'])->name('guruall.updatee');
@@ -361,7 +374,8 @@ Route::post('/identitas', [identitasController::class, 'storeOrUpdate'])->name('
     Route::post('/kurikulum-save', [kurikulumController::class, 'save']);
     //kurikulum
 
-    Route::get('/datamengajar/removeall', [datamengajarController::class, 'removeall'])->name('datamengajar.removeall');
+    // Route::get('/datamengajar/removeall', [datamengajarController::class, 'removeall'])->name('datamengajar.removeall');
+    Route::delete('/datamengajar/removeall', [datamengajarController::class, 'removeall'])->name('datamengajar.removeall');
     Route::get('/datamengajar-edit/{id}', [datamengajarController::class, 'edit']);
     Route::post('/datamengajar-update', [datamengajarController::class, 'update']);
     Route::post('/datamengajar-save', [datamengajarController::class, 'save']);

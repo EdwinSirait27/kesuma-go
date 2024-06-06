@@ -48,10 +48,7 @@ class editprofileControllerSU extends Controller
             ]);
         }
         // Update peran (role) dan hak akses (hakakses)
-        $akunguru->update([
-            
-            'hakakses' => $request->input('role'), // Sesuaikan dengan kolom yang menyimpan hakakses
-        ]);
+      
         $guru->update($request->only([
             'Nama', 'TempatLahir', 'TanggalLahir', 'Agama', 'JenisKelamin', 'StatusPegawai', 'NipNips',
             'Nuptk', 'Nik', 'Npwp', 'NomorSertifikatPendidik', 'TahunSertifikasi', 'PangkatGolonganTerakhir', 'TMT',

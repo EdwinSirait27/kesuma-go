@@ -150,12 +150,19 @@ class datamengajarController extends Controller
 
     
     
-    function removeall(Request $request)
-    {
-        $datamengajar_id_array = $request->input('datamengajar_id');
-        $data = datamengajar::whereIn('datamengajar_id', $datamengajar_id_array);
-        if ($data->delete()) {
-            return response()->json(['message' => 'Data Deleted']);
-        }
-    }
+public function removeAll(Request $request)
+{
+    $ids = $request->datamengajar_id;
+    datamengajar::whereIn('datamengajar_id', $ids)->delete();
+
+    return response()->json(['success' => 'Data deleted successfully.']);
+}
+    // function removeall(Request $request)
+    // {
+    //     $datamengajar_id_array = $request->input('datamengajar_id');
+    //     $data = datamengajar::whereIn('datamengajar_id', $datamengajar_id_array);
+    //     if ($data->delete()) {
+    //         return response()->json(['message' => 'Data Deleted']);
+    //     }
+    // }
 }

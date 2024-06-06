@@ -455,55 +455,54 @@
         
 
         $(document).on('click', '#bulk_delete', function() {
-            var id = [];
-            Swal.fire({
-                title: "Apakah Yakin?",
-                text: "Data Tidak Bisa Kembali",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, Hapus",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var id = [];
-                    $('.users_checkbox:checked').each(function() {
-                        id.push($(this).val());
+        var ids = []; // Menggunakan nama variable yang berbeda untuk menghindari konflik
+        Swal.fire({
+            title: "Apakah Yakin?",
+            text: "Data Tidak Bisa Kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Hapus",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('.users_checkbox:checked').each(function() {
+                    ids.push($(this).val()); // Menggunakan array ids untuk menyimpan nilai
+                });
+                if (ids.length > 0) {
+                    $.ajax({
+                        url: "{{ route('guruall.removeall') }}",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        method: "POST", // Mengubah metode menjadi POST
+                        data: {
+                            ids: ids // Menggunakan nama parameter yang sesuai
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your data has been deleted.",
+                                icon: "success",
+                            });
+                            window.location.assign("guruall"); // Pastikan URL ini benar
+                        },
+                        error: function(data) {
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
                     });
-                    if (id.length > 0) {
-                        $.ajax({
-                            url: "{{ route('guruall.removeall') }}",
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            method: "get",
-                            data: {
-                                guru_id: id
-                            },
-                            success: function(data) {
-                                console.log(data);
-                                Swal.fire({
-                                    title: "Deleted!",
-                                    text: "Your data has been deleted.",
-                                    icon: "success",
-                                });
-                                window.location.assign("guruall");
-                            },
-                            error: function(data) {
-                                var errors = data.responseJSON;
-                                console.log(errors);
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Tidak Ada Data Yang Tercentang",
-                            text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
-                            icon: "warning",
-                        });
-                    }
+                } else {
+                    Swal.fire({
+                        title: "Tidak Ada Data Yang Tercentang",
+                        text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
+                        icon: "warning",
+                    });
                 }
-            });
+            }
         });
+    });
+ 
     </script>
     <script type="text/javascript">
         $(document).ready(function() {

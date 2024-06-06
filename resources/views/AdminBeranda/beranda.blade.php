@@ -420,7 +420,7 @@
         var seconds = date.getSeconds();
 
         // Format tanggal dan waktu sesuai keinginan Anda
-        var formattedDate = month + '-' + day + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+        var formattedDate = day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
 
         return formattedDate;
     }

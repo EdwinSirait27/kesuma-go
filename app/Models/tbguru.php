@@ -11,6 +11,7 @@ class tbguru extends Model
 {
     use HasFactory;
     protected $table   = 'tb_guru';
+    
    
     public $timestamps = false;
     protected $fillable = ['foto','Nama', 'TempatLahir','TanggalLahir','Agama','JenisKelamin','StatusPegawai','NipNips','Nuptk','Nik','Npwp','NomorSertifikatPendidik','TahunSertifikasi','pangkatgt','jadwalkenaikanpangkat','jadwalkenaikangaji','TMT','PendidikanAkhir','TahunTamat','Jurusan','TugasMengajar','TugasTambahan','JamPerMinggu','TahunPensiun','Berkala','Pangkat','Jabatan','NomorTelephone','Alamat','Email','status','id'];

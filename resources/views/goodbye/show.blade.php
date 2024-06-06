@@ -105,7 +105,7 @@
                 <a href="{{ route('editpassword.index', ['encodedId' => base64_encode($siswa->siswa_id)]) }}" class="btn btn-dark">Edit Password</a>
             </div>
             <hr>
-            <form method="POST" action="{{ route('siswaall.updatee', ['encodedId' => base64_encode($siswa->siswa_id)]) }}" enctype="multipart/form-data" id="myForm">
+            <form method="POST" action="{{ route('goodbye.lulus', ['encodedId' => base64_encode($siswa->siswa_id)]) }}" enctype="multipart/form-data" id="myForm">
 
                 @csrf
                 @if ($errors->any())

@@ -15,17 +15,26 @@ class kepsekController extends Controller
         if ($request->ajax()) {
             $data = kepsek::select('id', 'dokumen', 'created_at')->get();
             return Datatables::of($data)->addIndexColumn()
-                ->addColumn('action', function ($data) {
-
-                    $button = '<a href="dokumen/' . $data->dokumen . '" class="edit btn btn-primary btn-sm">Download</a>';
-                    return $button;
-                })
+            ->addColumn('action', function ($data) {
+                $button = '<a href="' . route('kepsek.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
+                return $button;
+            })
+            
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$id}}" />')
                 ->rawColumns(['checkbox', 'action'])
                 ->make(true);
         }
 
         return view('kepsek.index',compact('data'));
+    }
+    public function download($dokumen)
+    {
+        $file = storage_path('app/public/kepsek/' . $dokumen);
+        if (file_exists($file)) {
+            return response()->download($file);
+        } else {
+            return redirect()->back()->with('error', 'File not found.');
+        }
     }
     public function update(Request $request, $id)
     {
@@ -132,8 +141,8 @@ class kepsekController extends Controller
 
             $dokumen = $request->file('dokumen');
             $nama_dokumen = $dokumen->getClientOriginalName();
-            $dokumen->move('dokumen/', $nama_dokumen);
-
+            $dokumen->storeAs('public/kepsek/', $nama_dokumen);
+            
             $data = new kepsek();
             $data->dokumen = $nama_dokumen;
             $data->created_at = now(); // Store the upload date and time

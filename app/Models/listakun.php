@@ -17,7 +17,7 @@ class listakun extends Model
     
     public function guru()
     {
-        return $this->hasOne(tbguru::class, 'guru_id', 'id');
+        return $this->hasOne(tbguru::class, 'guru_id');
     }
     // public function guru()
     // {

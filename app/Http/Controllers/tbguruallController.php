@@ -94,18 +94,32 @@ $redirectButton = '<a href="' . route('guruex.index', ['kesuma-goencrypted' => $
     //     }
     //     return view('guruall.index', compact('akungurus'));
     // }
-    function removeall(Request $request)
+    // function removeall(Request $request)
+    // {
+    //     $guru_id_array = $request->input('guru_id');
+    //     DB::beginTransaction();
+    //     try {
+    //         listakun::whereIn('guru_id', $guru_id_array)->delete();
+    //         tbguru::whereIn('guru_id', $guru_id_array)->delete();
+    //         DB::commit();
+    //         return response()->json(['message' => 'Data Deleted']);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+    //         return response()->json(['error' => $e->getMessage()]);
+    //     }
+    // }
+    public function removeall(Request $request)
     {
-        $guru_id_array = $request->input('guru_id');
-        DB::beginTransaction();
-        try {
-            listakun::whereIn('guru_id', $guru_id_array)->delete();
-            tbguru::whereIn('guru_id', $guru_id_array)->delete();
-            DB::commit();
-            return response()->json(['message' => 'Data Deleted']);
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return response()->json(['error' => $e->getMessage()]);
+        $ids = $request->ids; 
+        if (!empty($ids) && is_array($ids)) {
+            try {
+                tbguru::whereIn('guru_id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+            }
+        } else {
+            return response()->json(['error' => 'No IDs provided.'], 400);
         }
     }
     public function index(Request $request)

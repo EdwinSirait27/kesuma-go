@@ -9,8 +9,11 @@ use App\Models\listakunsiswa;
 use App\Models\siswamengajar;
 
 use App\Models\pengumpulantugas;
-use App\Models\siswaekstraguru;
-use App\Models\siswaorganisasiguru;
+use App\Models\SiswaEkstraGuru;
+use App\Models\organisasiguru;
+use App\Models\SiswaOrganisasiGuru;
+
+use App\Models\osis;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
@@ -20,10 +23,94 @@ use Illuminate\Support\Facades\Crypt;
 
 class tbsiswaallController extends Controller
 {
+
+//     public function removeall(Request $request)
+// {
+//     $ids = $request->ids;
+//     if (!empty($ids) && is_array($ids)) {
+//         try {
+//             $modelsWithSiswaId = ['tbsiswa', 'listakunsiswa', 'prestasi', 'SiswaOrganisasiGuru', 'organisasiguru', 'osis', 'siswamengajar', 'SiswaEkstraGuru', 'pengumpulantugas']; // Gantilah dengan nama model yang sesuai
+            
+//             foreach ($modelsWithSiswaId as $model) {
+//                 $model::whereIn('siswa_id', $ids)->delete();
+//             }
+
+//             return response()->json(['success' => true]);
+//         } catch (\Exception $e) {
+//             $errorMessage = $e->getMessage();
+//             return response()->json(['error' => $errorMessage], 500);
+//         }
+//     } else {
+//         return response()->json(['error' => 'No IDs provided.'], 400);
+//     }
+// }
+
+    
+    // inii
+    public function updatesiswa(Request $request)
+    {
+        // Validasi request
+        $request->validate([
+            'siswa_id' => 'required|array',
+
+        ]);
+
+        // Ambil siswa_id dari request
+        $siswaIds = $request->input('siswa_id');
+
+        // Lakukan pengubahan hak akses menjadi "Siswa" untuk setiap siswa yang dipilih
+        tbsiswa::whereIn('siswa_id', $siswaIds)->each(function ($siswa) {
+            $siswa->update(['status' => 'Lulus']);
+             // Perbarui hak akses di relasi listakunsiswa
+        });
+
+        // Beri respons sukses
+        return response()->json(['message' => 'Hak akses berhasil diubah menjadi Siswa']);
+    }
+    public function removeall(Request $request)
+    {
+        $ids = $request->ids; 
+        if (!empty($ids) && is_array($ids)) {
+            try {
+                tbsiswa::whereIn('siswa_id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+            }
+        } else {
+            return response()->json(['error' => 'No IDs provided.'], 400);
+        }
+    }
+    // public function removeall(Request $request)
+    // {
+    //     $ids = $request->ids; // Ambil ids yang dikirimkan dari AJAX
+
+    //     // Pastikan $ids adalah array dan tidak kosong
+    //     if (!empty($ids) && is_array($ids)) {
+    //         try {
+    //             // Hapus siswa berdasarkan ids
+    //             tbsiswa::whereIn('siswa_id', $ids)->delete();
+
+    //             // Jika berhasil, kembalikan respons sukses
+    //             return response()->json(['success' => true]);
+    //         } catch (\Exception $e) {
+    //             // Jika terjadi kesalahan, kembalikan respons error
+    //             return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+    //         }
+    //     } else {
+    //         // Jika $ids kosong atau bukan array, kembalikan respons error
+    //         return response()->json(['error' => 'No IDs provided.'], 400);
+    //     }
+    // }
+    
     public function index1(Request $request)
     {
         if ($request->ajax()) {
-            $data = tbsiswa::select(
+            $data = tbsiswa::with('listakunsiswa', 'kelas')
+            ->whereHas('listakunsiswa', function ($query) {
+                $query->where('hakakses', 'Siswa');
+                $query->where('status', 'Aktif','Tidak Aktif');
+            })->select(
                 'siswa_id',
                 'foto',
                 'NamaLengkap',
@@ -35,24 +122,14 @@ class tbsiswaallController extends Controller
                 'Email',
                 'status',
                 'kelas_id'
-            )->with('listakunsiswa', 'kelas')
-                ->whereHas('listakunsiswa', function ($query) {
-                    $query->where('hakakses', 'Siswa');
-                })
-                ->get();
-
+            )   ->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
-                    // $button = '<button onclick="editAndShow(\'hal_edit\', ' . $data->siswa_id . ');" class="btn btn-primary">Edit</button>';
-                    $encodedId = base64_encode($data->siswa_id);
-                   
+                    $encodedId = base64_encode($data->siswa_id); 
                     $button1 = '<a href="' . route('siswaall.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
-
-
                     $encryptedSiswaId = substr(Crypt::encryptString($data->siswa_id), 0, 12);
                     $redirectButton = '<a href="' . route('siswaex.index', ['kesuma-goencrypted' => $encryptedSiswaId]) . '" class="btn btn-success">Detail</a>';
                     $redirectButton1 = '<a href="' . route('prestasi.index', $data->siswa_id) . '" class="btn btn-dark">Prestasi</a>';
-
                     return $button1 . ' ' . $redirectButton . ' ' . $redirectButton1;
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
@@ -61,6 +138,74 @@ class tbsiswaallController extends Controller
         }
         return view('siswaall.index');
     }
+    public function indexlulus(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = tbsiswa::with('listakunsiswa', 'kelas')
+            ->whereHas('listakunsiswa', function ($query) {
+                $query->where('hakakses', 'Siswa');
+                $query->where('status', 'Lulus');
+            })->select(
+                'siswa_id',
+                'foto',
+                'NamaLengkap',
+                'NomorInduk',
+                'JenisKelamin',
+                'NISN',
+                'NomorTelephone',
+                'TahunMeninggalkanSekolah',
+                'TamatBelajarTahun',
+                'status',
+                
+            )   ->get();
+            return Datatables::of($data)->addIndexColumn()
+                ->addColumn('action', function ($data) {
+                    $encodedId = base64_encode($data->siswa_id); 
+                    $button1 = '<a href="' . route('goodbye.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
+                   
+                    return $button1;
+                })
+                ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('goodbye.index');
+    }
+    // public function index1(Request $request)
+    // {
+    //     if ($request->ajax()) {
+    //         $data = tbsiswa::select(
+    //             'siswa_id',
+    //             'foto',
+    //             'NamaLengkap',
+    //             'NomorInduk',
+    //             'JenisKelamin',
+    //             'NISN',
+    //             'Agama',
+    //             'NomorTelephone',
+    //             'Email',
+    //             'status',
+    //             'kelas_id'
+    //         )->with('listakunsiswa', 'kelas')
+    //             ->whereHas('listakunsiswa', function ($query) {
+    //                 $query->where('hakakses', 'Siswa');
+    //             })
+    //             ->get();
+    //         return Datatables::of($data)->addIndexColumn()
+    //             ->addColumn('action', function ($data) {
+    //                 $encodedId = base64_encode($data->siswa_id); 
+    //                 $button1 = '<a href="' . route('siswaall.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
+    //                 $encryptedSiswaId = substr(Crypt::encryptString($data->siswa_id), 0, 12);
+    //                 $redirectButton = '<a href="' . route('siswaex.index', ['kesuma-goencrypted' => $encryptedSiswaId]) . '" class="btn btn-success">Detail</a>';
+    //                 $redirectButton1 = '<a href="' . route('prestasi.index', $data->siswa_id) . '" class="btn btn-dark">Prestasi</a>';
+    //                 return $button1 . ' ' . $redirectButton . ' ' . $redirectButton1;
+    //             })
+    //             ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
+    //             ->rawColumns(['checkbox', 'action'])
+    //             ->make(true);
+    //     }
+    //     return view('siswaall.index');
+    // }
 
 
 
@@ -84,54 +229,65 @@ class tbsiswaallController extends Controller
         return view('siswaex.index');
     }
 
+    
+    // function removeall(Request $request)
+    // {
+    //     $siswa_id_array = $request->input('siswa_id');
+    //     $data = tbsiswa::whereIn('siswa_id', $siswa_id_array);
+    
+
+    //     if ($data->delete()) {
+    //         return response()->json(['message' => 'Data Deleted']);
+    //     }
+    // }
 
 
-    function removeall(Request $request)
-    {
-        $siswa_id_array = $request->input('siswa_id');
+    // function removeall(Request $request)
+    // {
+    //     $siswa_id_array = $request->input('siswa_id');
 
-        DB::beginTransaction();
-        try {
-            // Nonaktifkan aturan foreign key sementara
-            DB::statement('SET FOREIGN_KEY_CHECKS=0');
+    //     DB::beginTransaction();
+    //     try {
+    //         // Nonaktifkan aturan foreign key sementara
+    //         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-            // Coba hapus siswa dan entri terkait di listakunsiswa
-            foreach ($siswa_id_array as $siswa_id) {
-                $siswa = tbsiswa::find($siswa_id);
+    //         // Coba hapus siswa dan entri terkait di listakunsiswa
+    //         foreach ($siswa_id_array as $siswa_id) {
+    //             $siswa = tbsiswa::find($siswa_id);
 
-                // Jika siswa terikat ke kelas, coba pisahkan atau hapus kelas terlebih dahulu
-                if ($siswa && $siswa->kelas_id !== null) {
-                    // Contoh: Pisahkan siswa dari kelas
-                    // $kelas = Kelas::find($siswa->kelas_id);
-                    // $kelas->siswa()->detach($siswa); // Contoh menggunakan Eloquent Relationships
-                    // $kelas->delete(); // Atau menghapus kelas
-                }
+    //             // Jika siswa terikat ke kelas, coba pisahkan atau hapus kelas terlebih dahulu
+    //             if ($siswa && $siswa->kelas_id !== null) {
+    //                 // Contoh: Pisahkan siswa dari kelas
+    //                 // $kelas = Kelas::find($siswa->kelas_id);
+    //                 // $kelas->siswa()->detach($siswa); // Contoh menggunakan Eloquent Relationships
+    //                 // $kelas->delete(); // Atau menghapus kelas
+    //             }
 
-                // Hapus siswa
-                tbsiswa::destroy($siswa_id);
+    //             // Hapus siswa
+    //             tbsiswa::destroy($siswa_id);
 
-                // Hapus entri terkait di listakunsiswa
-                listakunsiswa::where('siswa_id', $siswa_id)->delete();
-                siswamengajar::where('siswa_id', $siswa_id)->delete();
-                prestasi::where('siswa_id', $siswa_id)->delete();
-                pengumpulantugas::where('siswa_id', $siswa_id)->delete();
-                siswaekstraguru::where('siswa_id', $siswa_id)->delete();
-                siswaorganisasiguru::where('siswa_id', $siswa_id)->delete();
-                // organisasiguru::where('siswa_id', $siswa_id)->delete();
-            }
+    //             // Hapus entri terkait di listakunsiswa
+    //             listakunsiswa::where('siswa_id', $siswa_id)->delete();
+    //             siswamengajar::where('siswa_id', $siswa_id)->delete();
+    //             prestasi::where('siswa_id', $siswa_id)->delete();
+    //             pengumpulantugas::where('siswa_id', $siswa_id)->delete();
+    //             siswaekstraguru::where('siswa_id', $siswa_id)->delete();
+    //             siswaorganisasiguru::where('siswa_id', $siswa_id)->delete();
+    //             // organisasiguru::where('siswa_id', $siswa_id)->delete();
+    //         }
 
-            // Aktifkan kembali aturan foreign key
-            DB::statement('SET FOREIGN_KEY_CHECKS=1');
+    //         // Aktifkan kembali aturan foreign key
+    //         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-            DB::commit();
+    //         DB::commit();
 
-            return response()->json(['message' => 'Data Deleted']);
-        } catch (\Exception $e) {
-            DB::rollBack();
+    //         return response()->json(['message' => 'Data Deleted']);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
 
-            return response()->json(['error' => $e->getMessage()]);
-        }
-    }
+    //         return response()->json(['error' => $e->getMessage()]);
+    //     }
+    // }
 
 
 
@@ -347,8 +503,8 @@ class tbsiswaallController extends Controller
                     if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
                         $file = $request->file('foto');
                         $fileName = time() . '_' . $file->getClientOriginalName(); // Gunakan timestamp untuk membuat nama file unik
-                        $file->move(public_path('fotosiswa/'), $fileName); // Pindahkan file ke direktori publik
-                        $newSiswa->foto = $fileName; // Simpan nama file ke dalam database
+                        $file->storeAs('public/fotosiswa', $fileName);
+            $newSiswa->foto = $fileName; // Simpan nama file ke dalam database
                     }
 
                     $newSiswa->save();
@@ -641,6 +797,110 @@ class tbsiswaallController extends Controller
         
         // return redirect()->route('siswaall.show', $siswa_id)->with('success', 'Data siswa berhasil diperbarui.');
         return redirect()->route('siswaall.show', ['encodedId' => base64_encode($siswa_id)])->with('success', 'Data siswa berhasil diperbarui.');
+
+    }
+    public function lulus(Request $request)
+    {
+        $encodedId = $request->encodedId;
+        $siswa_id = base64_decode($encodedId);
+        $request->validate([
+            'NamaLengkap' => 'required|string|max:255',
+            'foto' => 'image|mimes:jpeg|max:512', 
+        ], [
+            'foto.image' => 'File harus berupa gambar.',
+            'foto.mimes' => 'Format file gambar harus jpeg.',
+            'foto.max' => 'Ukuran file gambar tidak boleh melebihi 512 KB.',
+        ]);
+        $siswa = tbsiswa::with('listakunsiswa')->findOrFail($siswa_id);
+        if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
+            $file = $request->file('foto');
+            $fileName = time() . '_' . $file->getClientOriginalName(); 
+            $file->storeAs('public/fotosiswa', $fileName); 
+            $siswa->foto = $fileName;
+        }
+       
+        $siswa->NamaLengkap = $request->input('NamaLengkap');
+        $siswa->NomorInduk = $request->input('NomorInduk');
+        $siswa->NamaPanggilan = $request->input('NamaPanggilan');
+        $siswa->JenisKelamin = $request->input('JenisKelamin');
+        $siswa->NISN = $request->input('NISN');
+        $siswa->TempatLahir = $request->input('TempatLahir');
+        $siswa->TanggalLahir = $request->input('TanggalLahir');
+        $siswa->Agama = $request->input('Agama');
+        $siswa->Alamat = $request->input('Alamat');
+        $siswa->RT = $request->input('RT');
+        $siswa->RW = $request->input('RW');
+        $siswa->Kelurahan = $request->input('Kelurahan');
+        $siswa->Kecamatan = $request->input('Kecamatan');
+        $siswa->KabKota = $request->input('KabKota');
+        $siswa->Provinsi = $request->input('Provinsi');
+        $siswa->KodePos = $request->input('KodePos');
+        $siswa->Email = $request->input('Email');
+        $siswa->NomorTelephone = $request->input('NomorTelephone');
+        $siswa->Kewarganegaraan = $request->input('Kewarganegaraan');
+        $siswa->NIK = $request->input('NIK');
+        $siswa->GolDarah = $request->input('GolDarah');
+        $siswa->TinggalDengan = $request->input('TinggalDengan');
+        $siswa->StatusSiswa = $request->input('StatusSiswa');
+        $siswa->AnakKe = $request->input('AnakKe');
+        $siswa->SaudaraKandung = $request->input('SaudaraKandung');
+        $siswa->SaudaraTiri = $request->input('SaudaraTiri');
+        $siswa->Tinggicm = $request->input('Tinggicm');
+        $siswa->Beratkg = $request->input('Beratkg');
+        $siswa->RiwayatPenyakit = $request->input('RiwayatPenyakit');
+        $siswa->AsalSMP = $request->input('AsalSMP');
+        $siswa->AlamatSMP = $request->input('AlamatSMP');
+        $siswa->NPSNSMP = $request->input('NPSNSMP');
+        $siswa->KabKotaSMP = $request->input('KabKotaSMP');
+        $siswa->ProvinsiSMP = $request->input('ProvinsiSMP');
+        $siswa->NoIjasah = $request->input('NoIjasah');
+        $siswa->NoSKHUN = $request->input('NoSKHUN');
+        $siswa->DiterimaTanggal = $request->input('DiterimaTanggal');
+        $siswa->DiterimaDiKelas = $request->input('DiterimaDiKelas');
+        $siswa->DiterimaSemester = $request->input('DiterimaSemester');
+        $siswa->MutasiAsalSMA = $request->input('MutasiAsalSMA');
+        $siswa->AlasanPindah = $request->input('AlasanPindah');
+        $siswa->NoPesertaUNSMP = $request->input('NoPesertaUNSMP');
+        $siswa->TglIjasah = $request->input('TglIjasah');
+        $siswa->NamaOrangTuaPadaIjasah = $request->input('NamaOrangTuaPadaIjasah');
+        $siswa->NamaAyah = $request->input('NamaAyah');
+        $siswa->TahunLahirAyah = $request->input('TahunLahirAyah');
+        $siswa->AlamatAyah = $request->input('AlamatAyah');
+        $siswa->NomorTelephoneAyah = $request->input('NomorTelephoneAyah');
+        $siswa->AgamaAyah = $request->input('AgamaAyah');
+        $siswa->PendidikanTerakhirAyah = $request->input('PendidikanTerakhirAyah');
+        $siswa->PekerjaanAyah = $request->input('PekerjaanAyah');
+        $siswa->PenghasilanAyah = $request->input('PenghasilanAyah');
+        $siswa->NamaIbu = $request->input('NamaIbu');
+        $siswa->TahunLahirIbu = $request->input('TahunLahirIbu');
+        $siswa->AlamatIbu = $request->input('AlamatIbu');
+        $siswa->NomorTelephoneIbu = $request->input('NomorTelephoneIbu');
+        $siswa->AgamaIbu = $request->input('AgamaIbu');
+        $siswa->PendidikanTerakhirIbu = $request->input('PendidikanTerakhirIbu');
+        $siswa->PekerjaanIbu = $request->input('PekerjaanIbu');
+        $siswa->PenghasilanIbu = $request->input('PenghasilanIbu');
+        $siswa->NamaWali = $request->input('NamaWali');
+        $siswa->TahunLahirWali = $request->input('TahunLahirWali');
+        $siswa->AlamatWali = $request->input('AlamatWali');
+        $siswa->NomorTelephoneWali = $request->input('NomorTelephoneWali');
+        $siswa->AgamaWali = $request->input('AgamaWali');
+        $siswa->PendidikanTerakhirWali = $request->input('PendidikanTerakhirWali');
+        $siswa->PekerjaanWali = $request->input('PekerjaanWali');
+        $siswa->WaliPenghasilan = $request->input('WaliPenghasilan');
+        $siswa->StatusHubunganWali = $request->input('StatusHubunganWali');
+        $siswa->MenerimaBeasiswaDari = $request->input('MenerimaBeasiswaDari');
+        $siswa->TahunMeninggalkanSekolah = $request->input('TahunMeninggalkanSekolah');
+        $siswa->AlasanSebab = $request->input('AlasanSebab');
+        $siswa->TamatBelajarTahun = $request->input('TamatBelajarTahun');
+        $siswa->TanggalNomorSTTB = $request->input('TanggalNomorSTTB');
+        $siswa->InformasiLain = $request->input('InformasiLain');
+        $siswa->cita = $request->input('cita');
+        $siswa->status = $request->input('status');
+        $siswa->save();
+      
+        
+        // return redirect()->route('siswaall.show', $siswa_id)->with('success', 'Data siswa berhasil diperbarui.');
+        return redirect()->route('goodbye.show', ['encodedId' => base64_encode($siswa_id)])->with('success', 'Data siswa berhasil diperbarui.');
 
     }
     public function updateee(Request $request)

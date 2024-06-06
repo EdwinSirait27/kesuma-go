@@ -248,6 +248,7 @@
                     {
                         data: 'kurikulum.Nama_Kurikulum',
                         name: 'kurikulum.Nama_Kurikulum'
+                        defaultContent: 'Belum ada'
                     },
                     {
                         data: 'semester',

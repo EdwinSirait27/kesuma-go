@@ -53,6 +53,8 @@
                 <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Data Diri<small>Siswa</small></h2>
                 <div class="clearfix"></div>
             </div>
+            <button type="button" onclick="tambah()" class="btn btn-primary">Tambah
+                Siswa</button>
             <div class="x_content">
                 <div class="row">
                     <div class="col-sm-12">
@@ -125,8 +127,11 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10">
-                                <button type="button" onclick="tambah()" class="btn btn-primary">Tambah
-                                    Siswa</button>
+                                <button type="button" name="bulk_update" id="bulk_update"
+                                class="btn btn-success btn-xs">Ubah Status</button>
+                                <button type="button" class="btn btn-primary" id="checkAll">Check All</button>
+                                <button type="button" class="btn btn-secondary" id="uncheckAll">Uncheck All</button>
+                               
                                     @if (auth()->user()->hakakses == 'Admin')
                                     <button type="button" onclick="window.location.href = '/AdminBeranda'"
                                     class="btn btn-danger">Kembali</button>
@@ -158,7 +163,19 @@
                 $('#hal_eksten').hide();
                 $('#' + iv).show();
             }
+            document.getElementById('checkAll').addEventListener('click', function() {
+        var checkboxes = document.getElementsByClassName('users_checkbox');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = true;
+        }
+    });
 
+    document.getElementById('uncheckAll').addEventListener('click', function() {
+        var checkboxes = document.getElementsByClassName('users_checkbox');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = false;
+        }
+    });
 
 
             function tambah() {
@@ -481,57 +498,59 @@
                     ]
                 });
             });
-            $(document).on('click', '#bulk_delete', function() {
-                var id = [];
-                Swal.fire({
-                    title: "Apakah Yakin?",
-                    text: "Data Tidak Bisa Kembali",
-                    icon: "warning",
-                    showCancelButton: true,
-                    confirmButtonColor: "#3085d6",
-                    cancelButtonColor: "#d33",
-                    confirmButtonText: "Ya, Hapus",
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        var id = [];
-                        $('.users_checkbox:checked').each(function() {
-                            id.push($(this).val());
-                        });
-                        if (id.length > 0) {
-                            $.ajax({
-                                url: "{{ route('siswaall.removeall') }}", // Hapus 'kurikulum_id' => ''
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                                },
-                                method: "get",
-                                data: {
-                                    siswa_id: id // Ganti 'kurikulum_id' dengan 'id_kur'
-                                },
-                                success: function(data) {
-                                    console.log(data);
-                                    Swal.fire({
-                                        title: "Deleted!",
-                                        text: "Your data has been deleted.",
-                                        icon: "success",
-                                    });
-                                    window.location.assign("siswaall");
-                                },
-                                error: function(data) {
-                                    var errors = data.responseJSON;
-                                    console.log(errors);
-                                }
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Tidak Ada Data Yang Tercentang",
-                                text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
-                                icon: "warning",
-                            });
-                        }
-                    }
-                });
-            });
+            
+            // $(document).on('click', '#bulk_delete', function() {
+            //     var id = [];
+            //     Swal.fire({
+            //         title: "Apakah Yakin?",
+            //         text: "Data Tidak Bisa Kembali",
+            //         icon: "warning",
+            //         showCancelButton: true,
+            //         confirmButtonColor: "#3085d6",
+            //         cancelButtonColor: "#d33",
+            //         confirmButtonText: "Ya, Hapus",
+            //     }).then((result) => {
+            //         if (result.isConfirmed) {
+            //             var id = [];
+            //             $('.users_checkbox:checked').each(function() {
+            //                 id.push($(this).val());
+            //             });
+            //             if (id.length > 0) {
+            //                 $.ajax({
+            //                     url: "{{ route('siswaall.removeall') }}", // Hapus 'kurikulum_id' => ''
+            //                     headers: {
+            //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            //                     },
+            //                     method: "get",
+            //                     data: {
+            //                         siswa_id: id // Ganti 'kurikulum_id' dengan 'id_kur'
+            //                     },
+            //                     success: function(data) {
+            //                         console.log(data);
+            //                         Swal.fire({
+            //                             title: "Deleted!",
+            //                             text: "Your data has been deleted.",
+            //                             icon: "success",
+            //                         });
+            //                         window.location.assign("siswaall");
+            //                     },
+            //                     error: function(data) {
+            //                         var errors = data.responseJSON;
+            //                         console.log(errors);
+            //                     }
+            //                 });
+            //             } else {
+            //                 Swal.fire({
+            //                     title: "Tidak Ada Data Yang Tercentang",
+            //                     text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
+            //                     icon: "warning",
+            //                 });
+            //             }
+            //         }
+            //     });
+            // });
         </script>
+        
         <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('myDataTable').DataTable({
@@ -558,8 +577,124 @@
                     }
                 });
             });
-        </script>
-    @endif
+           
+
+
+</script>
+<script>
+    $(document).on('click', '#bulk_delete', function() {
+        var ids = []; // Menggunakan nama variable yang berbeda untuk menghindari konflik
+        Swal.fire({
+            title: "Apakah Yakin?",
+            text: "Data Tidak Bisa Kembali",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, Hapus",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('.users_checkbox:checked').each(function() {
+                    ids.push($(this).val()); // Menggunakan array ids untuk menyimpan nilai
+                });
+                if (ids.length > 0) {
+                    $.ajax({
+                        url: "{{ route('siswaall.removeall') }}",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        method: "POST", // Mengubah metode menjadi POST
+                        data: {
+                            ids: ids // Menggunakan nama parameter yang sesuai
+                        },
+                        success: function(data) {
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your data has been deleted.",
+                                icon: "success",
+                            });
+                            window.location.assign("siswaall"); // Pastikan URL ini benar
+                        },
+                        error: function(data) {
+                            var errors = data.responseJSON;
+                            console.log(errors);
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Tidak Ada Data Yang Tercentang",
+                        text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
+                        icon: "warning",
+                    });
+                }
+            }
+        });
+    });
+    </script>
+     <script type="text/javascript">
+        $(document).on('click', '#bulk_update', function() {
+            // Menampilkan peringatan menggunakan SweetAlert
+            Swal.fire({
+                title: "Apakah Anda yakin?",
+                text: "Ini akan mengubah Status siswa yang dipilih menjadi 'Lulus'.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Lanjutkan",
+                cancelButtonText: "Tidak, Batal",
+            }).then((result) => {
+                // Jika pengguna menekan tombol "Ya"
+                if (result.isConfirmed) {
+                    // Lakukan pembaruan hak akses
+                    performBulkUpdate();
+                }
+            });
+        });
+
+        // Fungsi untuk melakukan pembaruan hak akses
+        function performBulkUpdate() {
+            var id = [];
+            $('.users_checkbox:checked').each(function() {
+                id.push($(this).val());
+            });
+
+            if (id.length > 0) {
+                $.ajax({
+                    url: "{{ route('siswaall.updatesiswa') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "POST",
+                    data: {
+                        siswa_id: id
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        Swal.fire({
+                            title: "Hak Akses Berhasil Diubah!",
+                            text: "Hak akses siswa telah diubah menjadi Siswa.",
+                            icon: "success",
+                        });
+                        // Refresh data tabel setelah perubahan
+                        $('.user_datatable').DataTable().ajax.reload();
+                    },
+                    error: function(data) {
+                        var errors = data.responseJSON;
+                        console.log(errors);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Tidak Ada Data Yang Tercentang",
+                    text: "Dicentang Dulu Baru Bisa Diubah Hak Aksesnya.",
+                    icon: "warning",
+                });
+            }
+        }
+    </script>
+
+@endif
 
 
     @if (auth()->user()->hakakses == 'Siswa' ||

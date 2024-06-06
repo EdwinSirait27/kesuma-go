@@ -313,7 +313,7 @@ class ppdbController extends Controller
         DB::beginTransaction();
         try {
             listakunsiswa::whereIn('siswa_id', $siswa_id_array)->delete();
-            tbsiswa::whereIn('siswa_id', $siswa_id_array)->delete();
+            tbsiswa::with('kelas')->whereIn('siswa_id', $siswa_id_array)->delete();
             DB::commit();
 
             return response()->json(['message' => 'Data Deleted']);
@@ -323,6 +323,23 @@ class ppdbController extends Controller
             return response()->json(['error' => $e->getMessage()]);
         }
     }
+    // function removeall(Request $request)
+    // {
+    //     $siswa_id_array = $request->input('siswa_id');
+
+    //     DB::beginTransaction();
+    //     try {
+    //         listakunsiswa::whereIn('siswa_id', $siswa_id_array)->delete();
+    //         tbsiswa::whereIn('siswa_id', $siswa_id_array)->delete();
+    //         DB::commit();
+
+    //         return response()->json(['message' => 'Data Deleted']);
+    //     } catch (\Exception $e) {
+    //         DB::rollBack();
+
+    //         return response()->json(['error' => $e->getMessage()]);
+    //     }
+    // }
     public function edit($id)
     {
         $data = tbsiswa::with('listakunsiswa')->find($id);

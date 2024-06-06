@@ -15,6 +15,7 @@ class siswaController extends Controller
     {
         if ($request->ajax()) {
             $data = tbsiswa::with(['kelas'])
+            ->where('status', 'Aktif')
                 ->select('siswa_id', 'foto', 'NamaLengkap', 'NomorInduk', 'NISN', 'Agama', 'JenisKelamin', 'NomorTelephone', 'Alamat', 'Email', 'kelas_id')->get();
 
             return Datatables::of($data)

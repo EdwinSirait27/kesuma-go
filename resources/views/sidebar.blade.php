@@ -314,11 +314,24 @@
                                 class="label label-success pull-right"> <span></a>
                     </li>
                     @endif
-                    @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Siswa'||auth()->user()->hakakses == 'Guru'||auth()->user()->hakakses == 'Kurikulum')
+                    {{-- @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Siswa'||auth()->user()->hakakses == 'Guru'||auth()->user()->hakakses == 'Kurikulum')
                     <li><a href="/siswaall"><i class="fa fa-group"></i> Daftar Siswa <span
                                 class="label label-success pull-right"> <span></a>
                     </li>
-                    @endif
+                    @endif --}}
+                    @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Kurikulum')
+                    <li><a><i class="fa fa-group"></i> Daftar Siswa <span class="fa fa-chevron-down"></span></a>
+                        <ul class="nav child_menu">
+                            {{-- <li><a href="/osis">Penambahan</a></li> --}}
+                            <li><a href="/siswaall">Daftar Siswa</a></li>
+                            @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah')
+                   
+                            <li><a href="/goodbye">Daftar Siswa Lulus</a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    </li>
+                @endif
                     @if (auth()->user()->hakakses == 'Siswa')
                     <li><a href="/listsiswa"><i class="fa fa-university"></i> Kelas Siswa<span
                         class="label label-success pull-right"> <span></a>
@@ -355,7 +368,7 @@
                                 class="label label-success pull-right"> <span></a>
                     </li>
                     @endif
-    @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Kurikulum')
+    @if (auth()->user()->hakakses == 'Kurikulum'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Kurikulum')
                     <li><a href="/inputnilaispc"><i class="fa fa-flask"></i> Nilai <span
                                 class="label label-success pull-right"> <span></a>
                     </li>

@@ -10,9 +10,8 @@ class listakunsiswa extends Model
     use HasFactory;
     protected $table   = 'users';
     
-    protected $guarded = ['id','username','password','hakakses','remember_token','created_at'];
-    protected $fillable = ['id','username', 'password', 'hakakses', 'remember_token','siswa_id','ekskul_id','created_at','updated_at','no_pdf'];
-    public $timestamps = false;
+     protected $fillable = ['id','username', 'password', 'hakakses', 'remember_token','no_pdf'];
+    public $timestamps = true;
     protected $primaryKey = 'id';
     
  
@@ -20,7 +19,10 @@ class listakunsiswa extends Model
 {
     return $this->hasOne(tbsiswa::class, 'siswa_id');
 }
-
+public function siswaaa()
+{
+    return $this->belongsTo(tbsiswa::class); // Definisi relasi back-to-one
+}
 public function siswaa()
 {
     return $this->belongsTo(tbsiswa::class, 'siswa_id', 'id');

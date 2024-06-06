@@ -319,55 +319,107 @@
             });
         });
         $(document).on('click', '#bulk_delete', function() {
+    var id = [];
+    Swal.fire({
+        title: "Apakah Yakin?",
+        text: "Data Tidak Bisa Kembali",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Hapus",
+    }).then((result) => {
+        if (result.isConfirmed) {
             var id = [];
-            Swal.fire({
-                title: "Apakah Yakin?",
-                text: "Data Tidak Bisa Kembali",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Ya, Hapus",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var id = [];
-                    $('.users_checkbox:checked').each(function() {
-                        id.push($(this).val());
-                    });
-                    if (id.length > 0) {
-                        $.ajax({
-                            url: "{{ route('datamengajar.removeall') }}", // Hapus 'kurikulum_id' => ''
-                            headers: {
-                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            method: "get",
-                            data: {
-                                datamengajar_id: id // Ganti 'kurikulum_id' dengan 'id_kur'
-                            },
-                            success: function(data) {
-                                console.log(data);
-                                Swal.fire({
-                                    title: "Deleted!",
-                                    text: "Your data has been deleted.",
-                                    icon: "success",
-                                });
-                                window.location.assign("datamengajar");
-                            },
-                            error: function(data) {
-                                var errors = data.responseJSON;
-                                console.log(errors);
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Tidak Ada Data Yang Tercentang",
-                            text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
-                            icon: "warning",
-                        });
-                    }
-                }
+            $('.users_checkbox:checked').each(function() {
+                id.push($(this).val());
             });
-        });
+            if (id.length > 0) {
+                $.ajax({
+                    url: "{{ route('datamengajar.removeall') }}",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: "DELETE", // Ganti GET dengan DELETE
+                    data: {
+                        datamengajar_id: id
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        Swal.fire({
+                            title: "Deleted!",
+                            text: "Your data has been deleted.",
+                            icon: "success",
+                        }).then(() => {
+                            window.location.assign("datamengajar");
+                        });
+                    },
+                    error: function(data) {
+                        var errors = data.responseJSON;
+                        console.log(errors);
+                    }
+                });
+            } else {
+                Swal.fire({
+                    title: "Tidak Ada Data Yang Tercentang",
+                    text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
+                    icon: "warning",
+                });
+            }
+        }
+    });
+});
+
+        // $(document).on('click', '#bulk_delete', function() {
+        //     var id = [];
+        //     Swal.fire({
+        //         title: "Apakah Yakin?",
+        //         text: "Data Tidak Bisa Kembali",
+        //         icon: "warning",
+        //         showCancelButton: true,
+        //         confirmButtonColor: "#3085d6",
+        //         cancelButtonColor: "#d33",
+        //         confirmButtonText: "Ya, Hapus",
+        //     }).then((result) => {
+        //         if (result.isConfirmed) {
+        //             var id = [];
+        //             $('.users_checkbox:checked').each(function() {
+        //                 id.push($(this).val());
+        //             });
+        //             if (id.length > 0) {
+        //                 $.ajax({
+        //                     url: "{{ route('datamengajar.removeall') }}", // Hapus 'kurikulum_id' => ''
+        //                     headers: {
+        //                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        //                     },
+        //                     method: "get",
+        //                     data: {
+        //                         datamengajar_id: id // Ganti 'kurikulum_id' dengan 'id_kur'
+        //                     },
+        //                     success: function(data) {
+        //                         console.log(data);
+        //                         Swal.fire({
+        //                             title: "Deleted!",
+        //                             text: "Your data has been deleted.",
+        //                             icon: "success",
+        //                         });
+        //                         window.location.assign("datamengajar");
+        //                     },
+        //                     error: function(data) {
+        //                         var errors = data.responseJSON;
+        //                         console.log(errors);
+        //                     }
+        //                 });
+        //             } else {
+        //                 Swal.fire({
+        //                     title: "Tidak Ada Data Yang Tercentang",
+        //                     text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
+        //                     icon: "warning",
+        //                 });
+        //             }
+        //         }
+        //     });
+        // });
     </script>
 @endif
 

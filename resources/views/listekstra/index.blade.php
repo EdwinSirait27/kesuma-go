@@ -72,10 +72,18 @@ table:hover {
                                                 <tr>
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $siswa->siswa->NamaLengkap }}</td>
-                                                    <td>{{ $siswa->siswa->kelas->namakelas }}</td>
+                                                    <td>
+                                                        @if(isset($siswa->siswa->kelas->namakelas) && !empty($siswa->siswa->kelas->namakelas))
+                                                            {{ $siswa->siswa->kelas->namakelas }}
+                                                        @else
+                                                            Belum di Set
+                                                        @endif
+                                                        
+                                                        {{-- {{ $siswa->siswa->kelas->namakelas }}</td> --}}
 
                                                     <td><input type="checkbox" name="siswa_ids[]"
                                                             value="{{ $siswa->siswa_ekstra_guru_id }}"></td>
+                                                            
                                                 </tr>
                                             @endforeach
                                         </tbody>

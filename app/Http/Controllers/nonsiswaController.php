@@ -277,8 +277,7 @@ class nonsiswaController extends Controller
                             "password" => bcrypt($request->password),
                             "hakakses" => $hakakses,
                             "remember_token" => Str::random(60),
-                            "created_at" => now(), // Tambahkan created_at jika diperlukan
-                            "no_pdf" => $noPdf, // Tambahkan no_pdf di sini
+                           "no_pdf" => $noPdf, // Tambahkan no_pdf di sini
                     ]);
                 }
             }
