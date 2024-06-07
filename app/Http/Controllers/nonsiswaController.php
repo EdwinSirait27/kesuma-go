@@ -61,7 +61,6 @@ class nonsiswaController extends Controller
                 $existingSiswa = tbsiswa::find($request->txt_id);
                 if ($existingSiswa) {
                     $existingSiswa->NamaLengkap = $request->NamaLengkap;
-                    $existingSiswa->NISN = $request->NISN;
                     $existingSiswa->NomorInduk = $request->NomorInduk;
                     $existingSiswa->NamaPanggilan = $request->NamaPanggilan;
                     $existingSiswa->JenisKelamin = $request->JenisKelamin;
@@ -141,7 +140,7 @@ class nonsiswaController extends Controller
                     if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
                         $file = $request->file('foto');
                         $fileName = time() . '_' . $file->getClientOriginalName();
-                        $file->storeAs('public/fotononsiswa', $fileName);
+                        $file->storeAs('public/fotosiswa', $fileName);
                         $existingSiswa->foto = $fileName;
                     }
 
@@ -170,7 +169,6 @@ class nonsiswaController extends Controller
                     "NomorInduk" => $request->NomorInduk,
         "NamaPanggilan" => $request->NamaPanggilan,
         "JenisKelamin" => $request->JenisKelamin,
-        "NISN" => $request->NISN,
         "TempatLahir" => $request->TempatLahir,
         "TanggalLahir" => $request->TanggalLahir,
         "Agama" => $request->Agama,

@@ -101,8 +101,8 @@ label {
                                     <label for="password" class="col-sm-2 col-form-label">Password</label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" name="password" id="password"
-                                            placeholder="Password" maxlength="12" minlength="12"
-                                            value="{{ old('password', auth()->user()->akunsiswa->password) }}"
+                                            placeholder="Perbarui Password" maxlength="12" minlength="11"
+                                            
                                             {{ old('updatePassword') ? '' : 'disabled' }}>
                                         <div id="warning-message" class="alert" style="display:none;">Spasi tidak
                                             diperbolehkan!</div>
@@ -118,9 +118,10 @@ label {
                                 <div class="form-group">
                                     <input type="checkbox" id="updatePassword" name="updatePassword" value="1"
                                         onchange="togglePasswordField(this)">
-                                    <label for="updatePassword">Update Password</label>
-                                    <small id="info_txt_namakelas" class="form-text text-muted">*Maksimal 12 Karakter
-                                        bebas</small>
+                                    <label for="updatePassword">Perbarui Password</label>
+                                    <small id="info_txt_namakelas" class="form-text text-muted" style="color: red !important;">*Centang terlebih dahulu jika anda ingin perbarui password</small>
+                                    <small id="info_txt_namakelas" class="form-text text-muted" style="color: red !important;">*Maksimal 12 Karakter Bebas bebas</small>
+                                    
                                 </div>
                             </div>
                         </div>

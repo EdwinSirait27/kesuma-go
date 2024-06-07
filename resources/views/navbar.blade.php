@@ -1,131 +1,221 @@
-<!DOCTYPE html>
+{{-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> --}}
     <style>
-        /* Gaya CSS responsif */
-        .top_nav {
-            background-color: #2c3e50;
-            color: #fff;
-            padding: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-        }
+.top_nav {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+}
 
-        .nav_menu {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-        }
+.nav_menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 
-        .navbar-right {
-            display: flex;
-            align-items: center;
-            margin-left: auto;
-        }
+.nav.toggle {
+    margin-right: auto; /* Pastikan elemen toggle berada di pojok kiri */
+}
 
-        #menu_toggle {
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+.navbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Posisikan item kanan ke kanan */
+}
 
-        #menu_toggle:hover {
-            color: #3498db;
-        }
+#menu_toggle {
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
 
-        #menu_toggle i {
-            transition: transform 0.3s ease-in-out;
-        }
+#menu_toggle:hover {
+    color: #3498db;
+}
 
-        #menu_toggle:hover i {
-            transform: scale(1.1);
-        }
+#menu_toggle i {
+    transition: transform 0.3s ease-in-out;
+}
 
-        .user-profile {
-            color: #fff;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
+#menu_toggle:hover i {
+    transform: scale(1.1);
+}
 
-        .dropdown-menu {
-            border: 1px solid #3498db;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
-            animation: fadeInDown 0.5s;
-            background-color: #2c3e50;
-        }
+.user-profile {
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
 
-        .dropdown-item {
-            color: #333;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+.dropdown-menu {
+    border: 1px solid #3498db;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    animation: fadeInDown 0.5s;
+    background-color: #2c3e50;
+}
 
-        .dropdown-item:hover {
-            background-color: #3498db;
-            color: #fff;
-            transform: translateY(-3px);
-        }
+.dropdown-item {
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
 
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+.dropdown-item:hover {
+    background-color: #3498db;
+    color: #fff;
+    transform: translateY(-3px);
+}
 
-        @media (max-width: 768px) {
-    .nav_menu {
-        flex-direction: column;
-        align-items: flex-start; /* Mengatur agar menu berada di kiri */
-        text-align: left; /* Mengatur teks menjadi rata kiri */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
     }
-
-    .navbar-right {
-        margin-left: auto; /* Mengatur margin kiri menjadi otomatis */
-        margin-top: 10px;
-    }
-
-    .dropdown-menu {
-        width: 100%; /* Mengisi lebar penuh */
-    }
-
-    .dropdown-item {
-        width: 100%; /* Mengisi lebar penuh */
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
 
-        /* @media (max-width: 768px) {
+@media (min-width: 768px) {
     .nav_menu {
-        flex-direction: column;
-        align-items: right; 
-        text-align: right; 
+        flex-direction: row; /* Menjadikan item navigasi horizontal */
+        align-items: center; /* Pusatkan item navigasi secara vertikal */
+        justify-content: flex-start; /* Posisikan item navigasi mulai dari kiri */
     }
 
     .navbar-right {
-        margin-top: 10px;
+        margin-left: auto; /* Posisikan item kanan ke kanan */
     }
 
     .dropdown-menu {
-        width: 100%; 
+        position: absolute; /* Jadikan menu dropdown terpisah dari navbar */
+        top: 100%; /* Atur posisi menu dropdown tepat di bawah item navigasi */
+        left: 0; /* Atur posisi awal menu dropdown */
+        min-width: 160px; /* Tentukan lebar minimum menu dropdown */
     }
 
     .dropdown-item {
-        width: 100%; 
+        width: auto; /* Atur lebar item dropdown agar sesuai dengan konten */
     }
-} */
+}
+
+
+  /* .top_nav {
+    background-color: #2c3e50;
+    color: #fff;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.nav_menu {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.nav.toggle {
+    margin-right: auto;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    margin-left: auto; 
+}
+
+#menu_toggle {
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+#menu_toggle:hover {
+    color: #3498db;
+}
+
+#menu_toggle i {
+    transition: transform 0.3s ease-in-out;
+}
+
+#menu_toggle:hover i {
+    transform: scale(1.1);
+}
+
+.user-profile {
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.dropdown-menu {
+    border: 1px solid #3498db;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    animation: fadeInDown 0.5s;
+    background-color: #2c3e50;
+}
+
+.dropdown-item {
+    color: #333;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: #3498db;
+    color: #fff;
+    transform: translateY(-3px);
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (min-width: 768px) {
+    .nav_menu {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between; 
+    }
+
+    .navbar-right {
+        margin-left: auto;
+    }
+
+    .dropdown-menu {
+        position: absolute; 
+        top: 100%; 
+        left: 0;
+        min-width: 160px;
+    }
+
+    .dropdown-item {
+        width: auto; 
+    }
+}
+ */
+
+
+
 
     </style>
     {{-- <style>
-        /* Gaya CSS responsif */
         .top_nav {
             background-color: #2c3e50;
             color: #fff;
@@ -202,18 +292,32 @@
             }
         }
 
-        @media (max-width: 768px) {
-            .nav_menu {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+        @media (min-width: 768px) {
+    .nav_menu {
+        flex-direction: row;
+        align-items: center; 
+        justify-content: space-between;
+    }
 
-            .navbar-right {
-                margin-left: 0;
-                margin-top: 10px;
-            }
-        }
+    .navbar-right {
+        margin-left: auto;
+    }
+
+    .dropdown-menu {
+        position: absolute;
+        top: 100%; 
+        left: 0; 
+        min-width: 160px;
+    }
+
+    .dropdown-item {
+        width: auto; 
+    }
+}
+
+
     </style> --}}
+    
 </head>
 <body>
     <div class="top_nav">
@@ -271,8 +375,21 @@
             });
         });
     </script>
-</body>
-</html>
+    {{-- <script>
+        $(document).ready(function() {
+            $("#menu_toggle").on("click", function(e) {
+                e.preventDefault();
+                var scrollPosition = $(".nav_menu").offset().top;
+                $("html, body").animate({
+                        scrollTop: scrollPosition
+                    },
+                    800
+                );
+            });
+        });
+    </script> --}}
+{{-- </body>
+</html> --}}
 
 {{-- <style>
     .top_nav {

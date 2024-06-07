@@ -143,25 +143,25 @@
                                 @csrf
                                 <input type="hidden" name="txt_id" id="txt_id" value="0">
 
+                                
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="text" class="form-control" id="username" name="username"
-                                                placeholder="Username" minlength="11" maxlength="12"
-                                                oninput="this.value = this.value.replace(/[^0-9]/g, '');" >
+                                                placeholder="Username" pattern=".{8,12}"  maxlength="12" required>
                                             <div class="input-group-append">
                                                 <div class="input-group-text">
                                                     <span class="fas fa-user"></span>
                                                 </div>
                                             </div>
                                         </div>
-                                        <small class="text-info">*Numerik, Maksimal 12 Digit.</small>
+                                        <small class="text-info">*huruf atau angka gabungan, Minimal 8 Karakter, Maksimal 12 Karakter.</small>
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input for="password" type="password" class="form-control" name="password"
-                                                id="password" placeholder="Password" maxlength="12"
-                                                oninput="this.value = this.value.replace(/\s/g, '');" required>
+                                                id="password" placeholder="Password" pattern=".{8,12}" maxlength="12"
+                                                required>
                                             <div class="input-group-append">
                                                 <button class="btn btn-outline-secondary" type="button"
                                                     id="togglePassword">
@@ -170,15 +170,15 @@
                                             </div>
 
                                         </div>
-                                        <small class="text-info">*Numerik, Maksimal 12 Digit.</small>
+                                        <small class="text-info">*Minimal 8 Karakter, Maksimal 12 Karakter Bebas.</small>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="NamaLengkap"
                                                 id="NamaLengkap"
-                                                oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');"placeholder="Nama Lengkap"
-                                                maxlength="50" required>
+                                                pattern=".{1,100}" placeholder="Nama Lengkap"
+                                                maxlength="100" required>
 
 
                                             <div class="input-group-append">
@@ -187,28 +187,15 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Nama Lengkap Sesuai Ijazah SMP.</small>
                                     </div>
 
-                                    <div class="col-md-12 mb-3">
-                                        <div class="input-group">
-
-                                            <input type="text" class="form-control" name="NISN" id="NISN"
-                                                placeholder="NISN"
-                                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"maxlength="8"
-                                                required>
-
-                                            <div class="input-group-append">
-                                                <div class="input-group-text">
-                                                    <span class="fas fa-key"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
 
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="email" class="form-control" name="Email" id="Email"
-                                            placeholder="Email" maxlength="40" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                                            placeholder="Email" maxlength="100" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                                      
 
 
@@ -218,6 +205,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Email Anda.</small>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
@@ -234,6 +222,7 @@
 
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Memilih Jenis Kelamin Anda.</small>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
@@ -248,13 +237,13 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Alamat Anda.</small>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="TempatLahir"
-                                                id="TempatLahir" placeholder="Tempat Lahir" maxlength="20"
-                                                oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');"
+                                                id="TempatLahir" placeholder="Tempat Lahir" maxlength="50"
                                                 required>
 
 
@@ -264,6 +253,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Tempat Lahir Anda.</small>
                                     </div>
 
                                     <div class="col-md-12 mb-3">
@@ -276,6 +266,8 @@
 
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Tanggal Lahir Anda.</small>
+
                                     </div>
 
                                     <div class="col-md-12 mb-3">
@@ -292,6 +284,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Nomor Telephone Anda.</small>
+
                                     </div>
 
                                     <div class="col-md-12 mb-3">
@@ -311,12 +305,13 @@
 
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Agama Anda.</small>
+
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="AsalSMP" id="AsalSMP"
-                                                placeholder="Sekolah Asal SMP" maxlength="40"
-                                                oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '');"
+                                                placeholder="Sekolah Asal SMP" maxlength="50"
                                                 required>
 
 
@@ -326,12 +321,13 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Nama Sekolah SMP Anda, Maksimal 50 Karakter.</small>
+
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="NamaAyah"
-                                                id="NamaAyah" placeholder="Nama Orang Tua / Wali" maxlength="30"
-                                                oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');"
+                                                id="NamaAyah" placeholder="Nama Orang Tua / Wali" maxlength="50"
                                                 required>
 
 
@@ -341,12 +337,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Nama Orang Tua Anda, Maksimal 50 Karakter.</small>
+
                                     </div>
                                     <div class="col-md-12 mb-3">
                                         <div class="input-group">
                                             <input type="text" class="form-control" name="NomorTelephoneAyah"
                                                 id="NomorTelephoneAyah" placeholder="Nomor Telephone Orang Tua / Wali"
-                                                oninput="this.value = this.value.replace(/[^0-9]/g, '');"maxlength="13"
+                                                maxlength="13"
                                                 required>
 
 
@@ -356,6 +354,8 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <small class="text-info">*Silahkan Mengisi Nomor Telephone Orang Tua Anda, Maksimal 13 Karakter.</small>
+
                                     </div>
 
                                     <div class="col-md-12 mb-3">
@@ -390,10 +390,13 @@
                                 </div>
 
                                 <div class="d-flex justify-content-between">
-                                    <a href="#" onclick="window.history.back();" class="btn btn-danger">
+                                    {{-- <a href="#" onclick="window.history.back();" class="btn btn-danger">
                                         <i class="fa fa-arrow-left"></i> Kembali
-                                    </a>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
+                                    </a> --}}
+                                    <button type="button" onclick="window.location.href = '/'"
+                                    class="btn btn-danger"><i class="fa fa-arrow-left"></i>Kembali</button>
+
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Simpan</button>
                                 </div>
                             </form>
                         </div>
@@ -405,7 +408,164 @@
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
+   
+
+  <script>
+//    $(document).ready(function() {
+//         $('#username').on('input', function() {
+//             var usernameInput = $(this).val();
+//             var valid = /^[0-9]+$/.test(usernameInput);
+            
+//             if (!valid) {
+//                 Swal.fire({
+//                     icon: 'error',
+//                     title: 'Oops...',
+//                     text: 'Username Tidak boleh spasi, simbol, Minimal 8 Karakter, Maksimal 12 Karakter'
+//                 });
+//                 $(this).val('');
+//             }
+//         });
+//     });
+    $(document).ready(function() {
+    $('#username').on('input', function() {
+        var usernameInput = $(this).val();
+        var valid = /^[a-zA-Z0-9]+$/.test(usernameInput); // Mengizinkan hanya huruf dan angka
+        
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Username Tidak boleh spasi, simbol, Minimal 8 Karakter, Maksimal 12 Karakter'
+            });
+            $(this).val('').css('color', 'red'); // Menambahkan warna merah pada teks
+        } else {
+            $(this).css('color', ''); // Menghapus properti warna jika valid
+        }
+    });
+});
+$(document).ready(function() {
+    $('#NamaLengkap').on('input', function() {
+        var NamaLengkapInput = $(this).val();
+        var valid = /^[a-zA-Z\s]+$/.test(NamaLengkapInput); // Mengizinkan hanya huruf dan spasi
+        
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nama Lengkap tidak boleh angka dan simbol, Maksimal 100 Karakter'
+            });
+            $(this).val('').css('color', 'red'); // Menambahkan warna merah pada teks
+        } else {
+            $(this).css('color', ''); // Menghapus properti warna jika valid
+        }
+    });
+});
+$(document).ready(function() {
+    $('#NamaAyah').on('input', function() {
+        var NamaAyahInput = $(this).val();
+        var valid = /^[a-zA-Z\s]+$/.test(NamaAyahInput); // Mengizinkan hanya huruf dan spasi
+        
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Nama Orang Tua tidak boleh angka dan simbol, Maksimal 50 Karakter'
+            });
+            $(this).val('').css('color', 'red'); // Menambahkan warna merah pada teks
+        } else {
+            $(this).css('color', ''); // Menghapus properti warna jika valid
+        }
+    });
+});
+$(document).ready(function() {
+    $('#TempatLahir').on('input', function() {
+        var TempatLahirInput = $(this).val();
+        var valid = /^[a-zA-Z\s]+$/.test(TempatLahirInput); // Mengizinkan hanya huruf dan spasi
+        
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Tempat Lahir tidak boleh angka dan simbol, Maksimal 50 Karakter'
+            });
+            $(this).val('').css('color', 'red'); // Menambahkan warna merah pada teks
+        } else {
+            $(this).css('color', ''); // Menghapus properti warna jika valid
+        }
+    });
+});
+$(document).ready(function() {
+    $('#NomorTelephone').on('input', function() {
+        var NomorTelephoneInput = $(this).val();
+        var valid = /^[0-9]+$/.test(NomorTelephoneInput); // Mengizinkan hanya angka
+        
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Isi Angka Saja dek, Maksimal 13 Karakter'
+            });
+            $(this).val('').css('color', 'red'); // Menambahkan warna merah pada teks
+        } else {
+            $(this).css('color', ''); // Menghapus properti warna jika valid
+        }
+    });
+});
+$(document).ready(function() {
+    $('#NomorTelephoneAyah').on('input', function() {
+        var NomorTelephoneAyahInput = $(this).val();
+        var valid = /^[0-9]+$/.test(NomorTelephoneAyahInput); // Mengizinkan hanya angka
+        
+        if (!valid) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Isi Angka Saja dek, Maksimal 13 Karakter'
+            });
+            $(this).val('').css('color', 'red'); // Menambahkan warna merah pada teks
+        } else {
+            $(this).css('color', ''); // Menghapus properti warna jika valid
+        }
+    });
+});
+
+
+
+   
+    $(document).ready(function() {
+        $('#password').on('input', function() {
+            var passwordInput = $(this).val();
+            var hasSpace = /\s/.test(passwordInput);
+
+            if (hasSpace) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Password tidak boleh mengandung spasi!'
+                });
+                $(this).val('');
+            }
+        });
+    });
+
+
+
+     
+//   $(document).ready(function() {
+//         $('#username').on('input', function() {
+//             var usernameInput = $(this).val();
+//             var valid = /^[0-9]+$/.test(usernameInput);
+            
+//             if (!valid) {
+//                 Swal.fire({
+//                     icon: 'error',
+//                     title: 'Oops...',
+//                     text: 'Username hanya boleh berisi angka!, Tidak boleh spasi, simbol, ataupun huruf'
+//                 });
+//                 $(this).val('');
+//             }
+//         });
+//     });
       $(document).ready(function() {
                     $('form').submit(function(e) {
                         e.preventDefault();
@@ -514,7 +674,7 @@
                 preview.style.display = 'none';
             }
         }
-    </script>
+     </script>
 </body>
 
 </html>

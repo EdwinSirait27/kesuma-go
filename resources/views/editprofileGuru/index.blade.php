@@ -69,7 +69,12 @@ color: #333; /* Warna teks label */
         <div class="col-12">
             <div class="card">
                 <div class="card-header bg-dark text-white">
-                    <h3><i class="fa fa-calculator" style="margin-right: 10px;"></i>Edit <small>Profile</small></h3>
+                    <h3 style="display: flex; align-items: center;">
+                        <i class="fa fa-calculator" style="margin-right: 10px;"></i>
+                        Edit |<small>   Profile</small>
+                        <span style="flex-grow: 1;"></span>
+                        <a href="/editpassguru" class="btn btn-success">Ganti Password</a>
+                    </h3>
                     <div class="row">
                         <div class="col-md-6 col-12">
                             <h4>Nama Tenaga Pengajar : {{ $guru->Nama }}</h4>
@@ -424,7 +429,6 @@ color: #333; /* Warna teks label */
                         Update
                     </button>
                     
-                    <a href="/editpassguru" class="btn btn-dark">Edit Pass</a>
                     {{-- <button type="button" onclick="goBack()" class="btn btn-danger">Kembali</button> --}}
                     {{-- <button type="button" onclick="goBack()" class="btn btn-danger btn-back">Kembali</button> --}}
                     <a href="/GuruBeranda" class="btn btn-danger">Kembali</a>

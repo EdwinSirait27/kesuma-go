@@ -101,8 +101,8 @@ label {
                                     <label for="password" class="col-sm-2 col-form-label">Password</label>
                                     <div class="input-group">
                                         <input type="password" class="form-control" name="password" id="password"
-                                            placeholder="Password" maxlength="12" minlength="12"
-                                            value="{{ old('password', auth()->user()->akunguru->password) }}"
+                                            placeholder="Perbarui Password" maxlength="12" minlength="11"
+                                            
                                             {{ old('updatePassword') ? '' : 'disabled' }}>
                                         <div id="warning-message" class="alert" style="display:none;">Spasi tidak
                                             diperbolehkan!</div>
@@ -115,18 +115,9 @@ label {
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <input type="checkbox" id="updatePassword" name="updatePassword" value="1"
-                                        onchange="togglePasswordField(this)">
-                                    <label for="updatePassword">Update Password</label>
-                                    <small id="info_txt_namakelas" class="form-text text-muted">*Maksimal 12 Karakter
-                                        bebas</small>
-                                </div>
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <button type="button" id="submitBtn" class="btn btn-primary">Update</button>
+                                <button type="button" id="submitBtn" class="btn btn-primary">Perbarui</button>
                                 <button type="button" onclick="window.location.href = '/editprofileGuru'"
                                     class="btn btn-danger">Kembali</button>
                             </div>

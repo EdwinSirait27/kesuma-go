@@ -74,10 +74,7 @@
                                         width="150">
                                         Nama Lengkap
                                     </th>
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="120">
-                                        NISN
-                                    </th>
+                                  
                                     <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
                                         width="120">
                                         Jenis Kelamin
@@ -401,26 +398,22 @@
                             }
                         },
                         {
-                            data: 'foto',
-                            name: 'foto',
-                            render: function(data, type, full, meta) {
-                                if (data) {
-                                    return '<img src="{{ asset('storage/fotosiswa/') }}/' + data +
-                                        '" width="100" />';
-                                } else {
-                                    return 'Tidak Ada Foto';
-                                }
-                            }
-                        },
+    data: 'foto',
+    name: 'foto',
+    render: function(data, type, full, meta) {
+        if (data) {
+            return '<img src="{{ asset('storage/fotosiswa/') }}/' + data + '" width="100" />';
+        } else {
+            return 'Tidak Ada Foto';
+        }
+    }
+},
                         
                         {
                             data: 'NamaLengkap',
                             name: 'NamaLengkap'
                         },
-                        {
-                            data: 'NISN',
-                            name: 'NISN'
-                        },
+                       
                         {
                             data: 'JenisKelamin',
                             name: 'JenisKelamin'

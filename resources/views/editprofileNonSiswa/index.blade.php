@@ -78,12 +78,17 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header bg-dark text-white">
-                        <h3><i class="fa fa-calculator" style="margin-right: 10px;"></i>Edit <small>Profile</small></h3>
+                        <h3 style="display: flex; align-items: center;">
+                            <i class="fa fa-calculator" style="margin-right: 10px;"></i>
+                            Edit |<small>   Profile</small>
+                            <span style="flex-grow: 1;"></span>
+                            <a href="/editpassnonsiswa" class="btn btn-success">Ganti Password</a>
+                        </h3>
+                        
                         <div class="row">
                             <div class="col-md-6 col-12">
                                 <h4>Nama Siswa : {{ $siswa->NamaLengkap }}</h4>
                             </div>
-
                         </div>
                     </div>
                     <form method="POST" action="{{ route('editprofileNonSiswa.update') }}" enctype="multipart/form-data">
@@ -118,10 +123,8 @@
 
 
                             <div class="form-group col-md-6">
-                                <label for="NISN">NISN</label>
-                                <input type="text" class="form-control" name="NISN" placeholder="NISN" maxlength="30"
-                                    value="{{ old('NISN', auth()->user()->siswa->NISN) }}"
-                                    oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');" disabled>
+                                <label for="NISN"></label>
+                                
                             </div>
                         </div>
                         <div class="form-row">
@@ -276,10 +279,10 @@
                         <button type="submit" class="btn btn-primary" id="submitBtn">
                             <span class="spinner-border spinner-border-sm d-none" role="status"
                                 aria-hidden="true"></span>
-                            Update
+                            Perbarui
                         </button>
 
-                        <a href="/editpassnonsiswa" class="btn btn-dark">Edit Pass</a>
+                      
                         {{-- <button type="button" onclick="goBack()" class="btn btn-danger">Kembali</button> --}}
                         <a href="/NonSiswaBeranda" class="btn btn-danger">Kembali</a>
                     </form>

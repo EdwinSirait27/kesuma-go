@@ -197,17 +197,14 @@ background-color: #f5f5f5; /* Ganti dengan warna yang diinginkan */
                                                     </tr>
                                                 </tbody>
                                             </table>
-                                        </div>
+                                          </div>
                                     </div>
                                 </div>
-                                <hr> 
                             </div>
                         </div>
-                        <hr> 
                     </div>
                     </div>
-                    </div>
-                    </div>
+        <hr>
 
                     
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
