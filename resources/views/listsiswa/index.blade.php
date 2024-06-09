@@ -77,7 +77,16 @@
                         <h3><i class="fa fa-calculator" style="margin-right: 10px;"></i>Data <small>Kelas</small></h3>
                         <h2>Tahun Akademik : {{ $tahunakademik }}</h2>
                         <h2>Semester : {{ $semester }}</h2>
+                        @php
+                        $namaGuru = $datakelas?->guru?->Nama;
+                    @endphp
+                    
+                    @if (!is_null($namaGuru))
                         <h2>Wali Kelas : {{ $namaGuru }}</h2>
+                    @else
+                        <h2>Wali Kelas : Belum Di Set</h2>
+                    @endif
+                       
                         <h2>Kelas :  {{ $namakelas }}</h2>
                         <h2>Kapasitas :  {{ $kapasitas }}</h2>
 

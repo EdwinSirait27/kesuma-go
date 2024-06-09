@@ -263,7 +263,7 @@
                                             class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                        
-                                        <li><a href="/buttonppdb">Button Tanggal </a></li>
+                                        <li><a href="/buttonppdb">Button Ppdb </a></li>
                                         <li><a href="/buttonosis">Button Osis </a></li>
                                         <li><a href="/editdata">Button Edit Data </a></li>
                                         <li><a href="/buttonnilaisiswa">Button Nilai Siswa </a></li>
@@ -319,7 +319,7 @@
                                 class="label label-success pull-right"> <span></a>
                     </li>
                     @endif --}}
-                    @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Kurikulum')
+                    @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Kurikulum'||auth()->user()->hakakses == 'Guru'||auth()->user()->hakakses == 'Siswa')
                     <li><a><i class="fa fa-group"></i> Daftar Siswa <span class="fa fa-chevron-down"></span></a>
                         <ul class="nav child_menu">
                             {{-- <li><a href="/osis">Penambahan</a></li> --}}

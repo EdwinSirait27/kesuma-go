@@ -27,8 +27,19 @@
                         <div class="col-md-6">
                             <h5>Tahun Akademik : {{ $datakelas->tahun->tahunakademik }}</h5>
                             <h5>Kurikulum : {{ $datakelas->tahun->kurikulum->Nama_Kurikulum }}</h5>
-                    <h5>Wali Kelas : {{ $datakelas->guru->Nama }}</h5>
-                    <h5>Kelas : {{ $datakelas->kelas->namakelas }}</h5>
+                            <h5>Kelas : {{ $datakelas->kelas->namakelas }}</h5>
+                            @php
+                            $namaGuru = $datakelas?->guru?->Nama;
+                        @endphp
+                        
+                        @if (!is_null($namaGuru))
+                            <h2>Wali Kelas : {{ $namaGuru }}</h2>
+                        @else
+                            <h2>Wali Kelas : Belum Di Set</h2>
+                        @endif
+                        
+                        
+           
                 </div>
                 <div class="col-md-6 text-right">
                     <button type="button" onclick="window.location.href = '/datakelasadmin'"
@@ -40,9 +51,15 @@
                 <div class="card-body">
                     <form action="{{ route('jadwal.store') }}" method="POST" id="jadwalForm">
                         @csrf
-                        <input type="hidden" name="datakelas_id" value="{{ $datakelas->datakelas_id }}">
-                        <input type="hidden" name="tahunakademik_id" value="{{ $datakelas->tahunakademik_id }}">
-                        <input type="hidden" name="kurikulum_id" value="{{ $datakelas->tahun->kurikulum->kurikulum_id }}">
+                        @foreach ($siswa_id as $siswa)
+                        <input type="hidden" name="siswa_id[]" value="{{ $siswa }}">
+                    @endforeach
+                    
+
+                    <input type="hidden" name="datakelas_id" value="{{ $datakelas->datakelas_id ?? '' }}">
+                    <input type="hidden" name="tahunakademik_id" value="{{ $datakelas->tahunakademik_id ?? '' }}">
+                    <input type="hidden" name="kurikulum_id" value="{{ $datakelas->tahun->kurikulum->kurikulum_id ?? '' }}">
+                    
                        
                         <table class="table table-bordered" id="mataPelajaranTable">
                             <thead>
@@ -73,12 +90,13 @@
                        
                         <div class="text-left">
                            
-                            @if(isset($datamengajars) && count($datamengajars) > 0)
-                    <button type="submit" class="btn btn-success ">Daftar</button>
-                    @else
-                        <button class="btn btn-success" disabled>Daftar</button>
-                        <span class="text-danger">Tidak ada data yang dapat didaftar.</span>
-                    @endif
+                            @if (!is_null($datakelas) && isset($datamengajars) && count($datamengajars) > 0)
+                            <button type="submit" class="btn btn-success">Daftar</button>
+                        @else
+                            <button class="btn btn-success" disabled>Daftar</button>
+                            <span class="text-danger">Tidak ada data yang dapat didaftar.</span>
+                        @endif
+                        
                                 <button type="button" class="btn btn-primary" id="checkAll">Check All</button>
                                 <button type="button" class="btn btn-dark" id="uncheckAll">Uncheck All</button>
                                                         

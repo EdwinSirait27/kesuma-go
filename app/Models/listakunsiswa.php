@@ -29,8 +29,12 @@ public function siswaa()
 }
 public function tbsiswa()
 {
-    return $this->belongsTo(tbsiswa::class, 'siswa_id', 'siswa_id');
+    return $this->belongsTo(tbsiswa::class, 'siswa_id', 'id');
 }
+// public function tbsiswa()
+// {
+//     return $this->belongsTo(tbsiswa::class, 'siswa_id', 'siswa_id');
+// }
 
 public function ekskul()
 {

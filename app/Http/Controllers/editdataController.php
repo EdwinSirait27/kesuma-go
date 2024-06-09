@@ -114,7 +114,10 @@ class editdataController extends Controller
                 return redirect('/AdminBeranda')->with('error', 'Pengeditan belum dimulai.');
             }
         }
-        $siswa_id = Auth::id(); // Mendapatkan ID siswa yang sedang login
+        $user = Auth::user();
+
+        // Mengambil siswa_id dari user yang sedang login
+        $siswaId = $user->siswa_id; // Mendapatkan ID siswa yang sedang login
     
         if ($request->ajax()) {
             $data = tbsiswa::select(
@@ -130,7 +133,7 @@ class editdataController extends Controller
                 'status',
                 'kelas_id'
             )->with('listakunsiswa', 'kelas')
-                ->where('siswa_id', $siswa_id) // Memastikan hanya data siswa yang sedang login yang ditampilkan
+                ->where('siswa_id', $siswaId) // Memastikan hanya data siswa yang sedang login yang ditampilkan
                 ->whereHas('listakunsiswa', function ($query) {
                     $query->where('hakakses', 'Siswa');
                 })

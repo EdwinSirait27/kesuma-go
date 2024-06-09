@@ -21,6 +21,7 @@ class tugassiswaController extends Controller
                 'tugas_id',
                 'datakelas_datamengajar_id',
                 'dokumen',
+                'tipe',
                 'keterangan',
                 'created_at',
                 'updated_at'
@@ -32,6 +33,11 @@ class tugassiswaController extends Controller
                    $redirectButton = '<a href="' . route('download.tugas',['tugas_id' => $data->tugas_id]) . '" class="btn btn-success">Download Tugas</a>';
                     return $redirectButton;
                     
+                })
+                ->addColumn('dokumen', function ($data) {
+                    $path = $data->dokumen; // Ambil path lengkap dari database
+                    $namaFile = basename($path); // Ambil hanya nama file dari path
+                    return $namaFile; // Kembalikan hanya nama file
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$tugas_id}}" />')
                 ->rawColumns(['checkbox', 'action'])

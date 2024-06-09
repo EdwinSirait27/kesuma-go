@@ -26,8 +26,17 @@
                         <input type="file" class="form-control-file"  accept=".pdf,.doc,.docx" id="dokumen" name="dokumen">
                     </div>
                     </div>
+                    <div class="form-group row">
+                    <label for="tipe" class="col-sm-2 col-form-label">Tipe</label>
+                    <div class="col-sm-4">
+                        <select class="form-control" id="tipe" name="tipe" required>
+                            <option value="" selected disabled>Pilih Tipe</option>
+                            <option value="Tugas">Tugas</option>
+                            <option value="Materi">Materi</option>
+                        </select>
+               
+                </div>
                 
-                <div class="form-group row">
                     <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="keterangan" name="keterangan"
@@ -36,8 +45,9 @@
              
                 
                 </div>
+                </div>
 
-             
+                <div class="form-group row">
                     <label class="col-sm-2 col-form-label">Batas Awal Pengumpulan</label>
                     <div class="col-sm-4">
                         <input  class="date-picker form-control" name="created_at" id="created_at"
@@ -46,8 +56,7 @@
                             onblur="this.type='text'" onmouseout="timeFunctionLong(this)"required>
 
                     </div>
-                    </div>
-                <div class="form-group row">
+                    
                     <label class="col-sm-2 col-form-label">Batas Akhir Pengumpulan</label>
                     <div class="col-sm-4">
                         <input  class="date-picker form-control" name="updated_at" id="updated_at"

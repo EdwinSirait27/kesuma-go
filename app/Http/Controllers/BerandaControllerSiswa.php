@@ -86,14 +86,30 @@ class BerandaControllerSiswa extends Controller
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
                     $button = '<a href="' . route('SiswaBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
-       
-                    return $button;
+                    $previewButton = '';
+                    if (pathinfo($data->dokumen, PATHINFO_EXTENSION) == 'jpg') {
+                        // $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
+                        $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
+
+                    }
+                    
+                    return $button. ' ' . $previewButton;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
         return view('SiswaBeranda.beranda');
+    }
+    public function preview($dokumen)
+    {
+        $path = storage_path('app/public/pengumuman/' . $dokumen);
+
+        if (file_exists($path)) {
+            return response()->file($path);
+        } else {
+            return response()->json(['message' => 'File not found'], 404);
+        }
     }
     public function download($dokumen)
     {

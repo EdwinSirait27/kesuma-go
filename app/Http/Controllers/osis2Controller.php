@@ -111,7 +111,7 @@ class osis2Controller extends Controller
             if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
                 $file = $request->file('foto');
                 $fileName = time() . '_' . $file->getClientOriginalName();
-                $file->move(public_path('fotosiswa/'), $fileName);
+                $file->storeAs('public/fotosiswa', $fileName); 
                 $osis->foto = $fileName;
             }
             $osis->visi = $request->visi;

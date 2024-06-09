@@ -23,17 +23,16 @@ class organisasiguruController extends Controller
     {
         $organisasis = organisasi::all();
         $gurus = tbguru::all();
-        $siswas = tbsiswa::all();
-        $tahunakademiks = tahunakademik::all();
+        
+        $tahunakademiks = tahunakademik::where('statusaktif', 'Aktif')->get();
         $hakakses = Auth::user()->hakakses;
 
         if ($request->ajax()) {
-            $data = organisasiguru::with(['organ', 'guru', 'siswa','tahun1','tahun','kurs'])
+            $data = organisasiguru::with(['organ', 'guru', 'tahun1','tahun','kurs'])
                 ->select(
                     'organisasi_guru_siswa_id',
                     'organisasi_id',
                     'guru_id',
-                    'siswa_id',
                     'keterangan',
                     'tahunakademik_id'
                 )
@@ -57,7 +56,7 @@ class organisasiguruController extends Controller
                 ->make(true);
         }
 
-        return view('organisasisiswaall.index', compact('organisasis', 'gurus', 'siswas','tahunakademiks'));
+        return view('organisasisiswaall.index', compact('organisasis', 'gurus','tahunakademiks'));
     }
     public function index3(Request $request, $organisasi_guru_siswa_id = null)
     {
@@ -262,7 +261,7 @@ class organisasiguruController extends Controller
         if ($data) {
             $organisasi_id = $data->organisasi_id;
             $guru_id = $data->guru_id;
-            $siswa_id = $data->siswa_id;
+            // $siswa_id = $data->siswa_id;
             $keterangan = $data->keterangan;
             $tahunakademik_id = $data->tahunakademik_id;
 
@@ -271,7 +270,7 @@ class organisasiguruController extends Controller
             return response()->json([
                 "organisasi_id" => $organisasi_id,
                 "guru_id" => $guru_id,
-                "siswa_id" => $siswa_id,
+                // "siswa_id" => $siswa_id,
                 "keterangan" => $keterangan,
                 "tahunakademik_id" => $tahunakademik_id
 
@@ -288,14 +287,14 @@ class organisasiguruController extends Controller
             $request->validate([
                 'organisasi_id' => 'required',
                 'guru_id' => 'required',
-                'siswa_id' => 'required',
+                // 'siswa_id' => 'required',
                 'tahunakademik_id' => 'required',
             ]);
 
             // Cek apakah ada entri dengan kombinasi organisasi_id, guru_id, dan siswa_id yang sama
             $existingEntry = organisasiguru::where('organisasi_id', $request->organisasi_id)
                 ->where('guru_id', $request->guru_id)
-                ->where('siswa_id', $request->siswa_id)
+                // ->where('siswa_id', $request->siswa_id)
                 ->first();
 
             if ($existingEntry && $existingEntry->organisasi_guru_siswa_id != $request->txt_id) {
@@ -318,14 +317,14 @@ class organisasiguruController extends Controller
                 organisasiguru::where('organisasi_guru_siswa_id', $request->txt_id)->update([
                     "organisasi_id" => $request->organisasi_id,
                     "guru_id" => $request->guru_id,
-                    "siswa_id" => $request->siswa_id,
+                    // "siswa_id" => $request->siswa_id,
                     "keterangan" => $request->keterangan,
                     "tahunakademik_id" => $request->tahunakademik_id,
                 ]);
             } else {
                 $val["organisasi_id"] = $request->organisasi_id;
                 $val["guru_id"] = $request->guru_id;
-                $val["siswa_id"] = $request->siswa_id;
+                // $val["siswa_id"] = $request->siswa_id;
                 $val["keterangan"] = $request->keterangan;
                 $val["tahunakademik_id"] = $request->tahunakademik_id;
                 organisasiguru::create($val);

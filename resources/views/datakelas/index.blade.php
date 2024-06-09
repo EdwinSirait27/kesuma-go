@@ -323,9 +323,12 @@
                         name: 'kelas.namakelas '
                     },
                     {
-                        data: 'guru.Nama',
-                        name: 'guru.Nama'
-                    },
+                    data: 'guru.Nama',
+                    name: 'guru.Nama',
+                    render: function(data, type, row) {
+                        return data ? data : 'Tidak Di Set';
+                    }
+                },
                     {
                         data: 'kelas.kapasitas',
                         name: 'kelas.kapasitas '
@@ -412,20 +415,41 @@
 @endif
 @if (auth()->user()->hakakses == 'Guru'||auth()->user()->hakakses == 'Kurikulum')
     <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-calculator" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Kelas</small></h3>
-            <hr>
-        </div>
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-users"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Kelas</small></h3>
+            @forelse($kurs as $kurikulum)
+            <h2>Kurikulum: {{ $kurikulum->Nama_Kurikulum }}</h2>
+        @empty
+            <h2>Tidak ada data kurikulum aktif.</h2>
+        @endforelse
+    
+        @forelse($taon as $taun)
+            <h2>Tahun Akademik Aktif: {{ $taun->tahunakademik }}</h2>
+            <h2>Semester: {{ $taun->semester }}</h2>
+        @empty
+            <h2>Tidak ada data tahun akademik aktif.</h2>
+        @endforelse
     </div>
+    </div>
+    <hr>
     <div class="row">
-        <div class="col-md-12 col-sm-12 ">
-            <div class="row g-3 align-items-center">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2><i class="fa fa-calculator" style="margin-right: 10px; "></i>Data <small>Kelas</small></h2>
-
-                        <div class="clearfix"></div>
-                    </div>
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title row">
+                    <div class="col-md-8">
+                    <h2><i class="fa fa-bar-chart" style="margin-right: 10px;"></i> Data <small> Kelas </small></h2>
+                 
+                </div>
+                <div class="col-md-4">
+                    <select id="tahun_akademik_filter" class="form-control">
+                        <option value="">Pilih Tahun Akademik</option>
+                        @foreach($tahuns as $tahunAkademik)
+                            <option value="{{ $tahunAkademik->tahunakademik_id }}">{{ $tahunAkademik->tahunakademik }} - {{ $tahunAkademik->semester }}</option>
+                        @endforeach
+                    </select>
+                 
+                </div>
+            </div>
                     <div class="x_content">
                         <div class="row">
                             <div class="col-sm-12">
@@ -549,9 +573,12 @@
                         name: 'kelas.namakelas '
                     },
                     {
-                        data: 'guru.Nama',
-                        name: 'guru.Nama'
-                    },
+                    data: 'guru.Nama',
+                    name: 'guru.Nama',
+                    render: function(data, type, row) {
+                        return data ? data : 'Tidak Di Set';
+                    }
+                },
                     {
                         data: 'kelas.kapasitas',
                         name: 'kelas.kapasitas '
@@ -569,26 +596,51 @@
                     }
                 ]
             });
+            $('#tahun_akademik_filter').on('change', function() {
+                var tahunAkademikId = $(this).val(); // Mendapatkan nilai tahun akademik yang dipilih
+                table.ajax.url("{{ route('datakelas.index') }}?tahunakademik_id=" + tahunAkademikId).load(); // Mengubah URL Ajax dan memuat ulang tabel
+            });
         });
     
     </script>
     @endif
 @if (auth()->user()->hakakses == 'Siswa')
     <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-calculator" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Kelas</small></h3>
-            <hr>
-        </div>
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-users"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Kelas</small></h3>
+            @forelse($kurs as $kurikulum)
+            <h2>Kurikulum: {{ $kurikulum->Nama_Kurikulum }}</h2>
+        @empty
+            <h2>Tidak ada data kurikulum aktif.</h2>
+        @endforelse
+    
+        @forelse($taon as $taun)
+            <h2>Tahun Akademik Aktif: {{ $taun->tahunakademik }}</h2>
+            <h2>Semester: {{ $taun->semester }}</h2>
+        @empty
+            <h2>Tidak ada data tahun akademik aktif.</h2>
+        @endforelse
     </div>
+    </div>
+    <hr>
     <div class="row">
-        <div class="col-md-12 col-sm-12 ">
-            <div class="row g-3 align-items-center">
-                <div class="x_panel">
-                    <div class="x_title">
-                        <h2><i class="fa fa-calculator" style="margin-right: 10px; "></i>Data <small>Kelas</small></h2>
-
-                        <div class="clearfix"></div>
-                    </div>
+        <div class="col-md-12">
+            <div class="x_panel">
+                <div class="x_title row">
+                    <div class="col-md-8">
+                    <h2><i class="fa fa-bar-chart" style="margin-right: 10px;"></i> Data <small> Kelas </small></h2>
+                 
+                </div>
+                <div class="col-md-4">
+                    <select id="tahun_akademik_filter" class="form-control">
+                        <option value="">Pilih Tahun Akademik</option>
+                        @foreach($tahuns as $tahunAkademik)
+                            <option value="{{ $tahunAkademik->tahunakademik_id }}">{{ $tahunAkademik->tahunakademik }} - {{ $tahunAkademik->semester }}</option>
+                        @endforeach
+                    </select>
+                 
+                </div>
+            </div>
                     <div class="x_content">
                         <div class="row">
                             <div class="col-sm-12">
@@ -711,9 +763,12 @@
                         name: 'kelas.namakelas '
                     },
                     {
-                        data: 'guru.Nama',
-                        name: 'guru.Nama'
-                    },
+                    data: 'guru.Nama',
+                    name: 'guru.Nama',
+                    render: function(data, type, row) {
+                        return data ? data : 'Tidak Di Set';
+                    }
+                },
                     {
                         data: 'kelas.kapasitas',
                         name: 'kelas.kapasitas '
@@ -727,6 +782,10 @@
                         searchable: false
                     }
                 ]
+            });
+            $('#tahun_akademik_filter').on('change', function() {
+                var tahunAkademikId = $(this).val(); // Mendapatkan nilai tahun akademik yang dipilih
+                table.ajax.url("{{ route('datakelas.index') }}?tahunakademik_id=" + tahunAkademikId).load(); // Mengubah URL Ajax dan memuat ulang tabel
             });
         });
     

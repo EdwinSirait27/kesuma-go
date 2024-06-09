@@ -80,6 +80,10 @@
                                   
                                 <th scope="col" style="text-align: center;  font-size: 13px;" class="lebar-kolom"
                                     width="60";>
+                                    Tipe
+                                </th>
+                                <th scope="col" style="text-align: center;  font-size: 13px;" class="lebar-kolom"
+                                    width="60";>
                                     Keterangan Tugas
                                 </th>
                                     <th scope="col" style="text-align: center;  font-size: 13px;" class="lebar-kolom"
@@ -141,6 +145,7 @@
         function tambah() {
             $('#txt_id').val(0);
             $('#datakelas_datamengajar_id').val('');
+            $('#tipe').val('');
             $('#keterangan').val('');
             $('#dokumen').val('');
            $('#created_at').val('');
@@ -156,6 +161,7 @@
         success: function(data) {
             $('#txt_id').val(id);
             $('#datakelas_datamengajar_id').val(data.datakelas_datamengajar_id);
+            $('#tipe').val(data.tipe);
             // Menampilkan informasi dokumen jika ada
             if (data.dokumen) {
                 // Anda dapat menyesuaikan cara menampilkan informasi dokumen sesuai dengan kebutuhan
@@ -211,6 +217,7 @@
         function saveChanges() {
             var id = $('#txt_id').val();
             var datakelas_datamengajar_id = $('#datakelas_datamengajar_id').val();
+            var tipe = $('#tipe').val();
             
             var keterangan = $('#keterangan').val();
             var created_at = $('#created_at').val();
@@ -245,6 +252,7 @@
             // Kode pengisian data yang lain...
             $('#txt_id').val(data.txt_id);
             $('#datakelas_datamengajar_id').val(data.datakelas_datamengajar_id);
+            $('#tipe').val(data.tipe);
             $('#keterangan').val(data.keterangan);
             $('#created_at').val(data.created_at);
             $('#updated_at').val(data.updated_at);
@@ -283,6 +291,10 @@
                     {
                         data: 'datakelasdatamengajar.datakelas.kelas.namakelas',
                         name: 'datakelasdatamengajar.datakelas.kelas.namakelas'
+                    },
+                    {
+                        data: 'tipe',
+                        name: 'tipe'
                     },
 
                     

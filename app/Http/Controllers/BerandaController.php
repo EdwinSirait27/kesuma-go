@@ -88,28 +88,117 @@ class BerandaController extends Controller
             )
         );
     }
-    public function index2(Request $request)
-    {
-        if ($request->ajax()) {
-            $data = tbadmin::select('id', 'dokumen', 'created_at','oleh')->get();
-           
-            foreach ($data as $entry) {
-                $entry->formatted_created_at = Carbon::parse($entry->created_at)->format('d-m-Y H:i:s');
+        public function index2(Request $request)
+        {
+            if ($request->ajax()) {
+                $data = tbadmin::select('id', 'dokumen', 'created_at','oleh')->get();
+            
+                foreach ($data as $entry) {
+                    $entry->formatted_created_at = Carbon::parse($entry->created_at)->format('d-m-Y H:i:s');
+                }
+                return Datatables::of($data)->addIndexColumn()
+                    ->addColumn('action', function ($data) {
+
+                        $button = '<a href="' . route('AdminBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
+                        $previewButton = '';
+                        if (pathinfo($data->dokumen, PATHINFO_EXTENSION) == 'jpg') {
+                            $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
+
+                        }
+                        
+                        return $button. ' ' . $previewButton;
+                    })
+                    ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$id}}" />')
+                    ->rawColumns(['checkbox', 'action'])
+                    ->make(true);
             }
-             return Datatables::of($data)->addIndexColumn()
-                ->addColumn('action', function ($data) {
 
-                    $button = '<a href="' . route('AdminBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
-               
-                    return $button;
-                })
-                ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$id}}" />')
-                ->rawColumns(['checkbox', 'action'])
-                ->make(true);
+            return view('AdminBeranda.beranda',  compact('data'));
         }
+      
 
-        return view('AdminBeranda.beranda',  compact('data'));
+        public function preview($dokumen)
+    {
+        $path = storage_path('app/public/pengumuman/' . $dokumen);
+
+        if (file_exists($path)) {
+            return response()->file($path);
+        } else {
+            return response()->json(['message' => 'File not found'], 404);
+        }
     }
+        // public function preview($dokumen)
+        // {
+        //     $path = storage_path('app/public/pengumuman/' . $dokumen);
+        
+        //     if (file_exists($path)) {
+        //         $fileMimeType = mime_content_type($path);
+        //         $headers = [
+        //             'Content-Type' => $fileMimeType,
+        //             'Content-Disposition' => 'inline; filename="' . $dokumen . '"'
+        //         ];
+        
+        //         return response()->file($path, $headers);
+        //     } else {
+        //         abort(404, 'File not found');
+        //     }
+        // }
+        
+        
+// public function preview($dokumen)
+// {
+//     // Logika untuk menangani pratinjau file, misalnya dengan mengarahkan ke halaman view khusus
+//     $path = storage_path('app/public/pengumuman/' . $dokumen);
+
+//     if (file_exists($path)) {
+//         return response()->file($path);
+//     } else {
+//         abort(404);
+//     }
+// }
+
+
+
+//         namespace App\Http\Controllers;
+
+// use Illuminate\Http\Request;
+// use App\Models\tbadmin;
+// use Carbon\Carbon;
+// use DataTables;
+
+// class AdminController extends Controller
+// {
+//     public function index2(Request $request)
+//     {
+//         if ($request->ajax()) {
+//             $data = tbadmin::select('id', 'dokumen', 'created_at', 'oleh')->get();
+
+//             foreach ($data as $entry) {
+//                 $entry->formatted_created_at = Carbon::parse($entry->created_at)->format('d-m-Y H:i:s');
+//             }
+
+//             return Datatables::of($data)->addIndexColumn()
+//                 ->addColumn('action', function ($data) {
+//                     $downloadButton = '<a href="' . route('AdminBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
+//                     $previewButton = '<a href="' . route('AdminBeranda.preview', $data->dokumen) . '" class="edit btn btn-secondary btn-sm" target="_blank">Preview</a>';
+//                     return $downloadButton . ' ' . $previewButton;
+//                 })
+//                 ->addColumn('checkbox', function ($data) {
+//                     return '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="' . $data->id . '" />';
+//                 })
+//                 ->rawColumns(['checkbox', 'action'])
+//                 ->make(true);
+//         }
+
+//         // View Data
+//         $data = tbadmin::all()->map(function($entry) {
+//             $entry->formatted_created_at = Carbon::parse($entry->created_at)->format('d-m-Y H:i:s');
+//             return $entry;
+//         });
+
+//         return view('AdminBeranda.beranda', compact('data'));
+//     }
+// }
 
     public function download($dokumen)
     {
@@ -128,7 +217,7 @@ class BerandaController extends Controller
             return redirect('/AdminBeranda');
         } else {
             $this->validate($request, [
-                'dokumen' => 'mimes:doc,docx,pdf,xls,xlsx,ppt,pptx',
+                'dokumen' => 'mimes:doc,docx,pdf,xls,xlsx,ppt,pptx,jpg',
             ]);
             $dokumen = $request->file('dokumen');
             $nama_dokumen = $dokumen->getClientOriginalName();

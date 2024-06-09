@@ -164,7 +164,8 @@ class ekstraguruController extends Controller
     {
         $ekskuls = ekstra::all();
         $gurus = tbguru::all();
-        $tahunakademik = tahunakademik::all();
+        // $ = tahunakademik::all();
+        $tahunakademik = tahunakademik::where('statusaktif', 'Aktif')->get();
         $hakakses = Auth::user()->hakakses;
 
         if ($request->ajax()) {

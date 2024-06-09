@@ -96,8 +96,14 @@ class BerandaControllerKepalaSekolah extends Controller
                 ->addColumn('action', function ($data) {
 
                     $button = '<a href="' . route('KepalaSekolahBeranda.download', $data->dokumen) . '" class="edit btn btn-primary btn-sm">Download</a>';
-        
-                    return $button;
+                    $previewButton = '';
+                    if (pathinfo($data->dokumen, PATHINFO_EXTENSION) == 'jpg') {
+                        // $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
+                        $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
+
+                    }
+                    
+                    return $button. ' ' . $previewButton;
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$id}}" />')
                 ->rawColumns(['checkbox', 'action'])
@@ -116,8 +122,14 @@ class BerandaControllerKepalaSekolah extends Controller
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
                     $button = '<a href="dokumen/' . $data->dokumen . '" class="edit btn btn-primary btn-sm">Download</a>';
+                    $previewButton = '';
+                    if (pathinfo($data->dokumen, PATHINFO_EXTENSION) == 'jpg') {
+                        // $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
+                        $previewButton = '<button type="button" class="btn btn-secondary btn-sm btn-preview" data-dokumen="' . $data->dokumen . '">Preview</button>';
 
-                    return $button;
+                    }
+                    
+                    return $button. ' ' . $previewButton;
                 })
                 ->rawColumns(['action'])
                 ->make(true);
@@ -136,7 +148,16 @@ class BerandaControllerKepalaSekolah extends Controller
         }
                
     }
+    public function preview($dokumen)
+    {
+        $path = storage_path('app/public/pengumuman/' . $dokumen);
 
+        if (file_exists($path)) {
+            return response()->file($path);
+        } else {
+            return response()->json(['message' => 'File not found'], 404);
+        }
+    }
     public function simpan(Request $request)
     {
         if (!$request->hasFile('dokumen')) {

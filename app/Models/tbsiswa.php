@@ -21,7 +21,7 @@ class tbsiswa extends Model
     }
     public function akunsiswaa()
     {
-        return $this->hasoone(listakunsiswa::class, 'id');
+        return $this->hasoone(listakunsiswa::class, 'siswa_id','id');
     }
     public function SiswaEkstraGuru()
     {

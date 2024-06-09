@@ -28,18 +28,33 @@
                         <div class="col-md-6">
                             <h5>Tahun Akademik : {{ $datakelas->tahun->tahunakademik }}</h5>
                             <h5>Semester : {{ $datakelas->tahun->semester }}</h5>
-                    <h5>Wali Kelas : {{ $datakelas->guru->Nama }}</h5>
-                    <h5>Kelas : {{ $datakelas->kelas->namakelas }}</h5>
+                           
+                    {{-- <h5>Wali Kelas : {{ $datakelas->guru->Nama }}</h5> --}}
+                    @php
+                    $namaGuru = $datakelas?->guru?->Nama;
+                @endphp
+                
+                @if (!is_null($namaGuru))
+                    <h2>Wali Kelas : {{ $namaGuru }}</h2>
+                @else
+                    <h2>Wali Kelas : Belum Di Set</h2>
+                @endif
+                    <h2>Kelas : {{ $datakelas->kelas->namakelas }}</h2>
+                   
+                
                 </div>
                 <div class="col-md-6 text-right">
                     <button type="button" class="btn btn-danger" onclick="confirmDelete(event)">Hapus</button>
                    
-                    @if(isset($datamengajars) && count($datamengajars) > 0)
+                    @if (!is_null($namaGuru) && isset($datamengajars) && count($datamengajars) > 0)
                     <a href="{{ route('download-pdff', ['datakelasId' => $datakelasId]) }}" class="btn btn-success" download="namafile.pdf">Cetak Jadwal</a>
-                    @else
-                        <button class="btn btn-success" disabled>Cetak Jadwal</button>
-                        <span class="text-danger">Tidak ada data yang dapat diunduh.</span>
-                    @endif
+                @else
+                <button class="btn btn-success" disabled>Cetak Jadwal</button>
+                <span class="text-danger">Tidak ada data yang dapat diunduh.</span>
+                @endif
+                
+                       
+                   
                 </div>
                 </div>
                 </div>
@@ -282,7 +297,16 @@
             <div class="card bg-light">
                 <div class="card-header bg-dark text-white">
                     <h3><i class="fa fa-users" style="margin-right: 10px;"></i>Data Jadwal Mata Pelajaran</h3>
-                    <h5>Wali Kelas : {{ $datakelas->guru->Nama }}</h5>
+                    @php
+                    $namaGuru = $datakelas?->guru?->Nama;
+                @endphp
+                
+                @if (!is_null($namaGuru))
+                    <h2>Wali Kelas : {{ $namaGuru }}</h2>
+                @else
+                    <h2>Wali Kelas : Belum Di Set</h2>
+                @endif
+                   
                     <h5>Kelas : {{ $datakelas->kelas->namakelas }}</h5>
                     <h5>Tahun Akademik : {{ $datakelas->tahun->tahunakademik }}</h5>
                     <h5>Semester : {{ $datakelas->tahun->semester }}</h5>

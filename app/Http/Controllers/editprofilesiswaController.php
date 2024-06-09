@@ -10,6 +10,7 @@ use App\Models\ekstraguru;
 use App\Models\organisasiguru;
 use App\Models\SiswaEkstraGuru;
 use App\Models\SiswaOrganisasiGuru;
+use Illuminate\Support\Facades\DB; 
 
 class editprofilesiswaController extends Controller
 {
@@ -32,42 +33,95 @@ class editprofilesiswaController extends Controller
         return view('organisasisiswa.index', compact('namaLengkap', 'kelas', 'siswaOrganisasiGurus'));
     }
     public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'ekstra_guru_id' => 'required_without:bidang_lain|array',
-        ], [
-            'ekstra_guru_id.required_without' => 'Anda harus memilih setidaknya satu ekstrakulikuler.',
-        ]);
-        try {
-            $siswaId = Auth::id(); // Dapatkan ID dari pengguna yang diautentikasi (mungkin seorang siswa)
-            foreach ($request->ekstra_guru_id as $ekstraGuruId) {
-                // Periksa apakah entri sudah ada dalam basis data
-                $existingEntry = SiswaEkstraGuru::where('siswa_id', $siswaId)
-                    ->where('ekstra_guru_id', $ekstraGuruId)
-                    ->exists();
-                if ($existingEntry) {
-                    return redirect()->back()->with('warning', 'Anda sudah mendaftar kegiatan ekstrakurikuler ini sebelumnya.');
-                }
-                $countEkstraGuru = SiswaEkstraGuru::where('siswa_id', $siswaId)->count();
-                if ($countEkstraGuru >= 3) {
-                    return redirect()->back()->with('error', 'Anda hanya boleh mendaftar hingga 3 ekstrakulikuler.');
-                }
-                $ekstraGuru = ekstraguru::with('ekskul')->find($ekstraGuruId);
-                $kapasitasEkstra = $ekstraGuru->ekskul->kapasitas;
-                $countSiswaMendaftar = SiswaEkstraGuru::where('ekstra_guru_id', $ekstraGuruId)->count();
-                if ($countSiswaMendaftar >= $kapasitasEkstra) {
-                    return redirect()->back()->with('error', 'Kapasitas ekstrakurikuler ' . $ekstraGuru->ekskul->namaekskul . ' telah mencapai batas maksimal.');
-                }
-                $siswaEkstraGuru = new SiswaEkstraGuru();
-                $siswaEkstraGuru->siswa_id = $siswaId;
-                $siswaEkstraGuru->ekstra_guru_id = $ekstraGuruId;
-                $siswaEkstraGuru->save();
-            }
-            return redirect()->back()->with('success', 'Pendaftaran pada ekstrakurikuler berhasil.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Terjadi kesalahan. Pesan Kesalahan: ' . $e->getMessage());
+{
+    $validatedData = $request->validate([
+        'ekstra_guru_id' => 'required_without:bidang_lain|array',
+    ], [
+        'ekstra_guru_id.required_without' => 'Anda harus memilih setidaknya satu ekstrakulikuler.',
+    ]);
+
+    try {
+        // Mengambil user yang sedang login
+        $user = Auth::user();
+
+        // Mengambil siswa_id dari user yang sedang login
+        $siswaId = $user->siswa_id;
+
+        // Memeriksa keberadaan siswa dengan ID yang sesuai
+        if (!$siswaId) {
+            return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
         }
+
+        // Memeriksa pendaftaran ekstrakurikuler untuk setiap id yang dipilih
+        foreach ($request->ekstra_guru_id as $ekstraGuruId) {
+            $existingEntry = SiswaEkstraGuru::where('siswa_id', $siswaId)
+                ->where('ekstra_guru_id', $ekstraGuruId)
+                ->exists();
+            if ($existingEntry) {
+                return redirect()->back()->with('warning', 'Anda sudah mendaftar kegiatan ekstrakurikuler ini sebelumnya.');
+            }
+
+            $countEkstraGuru = SiswaEkstraGuru::where('siswa_id', $siswaId)->count();
+            if ($countEkstraGuru >= 3) {
+                return redirect()->back()->with('error', 'Anda hanya boleh mendaftar hingga 3 ekstrakulikuler.');
+            }
+
+            $ekstraGuru = EkstraGuru::with('ekskul')->find($ekstraGuruId);
+            $kapasitasEkstra = $ekstraGuru->ekskul->kapasitas;
+            $countSiswaMendaftar = SiswaEkstraGuru::where('ekstra_guru_id', $ekstraGuruId)->count();
+            if ($countSiswaMendaftar >= $kapasitasEkstra) {
+                return redirect()->back()->with('error', 'Kapasitas ekstrakurikuler ' . $ekstraGuru->ekskul->namaekskul . ' telah mencapai batas maksimal.');
+            }
+
+            $siswaEkstraGuru = new SiswaEkstraGuru();
+            $siswaEkstraGuru->siswa_id = $siswaId;
+            $siswaEkstraGuru->ekstra_guru_id = $ekstraGuruId;
+            $siswaEkstraGuru->save();
+        }
+
+        return redirect()->back()->with('success', 'Pendaftaran pada ekstrakurikuler berhasil.');
+    } catch (\Exception $e) {
+        return redirect()->back()->with('error', 'Terjadi kesalahan. Pesan Kesalahan: ' . $e->getMessage());
     }
+}
+
+
+    // public function store(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'ekstra_guru_id' => 'required_without:bidang_lain|array',
+    //     ], [
+    //         'ekstra_guru_id.required_without' => 'Anda harus memilih setidaknya satu ekstrakulikuler.',
+    //     ]);
+    //     try {
+    //         $siswaId = Auth::id(); // Dapatkan ID dari pengguna yang diautentikasi (mungkin seorang siswa)
+    //         foreach ($request->ekstra_guru_id as $ekstraGuruId) {
+    //             $existingEntry = SiswaEkstraGuru::where('siswa_id', $siswaId)
+    //                 ->where('ekstra_guru_id', $ekstraGuruId)
+    //                 ->exists();
+    //             if ($existingEntry) {
+    //                 return redirect()->back()->with('warning', 'Anda sudah mendaftar kegiatan ekstrakurikuler ini sebelumnya.');
+    //             }
+    //             $countEkstraGuru = SiswaEkstraGuru::where('siswa_id', $siswaId)->count();
+    //             if ($countEkstraGuru >= 3) {
+    //                 return redirect()->back()->with('error', 'Anda hanya boleh mendaftar hingga 3 ekstrakulikuler.');
+    //             }
+    //             $ekstraGuru = ekstraguru::with('ekskul')->find($ekstraGuruId);
+    //             $kapasitasEkstra = $ekstraGuru->ekskul->kapasitas;
+    //             $countSiswaMendaftar = SiswaEkstraGuru::where('ekstra_guru_id', $ekstraGuruId)->count();
+    //             if ($countSiswaMendaftar >= $kapasitasEkstra) {
+    //                 return redirect()->back()->with('error', 'Kapasitas ekstrakurikuler ' . $ekstraGuru->ekskul->namaekskul . ' telah mencapai batas maksimal.');
+    //             }
+    //             $siswaEkstraGuru = new SiswaEkstraGuru();
+    //             $siswaEkstraGuru->siswa_id = $siswaId;
+    //             $siswaEkstraGuru->ekstra_guru_id = $ekstraGuruId;
+    //             $siswaEkstraGuru->save();
+    //         }
+    //         return redirect()->back()->with('success', 'Pendaftaran pada ekstrakurikuler berhasil.');
+    //     } catch (\Exception $e) {
+    //         return redirect()->back()->with('error', 'Terjadi kesalahan. Pesan Kesalahan: ' . $e->getMessage());
+    //     }
+    // }
     public function storee(Request $request)
     {
         $validatedData = $request->validate([
@@ -76,7 +130,16 @@ class editprofilesiswaController extends Controller
             'organisasi_guru_siswa_id.required_without' => 'Anda harus memilih setidaknya satu Organisasi.',
         ]);
         try {
-            $siswaId = Auth::id();
+            $user = Auth::user();
+
+            // Mengambil siswa_id dari user yang sedang login
+            $siswaId = $user->siswa_id;
+    
+            // Memeriksa keberadaan siswa dengan ID yang sesuai
+            if (!$siswaId) {
+                return redirect()->back()->with('error', 'Data siswa tidak ditemukan.');
+            }
+    
             foreach ($request->organisasi_guru_siswa_id as $organisasiGuruId) {
                 $existingEntry = SiswaOrganisasiGuru::where('siswa_id', $siswaId)
                     ->where('organisasi_guru_siswa_id', $organisasiGuruId)

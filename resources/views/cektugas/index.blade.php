@@ -239,7 +239,8 @@ function saveChanges() {
                     },
                       {
                         data: 'siswa.kelas.namakelas',
-                        name: 'siswa.kelas.namakelas'
+                        name: 'siswa.kelas.namakelas',
+                        defaultContent: 'Belum ada kelas'
                     },
                     {
                         data: 'dokumen',

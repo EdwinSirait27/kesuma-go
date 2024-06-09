@@ -31,7 +31,17 @@
                         <div class="col-md-6">
                       <h2>Tahun Akademik : {{ $tahunakademik }}</h2>
                       <h2>Semester : {{ $semester }}</h2>
+                      @php
+                      $namaGuru = $datakelas?->guru?->Nama;
+                  @endphp
+                  
+                  @if (!is_null($namaGuru))
                       <h2>Wali Kelas : {{ $namaGuru }}</h2>
+                  @else
+                      <h2>Wali Kelas : Belum Di Set</h2>
+                  @endif
+                     
+                    
                       <h2>Kelas :  {{ $namakelas }}</h2>
                       <h2>Kapasitas :  {{ $kapasitas }}</h2>
 
@@ -42,7 +52,11 @@
                     @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah'||auth()->user()->hakakses == 'Guru')
                     <button type="button" onclick="window.location.href = '/datakelasadmin'" class="btn btn-danger">Kembali</button>
                     @endif
-                    <a href="{{ route('download-pdf', ['datakelasId' => $datakelasId]) }}" class="btn btn-success" download="namafile.pdf">Cetak Absensi</a>
+                    @if (!is_null($namaGuru))
+                          <a href="{{ route('download-pdf', ['datakelasId' => $datakelasId]) }}" class="btn btn-success" download="namafile.pdf">Cetak Absensi</a>
+                      
+                  @endif
+                    {{-- <a href="{{ route('download-pdf', ['datakelasId' => $datakelasId]) }}" class="btn btn-success" download="namafile.pdf">Cetak Absensi</a> --}}
                 </div>
                 </div>
                 </div>

@@ -79,10 +79,7 @@
                                                 style="text-align: center; font-size: 13px; max-width: 200px;">
                                                 Guru Pembina
                                             </th>
-                                            <th scope="col"
-                                                style="text-align: center; font-size: 13px; max-width: 200px;">
-                                                Ketua Organisasi
-                                            </th>
+                                          
                                             <th scope="col"
                                                 style="text-align: center; font-size: 13px; max-width: 200px;">
                                                 Kapasitas
@@ -142,7 +139,7 @@
             $('#txt_id').val(0);
             $('#organisasi_id').val('');
             $('#guru_id').val('');
-            $('#siswa_id').val('');
+            // $('#siswa_id').val('');
             $('#keterangan').val('');
             $('#tahunakademik_id').val('');
            
@@ -158,7 +155,7 @@
                     $('#txt_id').val(id);
                     $('#organisasi_id').val(data.organisasi_id);
                     $('#guru_id').val(data.guru_id);
-                    $('#siswa_id').val(data.siswa_id);
+                    // $('#siswa_id').val(data.siswa_id);
                     $('#keterangan').val(data.keterangan);
                     $('#tahunakademik_id').val(data.tahunakademik_id);
                     
@@ -175,7 +172,7 @@
             var id = $('#txt_id').val();
             var organisasi_id = $('#organisasi_id').val();
             var guru_id = $('#guru_id').val();
-            var siswa_id = $('#siswa_id').val();
+            // var siswa_id = $('#siswa_id').val();
             var keterangan = $('#keterangan').val();
             var tahunakademik_id = $('#tahunakademik_id').val();
             
@@ -184,7 +181,7 @@
                 id: id,
                 organisasi_id: organisasi_id,
                 guru_id: guru_id,
-                siswa_id: siswa_id,
+                // siswa_id: siswa_id,
                 keterangan: keterangan,
                 tahunakademik_id: tahunakademik_id
             };
@@ -209,7 +206,7 @@
             $('#txt_id').val(data.txt_id);
             $('#organisasi_id').val(data.organisasi_id);
             $('#guru_id').val(data.guru_id);
-            $('#siswa_id').val(data.siswa_id);
+            // $('#siswa_id').val(data.siswa_id);
             $('#keterangan').val(data.keterangan);
             $('#tahunakademik_id').val(data.tahunakademik_id);
             // Mengembalikan deferred object agar $.when() mengetahui bahwa pengisian data selesai
@@ -249,10 +246,10 @@
                         data: 'guru.Nama',
                         name: 'guru.Nama'
                     },
-                    {
-                        data: 'siswa.NamaLengkap',
-                        name: 'siswa.NamaLengkap'
-                    },
+                    // {
+                    //     data: 'siswa.NamaLengkap',
+                    //     name: 'siswa.NamaLengkap'
+                    // },
                     {
                         data: 'organ.kapasitas',
                         name: 'organ.kapasitas'
@@ -358,10 +355,7 @@
                                                 style="text-align: center; width: 5px; font-size: 13px; max-width: 10px;">
                                                 No.
                                             </th>
-                                            <th scope="col" style="text-align: center;  font-size: 13px;"
-                                                class="lebar-kolom" width="60";>
-                                              Kurikulum
-                                            </th>
+                                         
                                             <th scope="col" style="text-align: center;  font-size: 13px;"
                                                 class="lebar-kolom" width="60";>
                                               Tahun Akademik
@@ -377,10 +371,6 @@
                                             <th scope="col"
                                                 style="text-align: center; font-size: 13px; max-width: 200px;">
                                                 Guru Pembina
-                                            </th>
-                                            <th scope="col"
-                                                style="text-align: center; font-size: 13px; max-width: 200px;">
-                                                Ketua Organisasi
                                             </th>
                                             <th scope="col"
                                                 style="text-align: center; font-size: 13px; max-width: 200px;">
@@ -450,10 +440,7 @@
                             return meta.row + meta.settings._iDisplayStart + 1;
                         }
                     },
-                    {
-                        data: 'tahun1.kurikulum_id',
-                        name: 'tahun1.kurikulum_id '
-                    },
+                   
                     {
                         data: 'tahun1.tahunakademik',
                         name: 'tahun1.tahunakademik '
@@ -469,10 +456,6 @@
                     {
                         data: 'guru.Nama',
                         name: 'guru.Nama'
-                    },
-                    {
-                        data: 'siswa.NamaLengkap',
-                        name: 'siswa.NamaLengkap'
                     },
                     {
                         data: 'organ.kapasitas',

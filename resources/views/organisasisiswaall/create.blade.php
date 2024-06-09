@@ -42,19 +42,7 @@
                 
                     </div>
                     
-                    <label for="siswa_id" class="col-sm-2 col-form-label">Ketua Organisasi</label>
-                    <div class="col-sm-4">
-                        <select class="form-control" id="siswa_id" name="siswa_id" required>
-                            <option value="">Pilih Siswa </option>
-                            @foreach($siswas as $siswa)
-                                <option value="{{ $siswa->siswa_id }}">{{ $siswa->siswa_id }} - {{ $siswa->NamaLengkap }}</option>
-                            @endforeach
-                        </select>
-                  
-                    </div>
-                    </div>
                     
-                    <div class="form-group row">
                         <label for="keterangan" class="col-sm-2 col-form-label">Keterangan</label>
                         <div class="col-sm-4">
                             <input type="text" class="form-control" id="keterangan"

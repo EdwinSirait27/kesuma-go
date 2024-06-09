@@ -10,7 +10,7 @@ class tugas extends Model
 {
     protected $table = 'tugas';
     protected $guarded = ['tugas_id'];
-    protected $fillable = ['datakelas_datamengajar_id', 'dokumen','keterangan','created_at','updated_at'];
+    protected $fillable = ['datakelas_datamengajar_id', 'dokumen','keterangan','tipe','created_at','updated_at'];
     protected $primaryKey = 'tugas_id';
     public $timestamps = false;
     public function datakelasdatamengajar()

@@ -83,6 +83,7 @@ class tugasController extends Controller
                 'tugas_id',
                 'datakelas_datamengajar_id',
                 'dokumen',
+                'tipe',
                 'keterangan',
                 'created_at',
                 'updated_at'
@@ -96,6 +97,12 @@ class tugasController extends Controller
                     return $button . ' ' . $redirectButton;
                     
                 })
+                ->addColumn('dokumen', function ($data) {
+                    $path = $data->dokumen; // Ambil path lengkap dari database
+                    $namaFile = basename($path); // Ambil hanya nama file dari path
+                    return $namaFile; // Kembalikan hanya nama file
+                })
+                
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$tugas_id}}" />')
                 ->rawColumns(['checkbox', 'action'])
                 ->make(true);
@@ -112,7 +119,8 @@ public function unduh($tugas_id)
 {
     $tugas = tugas::findOrFail($tugas_id);
    if ($tugas && $tugas->dokumen) {
-        $pathToFile = storage_path('app/public/prkesiswa/' . $tugas->dokumen);
+        $pathToFile = storage_path('app/' . $tugas->dokumen);
+         
             return response()->download($pathToFile);       
 }
 }
@@ -133,12 +141,14 @@ public function unduh($tugas_id)
         if ($data) {
             $datakelas_datamengajar_id = $data->datakelas_datamengajar_id;
             $dokumen = $data->dokumen;
+            $tipe = $data->tipe;
             $keterangan = $data->keterangan;
             $created_at = $data->created_at;
             $updated_at = $data->updated_at;
             return response()->json([
                 "datakelas_datamengajar_id" => $datakelas_datamengajar_id,
                 "dokumen" => $dokumen,
+                "tipe" => $tipe,
                 "keterangan" => $keterangan,
                 "created_at" => $created_at,
                 "updated_at" => $updated_at
@@ -155,12 +165,14 @@ public function unduh($tugas_id)
             'keterangan' => 'required',
             'created_at' => 'required',
             'updated_at' => 'required',
+            'tipe' => 'required',
             'dokumen' => 'required|file|mimes:pdf,doc,docx|max:2048',
         ]);
         try {
             DB::beginTransaction();
             $val = [
                 "datakelas_datamengajar_id" => $request->datakelas_datamengajar_id,
+                "tipe" => $request->tipe,
                 "keterangan" => $request->keterangan,
                 "created_at" => $request->created_at,
                 "updated_at" => $request->updated_at,
@@ -168,7 +180,7 @@ public function unduh($tugas_id)
             if ($request->hasFile('dokumen')) {
                 $file = $request->file('dokumen');
                 $fileName = $file->getClientOriginalName();
-                $filePath = $file->storeAs('public/dokumen', $fileName);
+                $fileName = $file->storeAs('public/prkesiswa', $fileName);
                 $val['dokumen'] = $fileName;
             }
            
@@ -178,7 +190,7 @@ public function unduh($tugas_id)
                 tugas::create($val);
             }
             DB::commit();
-            return redirect('/pengumpulantugas')->with('success', 'Tugas berhasil ditambahkan!');
+            return redirect('/tugasguru')->with('success', 'Tugas berhasil ditambahkan!');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());

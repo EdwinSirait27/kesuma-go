@@ -31,7 +31,7 @@
                         <div class="col-md-6">
                       <h2>Tahun Akademik : {{ $tahunakademik }}</h2>
                       <h2>Semester : {{ $semester }}</h2>
-                      <h2>Wali Kelas : {{ $namaGuru }}</h2>
+                      {{-- <h2>Wali Kelas : {{ $namaGuru }}</h2> --}}
                       <h2>Kelas :  {{ $namakelas }}</h2>
                       <h2>Kapasitas :  {{ $kapasitas }}</h2>
                       <h2>Total jumlah siswa: {{ count($siswaIds) }}</h2>

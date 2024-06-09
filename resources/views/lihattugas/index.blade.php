@@ -80,6 +80,10 @@
                                   
                                 <th scope="col" style="text-align: center;  font-size: 13px;" class="lebar-kolom"
                                     width="60";>
+                                    Tipe
+                                </th>
+                                <th scope="col" style="text-align: center;  font-size: 13px;" class="lebar-kolom"
+                                    width="60";>
                                     Keterangan Tugas
                                 </th>
                                     <th scope="col" style="text-align: center;  font-size: 13px;" class="lebar-kolom"
@@ -159,6 +163,10 @@
                     {
                         data: 'datakelasdatamengajar.datakelas.kelas.namakelas',
                         name: 'datakelasdatamengajar.datakelas.kelas.namakelas'
+                    },
+                    {
+                        data: 'tipe',
+                        name: 'tipe'
                     },
 
                     

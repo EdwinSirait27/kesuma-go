@@ -349,14 +349,14 @@
                     <button type="button" onclick="window.location.href = '/guruall'"
                     class="btn btn-danger">Kembali</button>
                 </div>
+                
             </div>
-            
+            </div>
         </form>
     </div>
     <br>
     <br>
 </div>
-
                 <script>
                     const passwordInput = document.getElementById('password');
                     const updatePasswordCheckbox = document.getElementById('updatePasswordCheckbox');

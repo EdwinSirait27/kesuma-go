@@ -90,7 +90,7 @@ Route::middleware(['auth', hakakses::class . ':SU'])->group(function () {
 });
 
 Route::middleware(['auth', hakakses::class . ':Admin'])->group(function () {
-   
+    Route::get('/AdminBeranda/preview/{dokumen}', [BerandaController::class, 'preview'])->name('AdminBeranda.preview');
     Route::get('/AdminBeranda', [BerandaController::class, 'index'])->name('AdminBeranda');
     Route::get('/AdminBeranda/index2', [BerandaController::class, 'index2'])->name('AdminBeranda.index2');
     Route::get('/AdminBeranda/removeall', [BerandaController::class, 'removeall'])->name('AdminBeranda.removeall');
@@ -110,6 +110,7 @@ Route::middleware(['auth', hakakses::class . ':Admin'])->group(function () {
 });
 
 Route::middleware(['auth', hakakses::class . ':Siswa'])->group(function () {
+    Route::get('/SiswaBeranda/preview/{dokumen}', [BerandaControllerSiswa::class, 'preview'])->name('SiswaBeranda.preview');
     Route::get('/editdatasiswa', [editdataController::class, 'index1'])->name('editdatasiswa.index1');
     Route::get('/editdatasiswa-edit/{id}', [editdataController::class, 'edit']);
     Route::get('/datanilaisiswa', [DatakelasController::class, 'indexdatasiswa'])->name('datanilaisiswa.index');
@@ -144,6 +145,7 @@ Route::middleware(['auth', hakakses::class . ':Siswa'])->group(function () {
 
 
 Route::middleware(['auth', hakakses::class . ':Guru'])->group(function () {
+    Route::get('/GuruBeranda/preview/{dokumen}', [BerandaControllerGuru::class, 'preview'])->name('GuruBeranda.preview');
     Route::get('datamengajarr/{datamengajar_id}/downloaddddd', [datakelascontroller::class, 'downloaddddd'])->name('datamengajarr.downloaddddd');
     
 Route::get('/nilaisiswa/{encodedId}', [DatakelasController::class, 'viewSiswaByDatamengajar'])->name('nilaisiswa.index');
@@ -162,6 +164,7 @@ Route::get('/inputnilaiadmin', [DatakelasController::class, 'indexnilai1'])->nam
     Route::get('/GuruBeranda/index2', [BerandaControllerGuru::class, 'index2'])->name('GuruBeranda.index2');
 });
 Route::middleware(['auth', hakakses::class . ':Kurikulum'])->group(function () {
+    Route::get('/KurikulumBeranda/preview/{dokumen}', [BerandaControllerKurikulum::class, 'preview'])->name('KurikulumBeranda.preview');
     Route::get('/KurikulumBeranda', [BerandaControllerKurikulum::class, 'index'])->name('KurikulumBeranda');
     Route::get('/editprofileKurikulum', [editprofileControllerKurikulum::class, 'index'])->name('editprofileKurikulum');
     Route::post('/editprofileKurikulum', [editprofileControllerKurikulum::class, 'update'])->name('editprofileKurikulum.update');
@@ -179,6 +182,7 @@ Route::middleware(['auth', 'hakakses:Guru,Kurikulum,Siswa'])->group(function () 
     
 });
 Route::middleware(['auth', hakakses::class . ':NonSiswa'])->group(function () {
+    Route::get('/NonSiswaBeranda/preview/{dokumen}', [BerandaControllerNonSiswa::class, 'preview'])->name('NonSiswaBeranda.preview');
     Route::get('/editpassnonsiswa', [editprofileControllerNonSiswa::class, 'indexx'])->name('editpassnonsiswa');
     Route::post('/editpassnonsiswa', [editprofileControllerNonSiswa::class, 'updatee'])->name('editpassnonsiswa.updatee');
     
@@ -189,6 +193,7 @@ Route::middleware(['auth', hakakses::class . ':NonSiswa'])->group(function () {
   
 });
 Route::middleware(['auth', hakakses::class . ':KepalaSekolah'])->group(function () {
+    Route::get('/KepalaSekolahBeranda/preview/{dokumen}', [BerandaControllerKepalaSekolah::class, 'preview'])->name('KepalaSekolahBeranda.preview');
     Route::get('/KepalaSekolahBeranda', [BerandaControllerKepalaSekolah::class, 'index'])->name('KepalaSekolahBeranda');
     Route::get('/KepalaSekolahBeranda/index2', [BerandaControllerKepalaSekolah::class, 'index2'])->name('KepalaSekolahBeranda.index2');
     Route::get('/KepalaSekolahBeranda/removeall', [BerandaControllerKepalaSekolah::class, 'removeall'])->name('KepalaSekolahBeranda.removeall');
@@ -230,6 +235,10 @@ Route::post('/daftar-update', [nonsiswaController::class, 'update']);
 Route::post('/check-username', [nonsiswaController::class, 'checkUsername'])->name('check-username');
 
 Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah,Siswa,Guru,Kurikulum,NonSiswa'])->group(function () {
+    // routes/web.php
+
+
+
     Route::get('AdminBeranda/download/{dokumen}', [BerandaController::class, 'download'])->name('AdminBeranda.download');
     Route::get('KepalaSekolahBeranda/download/{dokumen}', [BerandaControllerKepalaSekolah::class, 'download'])->name('KepalaSekolahBeranda.download');
     Route::get('GuruBeranda/download/{dokumen}', [BerandaControllerGuru::class, 'download'])->name('GuruBeranda.download');
@@ -278,7 +287,8 @@ Route::get('/tugas', [DatakelasDatamengajarController::class, 'index'])->name('t
    
 });
 Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah,Guru,Kurikulum'])->group(function () {
-   
+    Route::get('/jadwaladmin{datakelas_id?}', [datakelasController::class, 'indexjadwal'])->name('jadwaladmin.index')->middleware('check.jadwaladmin_token');
+    
     Route::get('siswaaa/{siswa_id}/downloadddd', [datakelascontroller::class, 'downloadddd'])->name('siswaa.downloadddd');
     Route::put('/simpan-nilai/{siswa_id}', [datakelasController::class, 'simpanNilai'])->name('simpan.nilai');
     // Route::put('/simpan-nilai-matpel/{datamengajar_id}', [datakelasController::class, 'simpanNilaimatpel'])->name('simpan.nilai.matpel');
@@ -324,8 +334,13 @@ Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah'])->group(function () {
     Route::get('/goodbye', [tbsiswaallController::class, 'indexlulus'])->name('goodbye.index');
     Route::get('/datamengajar/{encodedId}', [datamengajarController::class, 'show1'])->name('datamengajar.show');
     
-    Route::get('/prestasi/create/{siswa_id}/', [tbsiswaallController::class, 'create'])->name('prestasi.create');
-Route::get('/prestasi/{siswa_id}/', [tbsiswaallController::class, 'indexx'])->name('prestasi.index');
+    Route::get('/prestasi/create/{encodedId}', [tbsiswaallController::class, 'create'])->name('prestasi.create');
+    // Route::post('/prestasi/removeall1', [tbsiswaallController::class, 'removeall1'])->name('prestasi.removeall1');
+    Route::get('/prestasi/removeall1', [tbsiswaallController::class, 'removeall1'])->name('prestasi.removeall1');
+
+    // Route::get('/prestasi/{siswa_id}/', [tbsiswaallController::class, 'indexx'])->name('prestasi.index');
+Route::get('/prestasi/{encodedId}', [tbsiswaallController::class, 'indexx'])->name('prestasi.index');
+
 Route::post('prestasi/{siswa_id}', [tbsiswaallController::class, 'store'])->name('prestasi.store');
     Route::get('/osis', [osis2Controller::class, 'index'])->name('osis.index');
     Route::get('/osis/removeall', [osis2Controller::class, 'removeall'])->name('osis.removeall');
@@ -337,7 +352,6 @@ Route::post('prestasi/{siswa_id}', [tbsiswaallController::class, 'store'])->name
     Route::get('/download-pdf', [datakelasController::class, 'downloadPDF'])->name('download.pdf');
     Route::get('/datamengajar', [datamengajarController::class, 'index'])->name('datamengajar.index');
     Route::get('/jadwal-create{datakelas_id?}', [datakelasController::class, 'create'])->name('jadwal.create')->middleware('check.jadwalcreateadmin_token');
-    Route::get('/jadwaladmin{datakelas_id?}', [datakelasController::class, 'indexjadwal'])->name('jadwaladmin.index')->middleware('check.jadwaladmin_token');
     Route::get('/listkelas{datakelas_id?}', [DatakelasController::class, 'indexall'])->name('listkelas.index')->middleware('check.listkelas_token');
     Route::get('/datakelasadmin', [datakelassController::class, 'indexx'])->name('datakelasadmin.index');
 // Route::get('/showsiswa/{datakelas_id}', 'NamaController@showSiswa')->name('showSiswa');
@@ -397,6 +411,7 @@ Route::get('/siswa-by-kelas1/{kelasId}', [datakelasController::class, 'getSiswaB
     Route::get('/siswa-by-kelas/{kelasId}', [datakelassController::class, 'getSiswaByKelasId']);
 
     Route::post('/datakelas-update', [datakelasController::class, 'update']);
+    // Route::post('/datakelas-update', [datakelasController::class, 'update']);
     Route::post('/datakelasadmin-update1', [datakelassController::class, 'update1']);
     Route::post('/datakelasadmin-save', [datakelassController::class, 'save']);
     Route::post('/remove-kelas-from-siswa',      [datakelassController::class, 'removeKelasFromSiswa'])->name('remove.kelas.from.siswa');

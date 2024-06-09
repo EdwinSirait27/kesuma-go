@@ -44,15 +44,19 @@ class pengumpulanController extends Controller
                     $redirectButton = '<a href="' . route('downloadd.tugas',['pengumpulan_id' => $data->pengumpulan_id]) . '" class="btn btn-success">Download File Tugas</a>';
                     return $button . ' ' . $redirectButton;
                 })
+              
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$pengumpulan_id}}" />')
                 ->rawColumns(['checkbox', 'action'])
                 ->make(true);
         }
-        $tugas = tugas::whereHas('datakelasdatamengajar', function ($query) use ($siswa) {
+        $tugas = tugas::where('tipe','Tugas')->whereHas('datakelasdatamengajar', function ($query) use ($siswa) {
             $query->whereHas('datakelas', function ($subquery) use ($siswa) {
                 $subquery->where('kelas_id', $siswa->kelas_id);
             });
         })->with(['datakelasdatamengajar.datamengajar.matpel','datakelasdatamengajar.datakelas.kelas'])->get();
+        foreach ($tugas as $data) {
+            $data->dokumen = basename($data->dokumen);
+        }
         return view('pengumpulantugas.index', compact('tugas','formattedDateTime'));
     }
     // public function index(Request $request)
@@ -132,6 +136,7 @@ public function unduh($pengumpulan_id)
 {
     $pengumpulan = pengumpulantugas::findOrFail($pengumpulan_id);
     if ($pengumpulan && $pengumpulan->dokumen) {
+        
         $pathToFile = storage_path('app/public/tugassiswa/' . $pengumpulan->dokumen);
    
             return response()->download($pathToFile);
@@ -291,7 +296,10 @@ public function update(Request $request)
 
     try {
         DB::beginTransaction();
-        $siswa_id = Auth::id();
+        $user = Auth::user();
+
+        // Mengambil siswa_id dari user yang sedang login
+        $siswa_id = $user->siswa_id;
         $tanggal_sekarang = $this->getCurrentDate(); 
         $tugas = Tugas::findOrFail($request->tugas_id);
         $batas_waktu_start = Carbon::parse($tugas->created_at); 
@@ -313,7 +321,7 @@ public function update(Request $request)
         if ($request->hasFile('dokumen')) {
             $file = $request->file('dokumen');
             $fileName = $file->getClientOriginalName();
-            $filePath = $file->storeAs('public/dokumen', $fileName);
+            $filePath = $file->storeAs('public/tugassiswa', $fileName);
             $val['dokumen'] = $fileName;
         }
         if ($request->txt_id !== '0') {

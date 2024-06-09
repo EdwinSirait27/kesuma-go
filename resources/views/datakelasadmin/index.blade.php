@@ -341,10 +341,7 @@
                         }
                     },
 
-                    // {
-                    //     data: 'tahun.kurikulum.Nama_Kurikulum',
-                    //     name: 'tahun.kurikulum.Nama_Kurikulum '
-                    // },
+                 
 
                     {
                         data: 'tahun.tahunakademik',
@@ -359,9 +356,12 @@
                         name: 'kelas.namakelas '
                     },
                     {
-                        data: 'guru.Nama',
-                        name: 'guru.Nama'
-                    },
+                    data: 'guru.Nama',
+                    name: 'guru.Nama',
+                    render: function(data, type, row) {
+                        return data ? data : 'Tidak Di Set';
+                    }
+                },
                     {
                         data: 'kelas.kapasitas',
                         name: 'kelas.kapasitas '

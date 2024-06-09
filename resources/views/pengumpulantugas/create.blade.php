@@ -30,7 +30,7 @@
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary">Simpan</button>
-                        <button type="button" onclick="window.location.href = '/tahunakademik'"
+                        <button type="button" onclick="window.location.href = '/pengumpulantugas'"
                         class="btn btn-danger">Kembali</button>
 
                     </div>

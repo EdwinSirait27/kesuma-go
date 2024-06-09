@@ -51,41 +51,37 @@
                       </div>
                       @endif     
                     
-                      <table class="table table-striped table-bordered" id="siswaTable">
+                      <div class="card-box table-responsive">
+                        <table id="myDataTable"
+                            class="table table-striped table-bordered dt-responsive nowrap user_datatable"
+                            cellspacing="0" width="100%">
                           <thead class="thead-white">
                               <tr>
                                       <th scope="col">No</th>
                                       <th scope="col">Prestasi</th>
                                       <th scope="col">Deskripsi</th>
-                                   
+                                      <th width="50px" style="text-align: center; font-size: 15px;">
+                                        <button type="button" name="bulk_delete" id="bulk_delete"
+                                            class="btn btn-danger btn-xs">Delete</button>
+                                    </th>
                                   </tr>
                               </thead>
                               <tbody>
-                                @foreach($prestasis as $index => $prestasi)
-                               
-                                     
-                                      <tr>
-                                          <th scope="row">{{ $index + 1 }}</th>
-                                          <td>{{ $prestasi ? $prestasi->prestasi : 'Nama tidak ditemukan' }}</td>
-                                          <td>{{ $prestasi ? $prestasi->keterangan : 'Nama tidak ditemukan' }}</td>
-                                         
-                                  
-                                          
-                                      </tr>
-                                  @endforeach
+                             
                                 </tbody>
                             </table>
                         
-                            <a href="{{ route('prestasi.create', $siswa_id) }}" class="btn btn-dark">Tambah Prestasi</a>
-                   
+                            <a href="{{ route('prestasi.create', ['encodedId' => base64_encode($siswa_id)]) }}" class="btn btn-dark">Tambah Prestasi</a>
+
                              
                   </div>
               </div>
           </div>
       </div>
+      </div>
   </div>
   <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
- 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
       $(document).ready(function () {
           var table = $('#siswaTable').DataTable({
@@ -100,5 +96,144 @@
           });
       });
       </script>
+     <script type="text/javascript">
+        $(document).ready(function() {
+            var encodedId = "{{ request()->route('encodedId') }}"; // Ambil encodedId dari rute
+            var table = $('.user_datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ url('/prestasi') }}/" + encodedId,
+                    method: "GET"
+                },
+                columns: [
+                    {
+                        data: 'prestasi_id',
+                        name: 'prestasi_id',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'prestasi',
+                        name: 'prestasi'
+                    },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan'
+                    },
+                    {
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+        });
+    </script>
+    
+       {{-- <script type="text/javascript">
+        $(document).ready(function() {
+            var table = $('.user_datatable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: "{{ route('prestasi.indexx') }}",
+                    method: "GET"
+                },
+                columns: [{
+                        data: 'prestasi_id',
+                        name: 'prestasi_id',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
+                    {
+                        data: 'prestasi',
+                        name: 'prestasi'
+                    },
+                    {
+                        data: 'keterangan',
+                        name: 'keterangan'
+                    }
+                    {
+                        data: 'checkbox',
+                        name: 'checkbox',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+        });
+        </script> --}}
+        <script>
+            $(document).on('click', '#bulk_delete', function() {
+            var id = [];
+            Swal.fire({
+                title: "Apakah Yakin?",
+                text: "Data Tidak Bisa Kembali",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Hapus",
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    var id = [];
+                    $('.users_checkbox:checked').each(function() {
+                        id.push($(this).val());
+                    });
+                    if (id.length > 0) {
+                        $.ajax({
+                            
+                            url: "{{ route('prestasi.removeall1') }}", // Hapus 'kurikulum_id' => ''
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            method: "get",
+                            data: {
+                                prestasi_id: id 
+                            },
+                            success: function(data) {
+                                console.log(data);
+                                Swal.fire({
+                                    title: "Deleted!",
+                                    text: "Your data has been deleted.",
+                                    icon: "success",
+                                });
+                                var encodedId = "{{ request()->route('encodedId') }}"; // Ambil encodedId dari rute
+    
+                                window.location.assign("prestasi");
+                            },
+                            error: function(data) {
+                                var errors = data.responseJSON;
+                                console.log(errors);
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Tidak Ada Data Yang Tercentang",
+                            text: "Dicentang Dulu Baru Bisa Dihapus Ya Admin:)",
+                            icon: "warning",
+                        });
+                    }
+                }
+            });
+        });
+    </script>
+       
+        
 @endsection 
-                     
+{{-- // @foreach($prestasis as $index => $prestasi)
+                               
+                                     
+// <tr>
+//     <th scope="row">{{ $index + 1 }}</th>
+//     <td>{{ $prestasi ? $prestasi->prestasi : 'Nama tidak ditemukan' }}</td>
+//     <td>{{ $prestasi ? $prestasi->keterangan : 'Nama tidak ditemukan' }}</td>
+   
+
+    
+// </tr>
+// @endforeach --}}

@@ -13,6 +13,7 @@ use Carbon\Carbon;
 use App\Models\tbguru;
 use App\Models\siswamengajar;
 use App\Models\DatakelasDatamengajar;
+use App\Models\Kurikulum;
 use App\Models\SiswaEkstraGuru;
 use Illuminate\Support\Str;
 use App\Models\datamengajar;
@@ -42,41 +43,26 @@ class datakelasController extends Controller
             return response()->json(['message' => 'Failed to remove Kelas ID from Tbsiswa', 'error' => $e->getMessage()], 500);
         }
     }
+  
     public function update(Request $request)
     {
         try {
             DB::beginTransaction();
-
-            // Validasi input
             $request->validate([
                 'kelas_id' => 'required',
-                'guru_id' => 'required',
                 'tahunakademik_id' => 'required',
             ]);
-
-            // Cek kombinasi yang sudah ada
             $this->checkExistingDataKelas($request);
-
-            // Ambil data kelas berdasarkan kelas_id
             $kelas = Kelas::find($request->kelas_id);
             if (!$kelas) {
                 throw new \Exception('Kelas tidak ditemukan.');
             }
-
-            // Cek kapasitas kelas
             $this->checkKelasCapacity($kelas, $request);
-
-            // Parsing selected_siswa
             $selectedSiswa = $this->parseSelectedSiswa($request->selected_siswa);
-
-            // Validasi jumlah siswa yang dipilih
             if (count($selectedSiswa) > 0) {
                 $this->validateSiswaSelection($kelas, $selectedSiswa, $request->txt_id);
             }
-
-            // Update atau buat DataKelas
             $this->updateOrCreateDataKelas($request, $selectedSiswa);
-
             DB::commit();
             return redirect('/datakelasadmin')->with('success', 'Data Kelas berhasil diperbarui!');
         } catch (\Exception $e) {
@@ -84,50 +70,41 @@ class datakelasController extends Controller
             return redirect('/datakelasadmin')->with('error', 'Terjadi kesalahan. ' . $e->getMessage());
         }
     }
-
     private function checkExistingDataKelas($request)
     {
         $existingDataKelas = DataKelas::where('kelas_id', $request->kelas_id)
             ->where('datakelas_id', '!=', $request->txt_id)
             ->where('tahunakademik_id', $request->tahunakademik_id)
             ->first();
-
         if ($existingDataKelas) {
             throw new \Exception('Kombinasi kelas sudah ada untuk tahun akademik ini.');
         }
-
         $existingDataKelas = DataKelas::where('guru_id', $request->guru_id)
             ->where('datakelas_id', '!=', $request->txt_id)
             ->where('tahunakademik_id', $request->tahunakademik_id)
             ->first();
-
         if ($existingDataKelas) {
             throw new \Exception('Kombinasi guru sudah ada untuk tahun akademik ini.');
         }
-
         $existingDataKelas = DataKelas::where('kelas_id', $request->kelas_id)
             ->where('guru_id', $request->guru_id)
             ->where('datakelas_id', '!=', $request->txt_id)
             ->where('tahunakademik_id', $request->tahunakademik_id)
             ->first();
-
         if ($existingDataKelas) {
             throw new \Exception('Kombinasi kelas dan guru sudah ada untuk tahun akademik ini.');
         }
     }
-
     private function checkKelasCapacity($kelas, $request)
     {
         $maxCapacity = $kelas->kapasitas;
         $existingStudentsCount = DataKelas::where('kelas_id', $request->kelas_id)
             ->where('datakelas_id', '!=', $request->txt_id)
             ->count();
-
         if ($existingStudentsCount >= $maxCapacity) {
             throw new \Exception('Kelas sudah mencapai kapasitas maksimum.');
         }
     }
-
     private function parseSelectedSiswa($selectedSiswa)
     {
         if (is_null($selectedSiswa)) {
@@ -135,7 +112,6 @@ class datakelasController extends Controller
         }
         return is_string($selectedSiswa) ? explode(',', $selectedSiswa) : $selectedSiswa;
     }
-
     private function validateSiswaSelection($kelas, $selectedSiswa, $txtId)
     {
         $totalSelected = count($selectedSiswa);
@@ -143,19 +119,15 @@ class datakelasController extends Controller
             ->where('datakelas_id', '!=', $txtId)
             ->count();
         $availableCapacity = $kelas->kapasitas - $existingStudentsCount;
-
         if ($totalSelected > $availableCapacity) {
             throw new \Exception('Jumlah siswa yang dipilih melebihi sisa kapasitas yang tersedia untuk kelas.');
         }
-
         if ($totalSelected < $availableCapacity) {
             throw new \Exception('Jumlah siswa yang dipilih kurang, harus pas dengan kapasitas kelas.');
         }
     }
-
     private function updateOrCreateDataKelas($request, $selectedSiswa)
     {
-        // Jika tidak ada siswa yang dipilih, update DataKelas saja
         if (count($selectedSiswa) == 0) {
             if ($request->txt_id != '0') {
                 DataKelas::where('datakelas_id', $request->txt_id)->update([
@@ -172,7 +144,6 @@ class datakelasController extends Controller
                 DataKelas::create($val);
             }
         } else {
-            // Jika ada siswa yang dipilih, update DataKelas dan TBSiswa
             if ($request->txt_id != '0') {
                 DataKelas::where('datakelas_id', $request->txt_id)->update([
                     "kelas_id" => $request->kelas_id,
@@ -180,7 +151,6 @@ class datakelasController extends Controller
                     "keterangan" => $request->keterangan,
                     "tahunakademik_id" => $request->tahunakademik_id,
                 ]);
-
                 TBSiswa::whereIn('siswa_id', $selectedSiswa)->update(['kelas_id' => $request->kelas_id]);
             } else {
                 $val["kelas_id"] = $request->kelas_id;
@@ -188,7 +158,6 @@ class datakelasController extends Controller
                 $val["keterangan"] = $request->keterangan;
                 $val["tahunakademik_id"] = $request->tahunakademik_id;
                 $newDataKelas = DataKelas::create($val);
-
                 TBSiswa::whereIn('siswa_id', $selectedSiswa)->update(['kelas_id' => $newDataKelas->kelas_id]);
             }
         }
@@ -203,7 +172,8 @@ class datakelasController extends Controller
                 $datakelas->load('kelas', 'guru');
                 $namakelas = $datakelas->kelas->namakelas;
                 $kapasitas = $datakelas->kelas->kapasitas;
-                $namaGuru = $datakelas->guru->Nama;
+                // $namaGuru = $datakelas->guru->Nama;
+                $namaGuru = $datakelas->guru->Nama ?? null;
                 $tahunakademik = $datakelas->tahun->tahunakademik;
                 $semester = $datakelas->tahun->semester;
                 $siswaIds = Tbsiswa::where('kelas_id', $kelasIdSiswa)->pluck('siswa_id')->toArray();
@@ -262,7 +232,8 @@ class datakelasController extends Controller
             $datakelas->load('kelas', 'guru');
             $namakelas = $datakelas->kelas->namakelas;
             $kapasitas = $datakelas->kelas->kapasitas;
-            $namaGuru = $datakelas->guru->Nama;
+            $namaGuru = $datakelas->guru ? $datakelas->guru->Nama : 'belum di set';
+
             $tahunakademik = $datakelas->tahun->tahunakademik;
             $semester = $datakelas->tahun->semester;
             $siswaIds = tbsiswa::where('kelas_id', $datakelas->kelas->kelas_id)->pluck('siswa_id')->toArray();
@@ -398,9 +369,18 @@ class datakelasController extends Controller
                 throw new \Illuminate\Database\Eloquent\ModelNotFoundException();
             }
             $datamengajars = Datamengajar::where('kelas_id', $datakelas->kelas->kelas_id)->get();
+        
+$kelasIdDatakelas = $datakelas->kelas->kelas_id;
+
+$siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas) {
+    $query->where('kelas_id', $kelasIdDatakelas);
+})->pluck('siswa_id');
+
+
             return view('jadwal.create', [
                 'datakelas' => $datakelas,
-                'datamengajars' => $datamengajars
+                'datamengajars' => $datamengajars,
+                'siswa_id' => $siswa_id
             ]);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return Redirect::route('jadwal.create')->with('success', 'Data berhasil disimpan.');
@@ -464,7 +444,9 @@ class datakelasController extends Controller
         }
     }
         $tahunAkademiks = tahunakademik::all();
-
+        $taon = tahunakademik::where('statusaktif','Aktif')->get();
+        $kurs = Kurikulum::where('Status_Aktif', 'Aktif')->get();
+        
         if ($request->ajax()) {
             $data = siswamengajar::with(['tahunakademik', 'kurikulum', 'siswa', 'datakelas.kelas', 'datamengajar.matpel'])
                 ->when($request->tahunakademik_id, function ($query) use ($request) {
@@ -499,7 +481,7 @@ class datakelasController extends Controller
                 ->make(true);
         }
 
-        return view('inputnilaispc.index', compact('tahunAkademiks'));
+        return view('inputnilaispc.index', compact('tahunAkademiks','kurs','taon'));
     }
     
     // public function indexadmin(Request $request)
@@ -559,7 +541,12 @@ class datakelasController extends Controller
         }
 
         $tahunAkademiks = tahunakademik::all();
-        $siswaId = Auth::id();
+        $user = Auth::user();
+        $taon = tahunakademik::where('statusaktif','Aktif')->get();
+        
+        $kurs = Kurikulum::where('Status_Aktif', 'Aktif')->get();
+        // Mengambil siswa_id dari user yang sedang login
+        $siswaId = $user->siswa_id;
         
         if ($request->ajax()) {
             try {
@@ -588,7 +575,7 @@ class datakelasController extends Controller
             }
         }
 
-        return view('datanilaisiswa.index', compact('tahunAkademiks'));
+        return view('datanilaisiswa.index', compact('tahunAkademiks','kurs','taon'));
     }
     // public function indexdatasiswa(Request $request)
     // {
@@ -815,7 +802,10 @@ class datakelasController extends Controller
             return redirect('/SiswaBeranda')->with('error', 'Belum Terbuka.');
         }
     }
-        $tahunAkademiks = tahunakademik::all();
+    $tahunAkademiks = tahunakademik::all();
+    $taon = tahunakademik::where('statusaktif','Aktif')->get();
+        
+    $kurs = Kurikulum::where('Status_Aktif', 'Aktif')->get();
         if ($request->ajax()) {
             $data = siswamengajar::with(['tahunakademik', 'kurikulum', 'siswa', 'datakelas.kelas', 'datamengajar.matpel'])
                 ->when($request->tahunakademik_id, function ($query) use ($request) {
@@ -856,7 +846,7 @@ class datakelasController extends Controller
                 ->make(true);
         }
 
-        return view('inputnilaiadmin.index', compact('tahunAkademiks'));
+        return view('inputnilaiadmin.index', compact('tahunAkademiks','kurs','taon'));
     }
 
     public function index(Request $request)
@@ -866,7 +856,7 @@ class datakelasController extends Controller
         $gurus = tbguru::all();
         $tahuns = tahunakademik::all();
         $taon = tahunakademik::where('statusaktif', 'Aktif')->get();
-       
+        $kurs = Kurikulum::where('Status_Aktif', 'Aktif')->get();
         $kelas_id = $request->get('kelas_id');
         $siswas = tbsiswa::with('kelas')->get();
         $datakelas = null;
@@ -892,19 +882,17 @@ class datakelasController extends Controller
             }
 
             return Datatables::of($data)->addIndexColumn()
-                ->addColumn('action', function ($data) use ($hakakses) {
+                ->addColumn('action', function ($data) use ($hakakses,$request) {
                     $buttons = '';
 
                     if ($hakakses == 'Kurikulum' || $hakakses == 'Guru') {
-                        $guru_id = Auth::user()->guru_id;
-                        $datakelas = datakelas::where('guru_id', $guru_id)->where('kelas_id', $data->kelas_id)->first();
-
-                        if ($datakelas) {
+                      
                             session(['datakelas_id' => $data->datakelas_id]);
-                            $buttons .= '<a href="' . route('jadwal.index') . '" class="btn btn-success">Jadwal</a>';
-                        } else {
-                            $buttons .= '<span class="text-warning">Anda tidak memiliki akses</span>';
-                        }
+                            // $buttons .= '<a href="' . route('jadwal.index') . '" class="btn btn-success">Jadwal</a>';
+                            $token = Str::random(32);
+                    
+                            $request->session()->put('jadwaladmin_token', $token);
+                            $buttons = '<a href="' . route('jadwaladmin.index', ['datakelas_id' => $data->datakelas_id, 'token' => $token]) . '" class="btn btn-dark">Jadwal </a>';
                     }
 
                     if ($hakakses == 'Siswa') {
@@ -928,8 +916,79 @@ class datakelasController extends Controller
                 ->make(true);
         }
 
-        return view('datakelas.index', compact('kelass', 'siswas', 'gurus', 'kelas_id', 'datakelas', 'datakelass', 'kapasitas_kelas', 'tahuns','taon'));
+        return view('datakelas.index', compact('kelass', 'siswas', 'gurus', 'kelas_id', 'datakelas', 'datakelass', 'kurs','kapasitas_kelas', 'tahuns','taon'));
     }
+    // public function index(Request $request)
+    // {
+    //     $hakakses = Auth::user()->hakakses;
+    //     $kelass = kelas::all();
+    //     $gurus = tbguru::all();
+    //     $tahuns = tahunakademik::all();
+    //     $taon = tahunakademik::where('statusaktif', 'Aktif')->get();
+       
+    //     $kelas_id = $request->get('kelas_id');
+    //     $siswas = tbsiswa::with('kelas')->get();
+    //     $datakelas = null;
+    //     $datakelass = datakelas::all();
+    //     $kapasitas_kelas = kelas::first()->kapasitas;
+
+    //     if ($request->ajax()) {
+    //         $data = datakelas::with(['tahun.kurikulum', 'guru', 'siswa', 'kelas'])
+    //             ->when($request->tahunakademik_id, function ($query) use ($request) {
+    //                 return $query->where('tahunakademik_id', $request->tahunakademik_id);
+    //             })
+    //             ->select(
+    //                 'datakelas_id',
+    //                 'kelas_id',
+    //                 'guru_id',
+    //                 'keterangan',
+    //                 'tahunakademik_id'
+    //             )
+    //             ->get();
+
+    //         foreach ($data as $item) {
+    //             $item->jumlah_siswa = tbsiswa::where('kelas_id', $item->kelas_id)->count();
+    //         }
+
+    //         return Datatables::of($data)->addIndexColumn()
+    //             ->addColumn('action', function ($data) use ($hakakses) {
+    //                 $buttons = '';
+
+    //                 if ($hakakses == 'Kurikulum' || $hakakses == 'Guru') {
+    //                     $guru_id = Auth::user()->guru_id;
+    //                     $datakelas = datakelas::where('guru_id', $guru_id)->where('kelas_id', $data->kelas_id)->first();
+
+    //                     if ($datakelas) {
+    //                         session(['datakelas_id' => $data->datakelas_id]);
+    //                         $buttons .= '<a href="' . route('jadwal.index') . '" class="btn btn-success">Jadwal</a>';
+    //                     } else {
+    //                         $buttons .= '<span class="text-warning">Anda tidak memiliki akses</span>';
+    //                     }
+    //                 }
+
+    //                 if ($hakakses == 'Siswa') {
+    //                     $siswa_id = Auth::user()->siswa_id;
+    //                     $siswa = tbsiswa::find($siswa_id);
+
+    //                     if ($siswa && $siswa->kelas_id == $data->kelas_id) {
+    //                         session(['datakelas_id' => $data->datakelas_id]);
+    //                         $buttons .= '<a href="' . route('jadwal.index') . '" class="btn btn-dark">Jadwal</a>';
+    //                     } else {
+    //                         $buttons .= '<span class="text-warning">Anda tidak memiliki akses</span>';
+    //                     }
+    //                 }
+
+    //                 return $buttons;
+    //             })
+    //             ->addColumn('checkbox', function ($data) {
+    //                 return '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="' . $data->datakelas_id . '" />';
+    //             })
+    //             ->rawColumns(['checkbox', 'action'])
+    //             ->make(true);
+    //     }
+
+    //     return view('datakelas.index', compact('kelass', 'siswas', 'gurus', 'kelas_id', 'datakelas', 'datakelass', 'kapasitas_kelas', 'tahuns','taon'));
+    // }
 
 
     public function downloadddd($siswa_id)
@@ -1340,16 +1399,20 @@ class datakelasController extends Controller
     public function indexsiswa(Request $request)
     {
 
-        $siswa_id = Auth::id();
+      
+        $user = Auth::user();
+
+        // Mengambil siswa_id dari user yang sedang login
+        $siswaId = $user->siswa_id;
 
         $siswa = SiswaMengajar::with(['tahunakademik', 'kurikulum', 'siswa', 'datakelas.kelas', 'datamengajar.matpel'])
-            ->where('siswa_id', $siswa_id)
+            ->where('siswa_id', $siswaId)
             ->first();
         $hakakses = tbguru::where('TugasMengajar', 'Kepala Sekolah')->pluck('guru_id');
         if (!$siswa) {
             return redirect()->route('inputnilaiguru.index')->with('error', 'Siswa tidak ditemukan.');
         }
-        $datamengajars = SiswaMengajar::where('siswa_id', $siswa_id)->get();
+        $datamengajars = SiswaMengajar::where('siswa_id', $siswaId)->get();
         $datamengajar_ids = [];
         foreach ($datamengajars as $datamengajar) {
             $datamengajar_ids[$datamengajar->datamengajar_id] = [
@@ -1632,9 +1695,12 @@ class datakelasController extends Controller
 
             // dd($request->all());
             $datakelas = Datakelas::find($request->input('datakelas_id'));
-            $kelasIdDatakelas = $datakelas->kelas_id;
-            $siswaIds = Tbsiswa::where('kelas_id', $kelasIdDatakelas)->pluck('siswa_id')->toArray();
-            if (empty($siswaIds)) {
+            $kelasIdDatakelas = $datakelas->kelas->kelas_id;
+
+$siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas) {
+    $query->where('kelas_id', $kelasIdDatakelas);
+})->pluck('siswa_id');
+            if (empty($siswa_id)) {
                 return Redirect::back()->with('error', 'Tidak ada siswa terdaftar dalam kelas ini.');
             }
             $datamengajarIds = $request->input('datamengajar_id');
@@ -1652,7 +1718,7 @@ class datakelasController extends Controller
                         $datakelasDatamengajar->datakelas_id = $datakelas->datakelas_id;
                         $datakelasDatamengajar->datamengajar_id = $datamengajarId;
                         $datakelasDatamengajar->save();
-                        foreach ($siswaIds as $siswaId) {
+                        foreach ($siswa_id as $siswaId) {
                             $siswaMengajar = new SiswaMengajar();
                             $siswaMengajar->siswa_id = $siswaId;
                             $siswaMengajar->datakelas_id = $datakelas->datakelas_id;
@@ -1671,6 +1737,30 @@ class datakelasController extends Controller
                             $siswaMengajar->nilaitotal = 0;
                             $siswaMengajar->save();
                         }
+                        // foreach ($siswa_id as $siswaId) {
+                        //     $siswaMengajar = new SiswaMengajar();
+                        //     $siswaMengajar->siswa_id = $siswaId;
+                        //     $siswaMengajar->datakelas_id = $datakelas->datakelas_id;
+                        //     $siswaMengajar->tahunakademik_id = $datakelas->tahunakademik_id;
+                        //     $siswaMengajar->kurikulum_id = $datakelas->tahun->kurikulum->kurikulum_id;
+                        //     $siswaMengajar->datamengajar_id = $datamengajarId;
+                        //     $siswaMengajar->nilaitugas = 0;
+                        //     $siswaMengajar->nilaitugas1 = 0;
+                        //     $siswaMengajar->nilaitugas2 = 0;
+                        //     $siswaMengajar->nilaitugas3 = 0;
+                        //     $siswaMengajar->nilaitugas4 = 0;
+                        //     $siswaMengajar->nilaitugas5 = 0;
+                        //     $siswaMengajar->nilaiuts = 0;
+                        //     $siswaMengajar->nilaiuas = 0;
+                        //     $siswaMengajar->nilaikeaktifan = 0;
+                        //     $siswaMengajar->nilaitotal = 0;
+                        //     if ($siswaMengajar->save()) {
+                        //         dd('save successful');
+                        //     } else {
+                        //         dd('save failed');
+                        //     }
+                        // }
+                        
                     }
                 }
                 DB::commit();

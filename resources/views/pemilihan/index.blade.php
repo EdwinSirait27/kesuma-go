@@ -116,10 +116,12 @@
                                         </td>
                                         <td>{{ $data->tanggal }}</td>
                                         <td>
-                                            @if($data->users->hakakses === 'Admin'||'Kurikulum')
+                                            @if($data->users->hakakses === 'Admin' || $data->users->hakakses === 'Kurikulum')
                                                 Guru
+                                            @elseif($data->users->hakakses === 'Siswa')
+                                                Siswa
                                             @else
-                                                {{ $data->users->hakakses }}
+                                                Hak akses tidak diketahui
                                             @endif
                                         </td>
                                         

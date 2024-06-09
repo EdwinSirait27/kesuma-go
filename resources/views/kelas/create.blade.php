@@ -56,7 +56,7 @@
                        
                         <button type="button" onclick="window.location.href = '/kelas'"
                         class="btn btn-danger">Kembali</button>
-                        @
+                        
 
                     </div>
                 </div>

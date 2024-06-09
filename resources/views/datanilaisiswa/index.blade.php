@@ -32,22 +32,33 @@
         }
 
 </style>
-    <div class="row">
-        <div class="col-md-12">
-            <h3><i class="fa fa-bar-chart" style="margin-right: 10px;"></i> Input Nilai Siswa</h3>
-            <hr>
-        </div>
-
+<div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-users"style="margin-right: 10px; margin-top: 15px;"></i>Daftar <small> Nilai</small></h3>
+        @forelse($kurs as $kurikulum)
+        <h2>Kurikulum: {{ $kurikulum->Nama_Kurikulum }}</h2>
+    @empty
+        <h2>Tidak ada data kurikulum aktif.</h2>
+    @endforelse
+    
+    @forelse($taon as $taun)
+        <h2>Tahun Akademik Aktif: {{ $taun->tahunakademik }}</h2>
+        <h2>Semester: {{ $taun->semester }}</h2>
+    @empty
+        <h2>Tidak ada data tahun akademik aktif.</h2>
+    @endforelse
     </div>
-
+    </div>
+    <hr>
     <div class="row">
-        <div class="col-md-12">
-            <div class="x_panel">
-                <div class="x_title row">
-                    <div class="col-md-8">
-                    <h2><i class="fa fa-bar-chart" style="margin-right: 10px;"></i> Input Nilai Siswa</h2>
-                 
-                </div>
+    <div class="col-md-12">
+        <div class="x_panel">
+            <div class="x_title row">
+                <div class="col-md-8">
+                <h2><i class="fa fa-bar-chart" style="margin-right: 10px;"></i> Daftar |<small>Nilai </small></h2>
+             
+            </div>
+    
                 <div class="col-md-4">
                     <select id="tahun_akademik_filter" class="form-control">
                         <option value="">Pilih Tahun Akademik</option>
@@ -108,7 +119,13 @@
                     method: "GET"
                 },
                 columns: [
-                    { data: 'index_increment', name: 'index_increment' },
+                    {
+                        data: 'siswa_mengajar_id',
+                        name: 'siswa_mengajar_id',
+                        render: function(data, type, row, meta) {
+                            return meta.row + meta.settings._iDisplayStart + 1;
+                        }
+                    },
                     {
                         data: 'tahunakademik.tahunakademik',
                         name: 'tahunakademik.tahunakademik'

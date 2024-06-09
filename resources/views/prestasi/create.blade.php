@@ -95,6 +95,7 @@
                     
                       <form id="prestasiForm" method="POST" action="{{ route('prestasi.store', $siswa_id) }}">
                         @csrf
+       
                         <div class="form-group">
                             <label for="prestasi">Prestasi:</label>
                             <input type="text" id="prestasi" name="prestasi" class="form-control"maxlength="30">

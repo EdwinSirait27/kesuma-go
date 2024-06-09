@@ -367,7 +367,8 @@
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
+   
+   <script>
         iForm('hal_index');
 
         function iForm(iv) {
@@ -701,7 +702,7 @@
       
     </script>
     <script
-     < type="text/javascript">
+      type="text/javascript">
         $(document).ready(function() {
             var table = $('myDataTable').DataTable({
                 "pageLength": 10, // Menampilkan 10 data per halaman secara default
@@ -724,7 +725,7 @@
                 }
             });
         });
-    </>
+
 
 </script>
 @endsection

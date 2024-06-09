@@ -37,14 +37,16 @@
     .user_datatable tbody tr:hover {
         background-color: lightyellow;
     }
-        .count {
+
+    .count {
         font-size: 24px;
         font-weight: bold;
         transition: color 0.3s ease-in-out;
     }
 
     .count:hover {
-        color: #007bff; /* Change the color on hover as an example */
+        color: #007bff;
+        /* Change the color on hover as an example */
     }
 
     .count-top {
@@ -66,13 +68,36 @@
     }
 
     .tile_stats_count:hover {
-        transform: scale(1.05); /* Scale up on hover as an example */
+        transform: scale(1.05);
+        /* Scale up on hover as an example */
     }
-    .table-active {
-background-color: #f5f5f5; /* Ganti dengan warna yang diinginkan */
-}
 
+    .table-active {
+        background-color: #f5f5f5;
+        /* Ganti dengan warna yang diinginkan */
+
+    }
+
+    .modal-dialog {
+        max-width: 90%;
+        width: auto;
+    }
+
+    .modal-content {
+        width: 100%;
+    }
+
+    .modal-body {
+        padding: 0;
+    }
+
+    #previewFrame {
+        width: 100%;
+        height: 500px;
+        border: none;
+    }
 </style>
+
     <div class="col-md-12 col-sm-12">
         <h1>
             <h1 style="color: black;">
@@ -340,67 +365,131 @@ background-color: #f5f5f5; /* Ganti dengan warna yang diinginkan */
     </div>
     </div>
     </div>
+    <div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">Preview</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="previewFrame" src="" style="width: 100%; height: 80vh; border: none;"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-        <script type="text/javascript">
-            $(document).ready(function() {
-                var table = $('.user_datatable').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    ajax: {
-                        url: "{{ route('KepalaSekolahBeranda.index2') }}",
-                        method: "GET"
-                    },
-                    columns: [{
-                            data: 'id',
-                            name: 'id',
-                            render: function(data, type, row, meta) {
-                                return meta.row + meta.settings._iDisplayStart + 1;
-                            }
-                        },
-                        {
-                            data: 'dokumen',
-                            name: 'dokumen'
-                        },
-                        {
-    data: 'created_at',
-    name: 'created_at',
-    render: function(data, type, row) {
-        // Ubah string ISO 8601 menjadi objek Date
-        var date = new Date(data);
+<script type="text/javascript">
+    $(document).ready(function() {
+        var table = $('.user_datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('KepalaSekolahBeranda.index2') }}",
+                method: "GET"
+            },
+            columns: [{
+                    data: 'id',
+                    name: 'id',
+                    render: function(data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }
+                },
+                {
+                    data: 'dokumen',
+                    name: 'dokumen',
+                },
+                {
+                    data: 'created_at',
+                    name: 'created_at',
+                    render: function(data, type, row) {
+                        var date = new Date(data);
+                        var day = date.getDate();
+                        var month = date.getMonth() + 1;
+                        var year = date.getFullYear();
+                        var hours = date.getHours();
+                        var minutes = date.getMinutes();
+                        var seconds = date.getSeconds();
+                        var formattedDate = day + '-' + month + '-' + year + ' ' + hours + ':' +
+                            minutes + ':' + seconds;
+                        return formattedDate;
+                    }
+                },
+                {
+                    data: 'oleh',
+                    name: 'oleh',
+                },
+                {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'checkbox',
+                    name: 'checkbox',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
+        });
 
-        // Ambil komponen tanggal yang diinginkan
-        var day = date.getDate();
-        var month = date.getMonth() + 1; // Perhatikan bahwa bulan dimulai dari 0 (Januari) hingga 11 (Desember)
-        var year = date.getFullYear();
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var seconds = date.getSeconds();
 
-        // Format tanggal dan waktu sesuai keinginan Anda
-        var formattedDate = month + '-' + day + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
 
-        return formattedDate;
-    }
-},
-{
-                            data: 'oleh',
-                            name: 'oleh'
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                            orderable: false,
-                            searchable: false
-                        },
-                        {
-                            data: 'checkbox',
-                            name: 'checkbox',
-                            orderable: false,
-                            searchable: false
-                        }
-                    ]
+        $('body').on('click', '.btn-preview', function() {
+            var dokumen = $(this).data('dokumen');
+            var url = "{{ route('KepalaSekolahBeranda.preview', ':dokumen') }}";
+            url = url.replace(':dokumen', dokumen);
+            var iframe = $('#previewFrame');
+            iframe.attr('src', url);
+            $('#previewModal').modal('show');
+
+            iframe.on('load', function() {
+                iframe.css({
+                    width: '100%',
+                    height: '500px'
+                });
+                var body = iframe.contents().find('body');
+                var image = body.find('img');
+
+                // Set the CSS for body to center the image
+                body.css({
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    height: '100%',
+                    margin: 0
+                });
+
+                // Set the CSS for the image
+                image.css({
+                    maxWidth: '100%',
+                    maxHeight: '100%',
+                    width: 'auto',
+                    height: 'auto'
+                });
+
+                image.on('load', function() {
+                    var width = this.naturalWidth;
+                    var height = this.naturalHeight;
+                    var maxHeight = $(window).height() * 0.8;
+                    height = height > maxHeight ? maxHeight : height;
+                    iframe.css({
+                        height: height + 'px'
+                    });
+                    $('.modal-dialog').css({
+                        width: 'auto'
+                    });
                 });
             });
+        });
+
+    });
             $(document).on('click', '#bulk_delete', function() {
                 var id = [];
                 Swal.fire({

@@ -1,7 +1,7 @@
 <div class="row" id="hal_edit" style="display: none;">
     <div class="col-md-12 col-sm-12">
         <div class="dashboard_graph">
-            <h3><i class="fa fa-bar-chart" style="margin-right: 10px; margin-top: 15px;"></i>Edit Data
+            <h3><i class="fa fa-bar-chart" style="margin-right: 10px; margin-top: 15px;"></i>Edit Dataaaaaa
                 <small>Kelas</small>
             </h3>
             <hr>
@@ -15,7 +15,8 @@
                             <option value="">Pilih Tahun</option>
                             @foreach ($taon as $tahun)
                                 <option value="{{ $tahun->tahunakademik_id }}">
-                                    {{ $tahun->kurikulum->Nama_Kurikulum }} - {{ $tahun->tahunakademik }}- {{ $tahun->semester }}
+                                    {{ $tahun->kurikulum->Nama_Kurikulum }} - {{ $tahun->tahunakademik }}-
+                                    {{ $tahun->semester }}
                                 </option>
                             @endforeach
                         </select>
@@ -26,7 +27,8 @@
                         <select class="form-control" id="kelas_id" name="kelas_id" required>
                             <option value="">Pilih Kelas</option>
                             @foreach ($kelass as $kelas)
-                                <option value="{{ $kelas->kelas_id }}">{{ $kelas->namakelas }} Kapasitas : {{ $kelas->kapasitas }}
+                                <option value="{{ $kelas->kelas_id }}">{{ $kelas->namakelas }} Kapasitas :
+                                    {{ $kelas->kapasitas }}
                                 </option>
                             @endforeach
                         </select>
@@ -35,7 +37,7 @@
                 <div class="form-group row">
                     <label for="guru_id" class="col-sm-2 col-form-label">Wali Kelas</label>
                     <div class="col-sm-4">
-                        <select class="form-control" id="guru_id" name="guru_id" required>
+                        <select class="form-control" id="guru_id" name="guru_id">
                             <option value="">Pilih Guru</option>
                             @foreach ($gurus as $guru)
                                 <option value="{{ $guru->guru_id }}"> {{ $guru->Nama }}</option>
@@ -61,130 +63,162 @@
 
 
                 <input type="hidden" id="kapasitas_kelas" data-kapasitas="{{ $kelas->kapasitas }}" />
-
-<table id="siswaTable" class="table table-striped table-bordered">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Nama Siswa</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($siswas as $index => $siswa)
-            @if (empty($siswa->kelas_id))
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $siswa->NamaLengkap }}</td>
-                    <td>
-                        @if ($siswa->kelas && $siswa->kelas->datakelas)
-                            @if ($siswa->kelas->kapasitas != $siswa->kelas->datakelas->count())
-                                <input type="checkbox" class="select-checkbox" name="selected_siswa[]"
-                                    value="{{ $siswa->siswa_id }}"
-                                    data-kelasid="{{ $siswa->kelas_id }}">
-                            @else
-                                <input type="checkbox" class="select-checkbox" name="selected_siswa[]"
-                                    value="{{ $siswa->siswa_id }}"
-                                    data-kelasid="{{ $siswa->kelas_id }}" disabled>
+                <table id="siswaTable" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Siswa</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($siswas as $index => $siswa)
+                            @if (empty($siswa->kelas_id))
+                                <tr>
+                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $siswa->NamaLengkap }}</td>
+                                    <td>
+                                        @if ($siswa->kelas && $siswa->kelas->datakelas)
+                                            @if ($siswa->kelas->kapasitas != $siswa->kelas->datakelas->count())
+                                                <input type="checkbox" class="select-checkbox" name="selected_siswa[]"
+                                                    value="{{ $siswa->siswa_id }}"
+                                                    data-kelasid="{{ $siswa->kelas_id }}">
+                                            @else
+                                                <input type="checkbox" class="select-checkbox" name="selected_siswa[]"
+                                                    value="{{ $siswa->siswa_id }}"
+                                                    data-kelasid="{{ $siswa->kelas_id }}" disabled>
+                                            @endif
+                                        @else
+                                            <!-- Handle jika relasi atau propertinya null -->
+                                            <input type="checkbox" class="select-checkbox" name="selected_siswa[]"
+                                                value="{{ $siswa->siswa_id }}" data-kelasid="{{ $siswa->kelas_id }}"
+                                                disabled>
+                                        @endif
+                                    </td>
+                                </tr>
                             @endif
-                        @else
-                            <!-- Handle jika relasi atau propertinya null -->
-                            <input type="checkbox" class="select-checkbox" name="selected_siswa[]"
-                                value="{{ $siswa->siswa_id }}" data-kelasid="{{ $siswa->kelas_id }}"
-                                disabled>
-                        @endif
-                    </td>
-                </tr>
-            @endif
-        @endforeach
-    </tbody>
-    </table>
-    <input type="hidden" name="selected_siswa" id="selected_siswa" value="">
-    <script>
-        $(document).ready(function() {
-            var table = $('#siswaTable').DataTable({
-                "pageLength": 10,
-                "lengthMenu": [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "Semua"]
-                ]
-            });
-    
-            $('.dataTables_length select option[value="-1"]').text('Semua');
-            $('.dataTables_length select').change(function() {
-                var selectedValue = $(this).val();
-                if (selectedValue == 'Semua') {
-                    table.page.len(-1).draw();
-                } else {
-                    table.page.len(selectedValue).draw();
-                }
-            });
-    
-            $('#siswaTable tbody').on('change', '.select-checkbox', function() {
-                if (!this.checked) {
-                    $('#select-all').prop('checked', false);
-                } else {
-                    var allChecked = $('.select-checkbox:checked').length === $('.select-checkbox').length;
-                    $('#select-all').prop('checked', allChecked);
-                }
-                updateSelectedSiswa(this);
-            });
-    
-            // Pemanggilan updateSelectedSiswa saat halaman pertama kali dimuat
-            updateSelectedSiswa();
-    
-            // Pemanggilan displaySelectedNames saat halaman pertama kali dimuat
-            displaySelectedNames();
-        });
-    
-        function updateSelectedSiswa(checkbox) {
-            var selectedSiswa = [];
-            $('.select-checkbox:checked').each(function() {
-                selectedSiswa.push($(this).val());
-            });
-            $('#selected_siswa').val(selectedSiswa.join(','));
-    
-            // Pemanggilan displaySelectedNames saat checkbox diubah
-            displaySelectedNames();
-    
-            // Pemanggilan checkKapasitasKelas setiap kali checkbox diubah
-            checkKapasitasKelas();
-        }
-    
-        function displaySelectedNames() {
-            var selectedNames = [];
-            var totalSelected = 0;
-            $('.select-checkbox:checked').each(function() {
-                var rowIndex = $(this).closest('tr').index();
-                var name = $('#siswaTable').DataTable().cell(rowIndex, 1).data();
-                selectedNames.push(name);
-                totalSelected++;
-            });
-            $('#selectedNames').html('<strong>Nama yang dicentang:</strong><br>' + selectedNames.join('<br>'));
-            $('#totalSelected').text('Total Siswa yang Dicentang: ' + totalSelected);
-        }
-    
-        function submitForm() {
-            // Update kembali selected siswa sebelum submit form
-            updateSelectedSiswa();
-        }
-    
-        function checkKapasitasKelas() {
-            var checkboxes = $('.select-checkbox');
-            var maxCapacity = parseInt($('#kapasitas_kelas').data('kelas.kapasitas'));
-            var selectedCount = $('.select-checkbox:checked').length;
-    
-            checkboxes.prop('disabled', false);
-    
-            checkboxes.each(function() {
-                if (selectedCount >= maxCapacity && !$(this).is(':checked')) {
-                    $(this).prop('disabled', true);
-                }
-            });
-        }
-    </script>
-    
+                        @endforeach
+                    </tbody>
+                </table>
+                <input type="hidden" name="selected_siswa" id="selected_siswa" value="">
+                <script>
+                    $(document).ready(function() {
+                        checkKapasitasKelas();
+                        var table = $('#siswaTable').DataTable({
+                            "pageLength": 10,
+                            "lengthMenu": [
+                                [10, 25, 50, 100, -1],
+                                [10, 25, 50, 100, "Semua"]
+                            ]
+                        });
 
+                        $('.dataTables_length select option[value="-1"]').text('Semua');
+                        $('.dataTables_length select').change(function() {
+                            var selectedValue = $(this).val();
+                            if (selectedValue == 'Semua') {
+                                table.page.len(-1).draw();
+                            } else {
+                                table.page.len(selectedValue).draw();
+                            }
+                        });
+
+                        $('#siswaTable tbody').on('change', '.select-checkbox', function() {
+                            if (!this.checked) {
+                                $('#select-all').prop('checked', false);
+                            } else {
+                                var allChecked = $('.select-checkbox:checked').length === $('.select-checkbox').length;
+                                $('#select-all').prop('checked', allChecked);
+                            }
+                            updateSelectedSiswa(this);
+                        });
+
+                        // Pemanggilan updateSelectedSiswa saat halaman pertama kali dimuat
+                        updateSelectedSiswa();
+
+                        // Pemanggilan displaySelectedNames saat halaman pertama kali dimuat
+                        displaySelectedNames();
+                    });
+
+                    function updateSelectedSiswa(checkbox) {
+                        var selectedSiswa = [];
+                        $('.select-checkbox:checked').each(function() {
+                            selectedSiswa.push($(this).val());
+                        });
+                        $('#selected_siswa').val(selectedSiswa.join(','));
+
+                        // Pemanggilan displaySelectedNames saat checkbox diubah
+                        displaySelectedNames();
+
+                        // Pemanggilan checkKapasitasKelas setiap kali checkbox diubah
+                        checkKapasitasKelas();
+                    }
+
+                    function displaySelectedNames() {
+                        var selectedNames = [];
+                        var totalSelected = 0;
+                        $('.select-checkbox:checked').each(function() {
+                            var rowIndex = $(this).closest('tr').index();
+                            var name = $('#siswaTable').DataTable().cell(rowIndex, 1).data();
+                            selectedNames.push(name);
+                            totalSelected++;
+                        });
+                        $('#selectedNames').html('<strong>Nama yang dicentang:</strong><br>' + selectedNames.join('<br>'));
+                        $('#totalSelected').text('Total Siswa yang Dicentang: ' + totalSelected);
+                    }
+
+                    function submitForm() {
+                        // Update kembali selected siswa sebelum submit form
+                        updateSelectedSiswa();
+                    }
+
+                    function checkKapasitasKelas() {
+    var checkboxes = $('.select-checkbox');
+    var maxCapacity = parseInt($('#kapasitas_kelas').data('kapasitas'));
+    var existingStudentsCount = $('.select-checkbox:checked').length; // Jumlah siswa yang sudah dipilih
+
+    // Jika jumlah siswa yang sudah ada dalam kelas sama dengan kapasitas kelas, nonaktifkan semua checkbox
+    if (existingStudentsCount >= maxCapacity) {
+        checkboxes.prop('disabled', true);
+    } else {
+        checkboxes.prop('disabled', false);
+    }
+}
+
+                    // function checkKapasitasKelas() {
+                    //     var checkboxes = $('.select-checkbox');
+                    //     var maxCapacity = parseInt($('#kapasitas_kelas').data('kapasitas'));
+                    //     var existingStudentsCount = $('.select-checkbox:checked').length; // Jumlah siswa yang sudah dipilih
+                    //     var selectedCount = 0; // Jumlah siswa yang akan ditambahkan
+
+                    //     checkboxes.each(function() {
+                    //         if ($(this).is(':checked')) {
+                    //             selectedCount++;
+                    //         }
+                    //     });
+
+                    //     checkboxes.prop('disabled', false);
+
+                    //     checkboxes.each(function() {
+                    //         if (existingStudentsCount + selectedCount >= maxCapacity && !$(this).is(':checked')) {
+                    //             $(this).prop('disabled', true);
+                    //         }
+                    //     });
+                    // }
+                </script>
+
+                {{-- // function checkKapasitasKelas() {
+        //     var checkboxes = $('.select-checkbox');
+        //     var maxCapacity = parseInt($('#kapasitas_kelas').data('kelas.kapasitas'));
+        //     var selectedCount = $('.select-checkbox:checked').length;
+    
+        //     checkboxes.prop('disabled', false);
+    
+        //     checkboxes.each(function() {
+        //         if (selectedCount >= maxCapacity && !$(this).is(':checked')) {
+        //             $(this).prop('disabled', true);
+        //         }
+        //     });
+        // } --}}
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <div id="kapasitas_kelas" data-kapasitas="{{ $kapasitas_kelas }}"></div>
@@ -200,11 +234,11 @@
                         <div id="selectedNames" style="margin-top: 10px;"></div>
                         <div id="totalSelected" style="margin-top: 10px;"></div>
                         <button type="submit" class="btn btn-primary">Simpan</button>
-                       
-                       
+
+
                         <button type="button" onclick="window.location.href = '/datakelasadmin'"
-                        class="btn btn-danger">Kembali</button>
-                        
+                            class="btn btn-danger">Kembali</button>
+
                     </div>
                 </div>
             </form>
@@ -324,4 +358,4 @@
     </div>
 </div>
 
-<br>    
+<br>

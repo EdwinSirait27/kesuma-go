@@ -234,8 +234,9 @@
                     <label for="username" class="col-sm-2 col-form-label">Username</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="username" name="username"
-                            placeholder="Username"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '');"maxlength="15" required>
+       placeholder="Username"
+       oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" minlength="8" maxlength="12" required>
+       <small style="color: red;">*Minimal 8 Karakter sampai  12 Karakter bebas</small>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -243,7 +244,10 @@
                     <div class="col-sm-4">
                         <div class="input-group">
                             <input type="password" class="form-control" name="password" id="password"
-                                placeholder="Password" maxlength="12" disabled>
+       placeholder="Password" minlength="12" maxlength="12" oninput="this.value = this.value.replace(/\s/g, '');" disabled>
+{{-- 
+                            <input type="password" class="form-control" name="password" id="password"
+                                placeholder="Password" maxlength="12" disabled> --}}
                             <div class="input-group-append">
                                 <button type="button" id="showPasswordBtn" class="btn btn-secondary">
                                     <i class="fa fa-eye"></i>
@@ -255,9 +259,10 @@
                             <div class="form-check">
                                 <input type="checkbox" class="form-check-input" id="updatePasswordCheckbox"
                                     name="updatePasswordCheckbox">
-                                <label class="form-check-label" for="updatePasswordCheckbox">Update Password</label>
+                                <label class="form-check-label" for="updatePasswordCheckbox">Buat Password</label>
                             </div>
-                            <small style="color: red;">*Maksimal 12 Karakter bebas</small>
+                            <small style="color: red;">*Minimal 8 Karakter sampai  12 Karakter bebas</small>
+       
                         </div>
                     </div>
 

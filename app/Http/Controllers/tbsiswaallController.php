@@ -81,6 +81,17 @@ class tbsiswaallController extends Controller
             return response()->json(['error' => 'No IDs provided.'], 400);
         }
     }
+    function removeall1(Request $request)
+    {
+
+        $prestasi_id_array = $request->input('prestasi_id');
+        $data = prestasi::whereIn('prestasi_id', $prestasi_id_array);
+    
+
+        if ($data->delete()) {
+            return response()->json(['message' => 'Data Deleted']);
+        }
+    }
     // public function removeall(Request $request)
     // {
     //     $ids = $request->ids; // Ambil ids yang dikirimkan dari AJAX
@@ -129,7 +140,10 @@ class tbsiswaallController extends Controller
                     $button1 = '<a href="' . route('siswaall.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
                     $encryptedSiswaId = substr(Crypt::encryptString($data->siswa_id), 0, 12);
                     $redirectButton = '<a href="' . route('siswaex.index', ['kesuma-goencrypted' => $encryptedSiswaId]) . '" class="btn btn-success">Detail</a>';
-                    $redirectButton1 = '<a href="' . route('prestasi.index', $data->siswa_id) . '" class="btn btn-dark">Prestasi</a>';
+                    $encodedId = base64_encode($data->siswa_id);
+                    $redirectButton1 = '<a href="' . route('prestasi.index', ['encodedId' => $encodedId]) . '"  class="btn btn-dark">Prestasi</a>';
+
+                    // $redirectButton1 = '<a href="' . route('prestasi.index', $data->siswa_id) . '" class="btn btn-dark">Prestasi</a>';
                     return $button1 . ' ' . $redirectButton . ' ' . $redirectButton1;
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
@@ -636,8 +650,17 @@ class tbsiswaallController extends Controller
         }
         return response()->json(null, 404);
     }
-    public function store(Request $request ,$siswa_id)
+    public function store(Request $request, $siswa_id )
     {
+        
+        // $encodedId = $request->encodedId;
+    
+        // // Check if encodedId is present and valid
+        // if (!$encodedId || !($siswa_id = base64_decode($encodedId, true))) {
+        //     // Handle error if decoding fails
+        //     return redirect()->back()->with('error', 'Invalid data');
+        // }
+    
        // Validasi input
         $validatedData = $request->validate([
             'prestasi' => 'required',
@@ -659,16 +682,89 @@ class tbsiswaallController extends Controller
         // Jika Anda ingin memberikan respons atau kembali ke halaman sebelumnya
         return redirect()->back()->with('success', 'Prestasi berhasil disimpan!');
     }
-    public function indexx($siswa_id)
+    public function indexx(Request $request)
     {
-        // Ambil daftar prestasi siswa berdasarkan $siswa_id
+        $encodedId = $request->encodedId;
+    
+        // Check if encodedId is present and valid
+        if (!$encodedId || !($siswa_id = base64_decode($encodedId, true))) {
+            // Handle error if decoding fails
+            return redirect()->back()->with('error', 'Invalid data');
+        }
+    
         $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
-
-        // Kembalikan view 'index' sambil mengirimkan data prestasi ke dalam view
+    
+        if ($request->ajax()) {
+            $data = Prestasi::select(
+                    'prestasi_id',
+                    'siswa_id',
+                    'prestasi',
+                    'keterangan'
+                )->where('siswa_id', $siswa_id)->get();
+    
+            return Datatables::of($data)->addIndexColumn()
+                ->addColumn('checkbox', function($row) {
+                    return '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="'.$row->prestasi_id.'" />';
+                })
+                ->rawColumns(['checkbox'])
+                ->make(true);
+        }
+    
         return view('prestasi.index', compact('prestasis', 'siswa_id'));
     }
-    public function create($siswa_id)
+    
+    // public function indexx(Request $request)
+    // { 
+    //     $encodedId = $request->encodedId;
+    //     $siswa_id = base64_decode($encodedId);
+    //     $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
+
+    //     if (!$siswa_id) {
+    //         // Handle error if decoding fails
+    //         return redirect()->back()->with('error', 'Invalid data');
+    //     }
+    //     if ($request->ajax()) {
+    //         $data = Prestasi::select(
+            
+    //             'prestasi_id',
+    //             'siswa_id',
+    //             'prestasi',
+    //             'keterangan'
+                
+    //         )->get();
+
+    //         return Datatables::of($data)->addIndexColumn()
+                
+    //             ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$prestasi_id}}" />')
+    //             ->rawColumns(['checkbox'])
+    //             ->make(true);
+    //     }
+    //     return view('prestasi.index', compact('prestasis','siswa_id'));
+    // }
+        // Ambil daftar prestasi siswa berdasarkan $siswa_id
+    //     $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
+
+    //     // Kembalikan view 'index' sambil mengirimkan data prestasi ke dalam view
+    //     return view('prestasi.index', compact('prestasis','siswa_id'));
+    // }
+    // public function indexx($siswa_id)
+    // {
+    //     // Ambil daftar prestasi siswa berdasarkan $siswa_id
+    //     $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
+
+    //     // Kembalikan view 'index' sambil mengirimkan data prestasi ke dalam view
+    //     return view('prestasi.index', compact('prestasis', 'siswa_id'));
+    // }
+
+    public function create(Request $request)
     {
+        $encodedId = $request->encodedId;
+        $siswa_id = base64_decode($encodedId);
+
+        if (!$siswa_id) {
+            // Handle error if decoding fails
+            return redirect()->back()->with('error', 'Invalid data');
+        }
         $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
         return view('prestasi.create', compact('siswa_id', 'prestasis'));
     }

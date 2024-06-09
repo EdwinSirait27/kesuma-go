@@ -153,6 +153,9 @@
         </div>
         </div>
         </div>
+        {{-- <iframe id="preview-frame" width="400" height="300" frameborder="0"></iframe> --}}
+        {{-- <iframe id="preview-frame" width="400" height="300" frameborder="0"></iframe> --}}
+
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             iForm('hal_index');
@@ -420,6 +423,9 @@
                             }
                         },
                         
+                        
+
+
                         {
     data: 'foto',
     name: 'foto',
@@ -498,7 +504,9 @@
                     ]
                 });
             });
-            
+          
+
+
             // $(document).on('click', '#bulk_delete', function() {
             //     var id = [];
             //     Swal.fire({
