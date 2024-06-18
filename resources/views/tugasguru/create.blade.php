@@ -1,11 +1,17 @@
 <div class="row" id="hal_edit" style="display: none;">
     <div class="col-md-12 col-sm-12">
         <div class="dashboard_graph">
-            <h3><i class="fa fa-calculator" style="margin-right: 10px; margin-top: 15px;"></i>Edit Tugas
-                <small>Guru</small></h3>
+            <h2><i class="fa fa-futbol-o" style="margin-right: 10px;"></i>Edit Pemberian Tugas</h2>
             <hr>
             <form method="POST" action="/tugasguru-update" enctype="multipart/form-data" onsubmit="return simpan()">
                 @csrf
+                <div class="alert alert-dark">
+                    <ul>
+                        Keterangan
+                       <li> Jika guru menginput tugas kepada siswa, jika ingin diganti waktu dan tanggal, silahkan upload ulang dokumen file tugasnya</li>
+                        
+                    </ul>
+                </div>
                 <input type="hidden" name="txt_id" id="txt_id" />
                 <div class="form-group row">
                     <label for="datakelas_datamengajar_id" class="col-sm-2 col-form-label">Mata Pelajaran</label>
@@ -71,7 +77,7 @@
                 <div class="form-group row">
                     <div class="col-sm-10">
                         <button type="submit" class="btn btn-primary">Simpan</button>
-                        <button type="button" onclick="window.location.href = '/tahunakademik'"
+                        <button type="button" onclick="window.location.href = '/tugasguru'"
                         class="btn btn-danger">Kembali</button>
 
                     </div>

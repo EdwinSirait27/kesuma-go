@@ -42,15 +42,16 @@
         }
     </style>
     @if (auth()->user()->hakakses == 'Admin' || auth()->user()->hakakses == 'KepalaSekolah')
-        <div class="row" id="hal_index">
-            <div class="col-md-12 col-sm-12">
-                <h3><i class="fa fa-male" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Siswa</small></h3>
-                <hr>
-            </div>
-        </div>
+    <div class="row" id="hal_index">
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-male"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> siswa</small></h3>
+           
+    </div>
+    </div>
+    <hr>
         <div class="x_panel">
             <div class="x_title">
-                <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Data Diri<small>Siswa</small></h2>
+                <h2><i class="fa fa-male" style="margin-right: 10px; "></i>List Data<small>Siswa</small></h2>
                 <div class="clearfix"></div>
             </div>
             <button type="button" onclick="tambah()" class="btn btn-primary">Tambah

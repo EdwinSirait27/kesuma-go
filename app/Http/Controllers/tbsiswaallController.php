@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\tbsiswa;
 use App\Models\prestasi;
+use App\Models\arsip;
 use App\Models\listakunsiswa;
 use App\Models\siswamengajar;
 
@@ -20,32 +21,35 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\log;
+use League\Csv\Reader;
+use League\Csv\Statement;
 
 class tbsiswaallController extends Controller
 {
 
-//     public function removeall(Request $request)
-// {
-//     $ids = $request->ids;
-//     if (!empty($ids) && is_array($ids)) {
-//         try {
-//             $modelsWithSiswaId = ['tbsiswa', 'listakunsiswa', 'prestasi', 'SiswaOrganisasiGuru', 'organisasiguru', 'osis', 'siswamengajar', 'SiswaEkstraGuru', 'pengumpulantugas']; // Gantilah dengan nama model yang sesuai
-            
-//             foreach ($modelsWithSiswaId as $model) {
-//                 $model::whereIn('siswa_id', $ids)->delete();
-//             }
+    //     public function removeall(Request $request)
+    // {
+    //     $ids = $request->ids;
+    //     if (!empty($ids) && is_array($ids)) {
+    //         try {
+    //             $modelsWithSiswaId = ['tbsiswa', 'listakunsiswa', 'prestasi', 'SiswaOrganisasiGuru', 'organisasiguru', 'osis', 'siswamengajar', 'SiswaEkstraGuru', 'pengumpulantugas']; // Gantilah dengan nama model yang sesuai
 
-//             return response()->json(['success' => true]);
-//         } catch (\Exception $e) {
-//             $errorMessage = $e->getMessage();
-//             return response()->json(['error' => $errorMessage], 500);
-//         }
-//     } else {
-//         return response()->json(['error' => 'No IDs provided.'], 400);
-//     }
-// }
+    //             foreach ($modelsWithSiswaId as $model) {
+    //                 $model::whereIn('siswa_id', $ids)->delete();
+    //             }
 
-    
+    //             return response()->json(['success' => true]);
+    //         } catch (\Exception $e) {
+    //             $errorMessage = $e->getMessage();
+    //             return response()->json(['error' => $errorMessage], 500);
+    //         }
+    //     } else {
+    //         return response()->json(['error' => 'No IDs provided.'], 400);
+    //     }
+    // }
+
+
     // inii
     public function updatesiswa(Request $request)
     {
@@ -61,7 +65,7 @@ class tbsiswaallController extends Controller
         // Lakukan pengubahan hak akses menjadi "Siswa" untuk setiap siswa yang dipilih
         tbsiswa::whereIn('siswa_id', $siswaIds)->each(function ($siswa) {
             $siswa->update(['status' => 'Lulus']);
-             // Perbarui hak akses di relasi listakunsiswa
+            // Perbarui hak akses di relasi listakunsiswa
         });
 
         // Beri respons sukses
@@ -69,7 +73,7 @@ class tbsiswaallController extends Controller
     }
     public function removeall(Request $request)
     {
-        $ids = $request->ids; 
+        $ids = $request->ids;
         if (!empty($ids) && is_array($ids)) {
             try {
                 tbsiswa::whereIn('siswa_id', $ids)->delete();
@@ -86,10 +90,24 @@ class tbsiswaallController extends Controller
 
         $prestasi_id_array = $request->input('prestasi_id');
         $data = prestasi::whereIn('prestasi_id', $prestasi_id_array);
-    
+
 
         if ($data->delete()) {
             return response()->json(['message' => 'Data Deleted']);
+        }
+    }
+    public function removeall2(Request $request)
+    {
+        $ids = $request->ids;
+        if (!empty($ids) && is_array($ids)) {
+            try {
+                arsip::whereIn('siswa_id', $ids)->delete();
+                return response()->json(['success' => true]);
+            } catch (\Exception $e) {
+                return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
+            }
+        } else {
+            return response()->json(['error' => 'No IDs provided.'], 400);
         }
     }
     // public function removeall(Request $request)
@@ -113,31 +131,31 @@ class tbsiswaallController extends Controller
     //         return response()->json(['error' => 'No IDs provided.'], 400);
     //     }
     // }
-    
+
     public function index1(Request $request)
     {
         if ($request->ajax()) {
             $data = tbsiswa::with('listakunsiswa', 'kelas')
-            ->whereHas('listakunsiswa', function ($query) {
-                $query->where('hakakses', 'Siswa');
-                $query->where('status', 'Aktif','Tidak Aktif');
-            })->select(
-                'siswa_id',
-                'foto',
-                'NamaLengkap',
-                'NomorInduk',
-                'JenisKelamin',
-                'NISN',
-                'Agama',
-                'NomorTelephone',
-                'Email',
-                'status',
-                'kelas_id'
-            )   ->get();
+                ->whereHas('listakunsiswa', function ($query) {
+                    $query->where('hakakses', 'Siswa');
+                    $query->where('status', 'Aktif', 'Tidak Aktif');
+                })->select(
+                    'siswa_id',
+                    'foto',
+                    'NamaLengkap',
+                    'NomorInduk',
+                    'JenisKelamin',
+                    'NISN',
+                    'Agama',
+                    'NomorTelephone',
+                    'Email',
+                    'status',
+                    'kelas_id'
+                )->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
-                    $encodedId = base64_encode($data->siswa_id); 
-                    $button1 = '<a href="' . route('siswaall.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
+                    $encodedId = base64_encode($data->siswa_id);
+                    $button1 = '<a href="' . route('siswaall.show', ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
                     $encryptedSiswaId = substr(Crypt::encryptString($data->siswa_id), 0, 12);
                     $redirectButton = '<a href="' . route('siswaex.index', ['kesuma-goencrypted' => $encryptedSiswaId]) . '" class="btn btn-success">Detail</a>';
                     $encodedId = base64_encode($data->siswa_id);
@@ -147,36 +165,112 @@ class tbsiswaallController extends Controller
                     return $button1 . ' ' . $redirectButton . ' ' . $redirectButton1;
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
+            
                 ->rawColumns(['checkbox', 'action'])
                 ->make(true);
         }
         return view('siswaall.index');
     }
+    public function arsip(Request $request)
+    {
+        $tamat = Arsip::all();
+        if ($request->ajax()) {
+            $data = arsip::when($request->TamatBelajarTahun, function ($query) use ($request) {
+                return $query->where('TamatBelajarTahun', $request->TamatBelajarTahun);
+            })->get();
+
+            return Datatables::of($data)
+            ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
+            ->rawColumns(['checkbox'])
+                ->make(true); 
+        }
+        return view('arsip.index', compact('tamat'));
+    }
+    public function showUploadForm()
+    {
+        return view('uploaddata.index');
+    }
+
+
+public function uploadCSV(Request $request)
+{
+    $request->validate([
+        'csv_file' => 'required|mimes:csv|max:2048'
+    ]);
+    
+    $file = $request->file('csv_file');
+
+    try {
+        // Create CSV reader instance
+        $csv = Reader::createFromPath($file->getPathname(), 'r');
+        $csv->setHeaderOffset(0);
+        
+        // Get CSV header
+        $header = $csv->getHeader();
+        
+        if ($header === null) {
+            throw new \Exception("CSV file does not have a valid header.");
+        }
+
+        // Log CSV header
+        Log::info('CSV Header: ' . implode(', ', $header));
+
+        // Begin database transaction
+        DB::beginTransaction();
+
+        // Process each row in the CSV
+        foreach ($csv as $rowIndex => $record) {
+            // Validate and clean data
+            $rowData = [];
+            foreach ($header as $column) {
+                $rowData[$column] = isset($record[$column]) ? $record[$column] : '';
+            }
+
+            // Insert data into 'arsip' model
+            arsip::create($rowData);
+        }
+
+        // Commit transaction if everything is successful
+        DB::commit();
+
+    } catch (\Exception $e) {
+        // Rollback transaction on any exception
+        DB::rollBack();
+        
+        return redirect()->back()->withErrors(['msg' => $e->getMessage()]);
+    }
+
+    return redirect()->back()->with('success', 'CSV file uploaded and data saved successfully.');
+}
+
+
+  
+
     public function indexlulus(Request $request)
     {
         if ($request->ajax()) {
             $data = tbsiswa::with('listakunsiswa', 'kelas')
-            ->whereHas('listakunsiswa', function ($query) {
-                $query->where('hakakses', 'Siswa');
-                $query->where('status', 'Lulus');
-            })->select(
-                'siswa_id',
-                'foto',
-                'NamaLengkap',
-                'NomorInduk',
-                'JenisKelamin',
-                'NISN',
-                'NomorTelephone',
-                'TahunMeninggalkanSekolah',
-                'TamatBelajarTahun',
-                'status',
-                
-            )   ->get();
+                ->whereHas('listakunsiswa', function ($query) {
+                    $query->where('hakakses', 'Siswa');
+                    $query->where('status', 'Lulus');
+                })->select(
+                    'siswa_id',
+                    'foto',
+                    'NamaLengkap',
+                    'NomorInduk',
+                    'JenisKelamin',
+                    'NISN',
+                    'NomorTelephone',
+                    'TahunMeninggalkanSekolah',
+                    'TamatBelajarTahun',
+                    'status',
+
+                )->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($data) {
-                    $encodedId = base64_encode($data->siswa_id); 
-                    $button1 = '<a href="' . route('goodbye.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
-                   
+                    $encodedId = base64_encode($data->siswa_id);
+                    $button1 = '<a href="' . route('goodbye.show', ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
+
                     return $button1;
                 })
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
@@ -242,13 +336,28 @@ class tbsiswaallController extends Controller
         }
         return view('siswaex.index');
     }
+    public function lulussiswa(Request $request)
+    {
+        if ($request->ajax()) {
+            $data = tbsiswa::where('status','Lulus')->get();
+            return Datatables::of($data)->addIndexColumn()
+                ->addColumn('action', function ($data) {
+                    $button = '<button onclick="editAndShow(\'hal_edit\', ' . $data->siswa_id . ');" class="btn btn-primary">Edit</button>';
+                    return $button;
+                })
+                ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$siswa_id}}" />')
+                ->rawColumns(['checkbox', 'action'])
+                ->make(true);
+        }
+        return view('lulus.index');
+    }
 
-    
+
     // function removeall(Request $request)
     // {
     //     $siswa_id_array = $request->input('siswa_id');
     //     $data = tbsiswa::whereIn('siswa_id', $siswa_id_array);
-    
+
 
     //     if ($data->delete()) {
     //         return response()->json(['message' => 'Data Deleted']);
@@ -314,7 +423,7 @@ class tbsiswaallController extends Controller
                     'required',
                     Rule::unique('users')->ignore($request->txt_id),
                 ],
-                'foto' => 'image|mimes:jpeg|max:512', 
+                'foto' => 'image|mimes:jpeg|max:512',
             ], [
                 'foto.image' => 'File harus berupa gambar.',
                 'foto.mimes' => 'Format file gambar harus jpeg.',
@@ -518,7 +627,7 @@ class tbsiswaallController extends Controller
                         $file = $request->file('foto');
                         $fileName = time() . '_' . $file->getClientOriginalName(); // Gunakan timestamp untuk membuat nama file unik
                         $file->storeAs('public/fotosiswa', $fileName);
-            $newSiswa->foto = $fileName; // Simpan nama file ke dalam database
+                        $newSiswa->foto = $fileName; // Simpan nama file ke dalam database
                     }
 
                     $newSiswa->save();
@@ -650,22 +759,23 @@ class tbsiswaallController extends Controller
         }
         return response()->json(null, 404);
     }
-    public function store(Request $request, $siswa_id )
+    public function store(Request $request, $siswa_id)
     {
-        
+
         // $encodedId = $request->encodedId;
-    
+
         // // Check if encodedId is present and valid
         // if (!$encodedId || !($siswa_id = base64_decode($encodedId, true))) {
         //     // Handle error if decoding fails
         //     return redirect()->back()->with('error', 'Invalid data');
         // }
-    
-       // Validasi input
+
+        // Validasi input
         $validatedData = $request->validate([
             'prestasi' => 'required',
             'keterangan' => 'required',
-            'foto' => 'image|mimes:jpeg|max:512', 
+        
+            'foto' => 'image|mimes:jpeg|max:512',
         ], [
             'foto.image' => 'File harus berupa gambar.',
             'foto.mimes' => 'Format file gambar harus jpeg.',
@@ -685,34 +795,34 @@ class tbsiswaallController extends Controller
     public function indexx(Request $request)
     {
         $encodedId = $request->encodedId;
-    
+
         // Check if encodedId is present and valid
         if (!$encodedId || !($siswa_id = base64_decode($encodedId, true))) {
             // Handle error if decoding fails
             return redirect()->back()->with('error', 'Invalid data');
         }
-    
+
         $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
-    
+
         if ($request->ajax()) {
             $data = Prestasi::select(
-                    'prestasi_id',
-                    'siswa_id',
-                    'prestasi',
-                    'keterangan'
-                )->where('siswa_id', $siswa_id)->get();
-    
+                'prestasi_id',
+                'siswa_id',
+                'prestasi',
+                'keterangan'
+            )->where('siswa_id', $siswa_id)->get();
+
             return Datatables::of($data)->addIndexColumn()
-                ->addColumn('checkbox', function($row) {
-                    return '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="'.$row->prestasi_id.'" />';
+                ->addColumn('checkbox', function ($row) {
+                    return '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="' . $row->prestasi_id . '" />';
                 })
                 ->rawColumns(['checkbox'])
                 ->make(true);
         }
-    
+
         return view('prestasi.index', compact('prestasis', 'siswa_id'));
     }
-    
+
     // public function indexx(Request $request)
     // { 
     //     $encodedId = $request->encodedId;
@@ -725,23 +835,23 @@ class tbsiswaallController extends Controller
     //     }
     //     if ($request->ajax()) {
     //         $data = Prestasi::select(
-            
+
     //             'prestasi_id',
     //             'siswa_id',
     //             'prestasi',
     //             'keterangan'
-                
+
     //         )->get();
 
     //         return Datatables::of($data)->addIndexColumn()
-                
+
     //             ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$prestasi_id}}" />')
     //             ->rawColumns(['checkbox'])
     //             ->make(true);
     //     }
     //     return view('prestasi.index', compact('prestasis','siswa_id'));
     // }
-        // Ambil daftar prestasi siswa berdasarkan $siswa_id
+    // Ambil daftar prestasi siswa berdasarkan $siswa_id
     //     $prestasis = Prestasi::where('siswa_id', $siswa_id)->get();
 
     //     // Kembalikan view 'index' sambil mengirimkan data prestasi ke dalam view
@@ -772,7 +882,7 @@ class tbsiswaallController extends Controller
     {
         $encodedId = $request->encodedId;
         $siswa_id = base64_decode($encodedId);
-       
+
         $siswa = tbsiswa::with('listakunsiswa', 'kelas')->findOrFail($siswa_id);
         return view('siswaall.show', compact('siswa'));
     }
@@ -780,7 +890,7 @@ class tbsiswaallController extends Controller
     {
         $encodedId = $request->encodedId;
         $siswa_id = base64_decode($encodedId);
-       
+
         $siswa = tbsiswa::with('listakunsiswa', 'kelas')->findOrFail($siswa_id);
         return view('editpassword.index', compact('siswa'));
     }
@@ -797,7 +907,7 @@ class tbsiswaallController extends Controller
         $siswa_id = base64_decode($encodedId);
         $request->validate([
             'NamaLengkap' => 'required|string|max:255',
-            'foto' => 'image|mimes:jpeg|max:512', 
+            'foto' => 'image|mimes:jpeg|max:512',
         ], [
             'foto.image' => 'File harus berupa gambar.',
             'foto.mimes' => 'Format file gambar harus jpeg.',
@@ -806,11 +916,11 @@ class tbsiswaallController extends Controller
         $siswa = tbsiswa::with('listakunsiswa')->findOrFail($siswa_id);
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
             $file = $request->file('foto');
-            $fileName = time() . '_' . $file->getClientOriginalName(); 
-            $file->storeAs('public/fotosiswa', $fileName); 
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/fotosiswa', $fileName);
             $siswa->foto = $fileName;
         }
-       
+
         $siswa->NamaLengkap = $request->input('NamaLengkap');
         $siswa->NomorInduk = $request->input('NomorInduk');
         $siswa->NamaPanggilan = $request->input('NamaPanggilan');
@@ -889,11 +999,10 @@ class tbsiswaallController extends Controller
         $siswa->cita = $request->input('cita');
         $siswa->status = $request->input('status');
         $siswa->save();
-      
-        
+
+
         // return redirect()->route('siswaall.show', $siswa_id)->with('success', 'Data siswa berhasil diperbarui.');
         return redirect()->route('siswaall.show', ['encodedId' => base64_encode($siswa_id)])->with('success', 'Data siswa berhasil diperbarui.');
-
     }
     public function lulus(Request $request)
     {
@@ -901,7 +1010,7 @@ class tbsiswaallController extends Controller
         $siswa_id = base64_decode($encodedId);
         $request->validate([
             'NamaLengkap' => 'required|string|max:255',
-            'foto' => 'image|mimes:jpeg|max:512', 
+            'foto' => 'image|mimes:jpeg|max:512',
         ], [
             'foto.image' => 'File harus berupa gambar.',
             'foto.mimes' => 'Format file gambar harus jpeg.',
@@ -910,11 +1019,11 @@ class tbsiswaallController extends Controller
         $siswa = tbsiswa::with('listakunsiswa')->findOrFail($siswa_id);
         if ($request->hasFile('foto') && $request->file('foto')->isValid()) {
             $file = $request->file('foto');
-            $fileName = time() . '_' . $file->getClientOriginalName(); 
-            $file->storeAs('public/fotosiswa', $fileName); 
+            $fileName = time() . '_' . $file->getClientOriginalName();
+            $file->storeAs('public/fotosiswa', $fileName);
             $siswa->foto = $fileName;
         }
-       
+
         $siswa->NamaLengkap = $request->input('NamaLengkap');
         $siswa->NomorInduk = $request->input('NomorInduk');
         $siswa->NamaPanggilan = $request->input('NamaPanggilan');
@@ -993,11 +1102,10 @@ class tbsiswaallController extends Controller
         $siswa->cita = $request->input('cita');
         $siswa->status = $request->input('status');
         $siswa->save();
-      
-        
+
+
         // return redirect()->route('siswaall.show', $siswa_id)->with('success', 'Data siswa berhasil diperbarui.');
         return redirect()->route('goodbye.show', ['encodedId' => base64_encode($siswa_id)])->with('success', 'Data siswa berhasil diperbarui.');
-
     }
     public function updateee(Request $request)
     {
@@ -1005,17 +1113,16 @@ class tbsiswaallController extends Controller
         $siswa_id = base64_decode($encodedId);
         $request->validate([
             'password' => 'required',
-          
+
         ]);
         $siswa = tbsiswa::with('listakunsiswa')->findOrFail($siswa_id);
-        
+
         $hashedPassword = Hash::make($request->input('password'));
 
         // Update password untuk setiap akun siswa terkait
         $siswa->listakunsiswa()->update(['password' => $hashedPassword]);
-$siswa->save();
+        $siswa->save();
         return redirect()->route('editpassword.index', ['encodedId' => base64_encode($siswa_id)])->with('success', 'Password berhasil diperbarui.');
-
     }
 }
 // foreach ($siswa->listakunsiswa as $akun) {
@@ -1023,3 +1130,8 @@ $siswa->save();
 //     $akun->password = $request->input('password'); // Update username with the new name
 //     $akun->save(); // Save the changes
 // }
+
+
+
+
+

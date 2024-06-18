@@ -34,7 +34,7 @@
                 </div>
                 </div>
                 <div class="form-group row">   
-                <label for="status" class="col-sm-2 col-form-label label-input">Status Aktif</label>
+                <label for="status" class="col-sm-2 col-form-label label-input">KKM</label>
                     <div class="col-sm-4">
                         <input type="text" class="form-control" name="KKM"  id="KKM" placeholder="KKM"
                         oninput="this.value = this.value.replace(/[^0-9]/g, '');" maxlength="3"

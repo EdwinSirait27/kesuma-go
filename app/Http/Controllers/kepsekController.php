@@ -136,7 +136,7 @@ class kepsekController extends Controller
             return redirect('kepsek');
         } else {
             $this->validate($request, [
-                'dokumen' => 'mimes:doc,docx,pdf,xls,xlsx,ppt,pptx',
+                'dokumen' => 'mimes:doc,docx,pdf,xls,xlsx,ppt,pptx,csv',
             ]);
 
             $dokumen = $request->file('dokumen');

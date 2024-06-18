@@ -1,9 +1,9 @@
 <div class="row" id="hal_edit" style="display: none;">
     <div class="col-md-12 col-sm-12">
         <div class="dashboard_graph">
-            <h1><i class="fa fa-futbol-o" style="margin-right: 10px;"></i>Edit Button Tanggal</h1>
+            <h2><i class="fa fa-futbol-o" style="margin-right: 10px;"></i>Edit Button Osis</h2>
             <hr>
-            <hr>
+            
             <form method="POST" action="/buttonosis-update3" onsubmit="return simpan()">
                 @csrf
                 <input type="hidden" name="txt_id" id="txt_id" />

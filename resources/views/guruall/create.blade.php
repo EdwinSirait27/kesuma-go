@@ -14,12 +14,24 @@
                 onsubmit="return simpan()">
 
                 @csrf
+                @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                 <input type="hidden" name="txt_id" id="txt_id" />
                 <div class="form-group row">
                     <label for="Nama" class="col-sm-2 col-form-label">Nama</label>
                     <div class="col-sm-4">
-                        <input type="text" class="form-control" id="Nama" name="Nama" placeholder="Nama"
-                            maxlength="50">
+                        {{-- <input type="text" class="form-control" id="Nama" name="Nama" placeholder="Nama"
+                            maxlength="50" required> --}}
+                            <input type="text" class="form-control" name="Nama" placeholder="Nama Lengkap"
+                                maxlength="50" oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');"
+                              required>
                     </div>
                     <label for="TempatLahir" class="col-sm-2 col-form-label">Tempat Lahir</label>
                     <div class="col-sm-4">
@@ -150,7 +162,7 @@
                     <label for="TMT" class="col-sm-2 col-form-label">TMT</label>
                     <div class="col-sm-4">
                         <input type="date" class="form-control" id="TMT" name="TMT"
-                            placeholder="Tanggal Mulai Tugas">
+                            placeholder="Tanggal Mulai Tugas" required>
 
                     </div>
 
@@ -235,8 +247,8 @@
                     <div class="col-sm-4">
                         <input type="text" class="form-control" id="username" name="username"
        placeholder="Username"
-       oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" minlength="8" maxlength="12" required>
-       <small style="color: red;">*Minimal 8 Karakter sampai  12 Karakter bebas</small>
+       oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '');" minlength="7" maxlength="12" required>
+       <small style="color: red;">*Minimal 7 Karakter, Maksimal 12 Karakter bebas</small>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -261,7 +273,7 @@
                                     name="updatePasswordCheckbox">
                                 <label class="form-check-label" for="updatePasswordCheckbox">Buat Password</label>
                             </div>
-                            <small style="color: red;">*Minimal 8 Karakter sampai  12 Karakter bebas</small>
+                            <small style="color: red;">*Minimal 7 Karakter, Maksimal 12 Karakter bebas</small>
        
                         </div>
                     </div>

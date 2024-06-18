@@ -426,7 +426,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
     }
     public function indexadmin(Request $request)
     {
-        $activePemilihan = buttonnilaiguru::whereNotNull('start_date')
+        $activePemilihan = buttonnilaikurikulum::whereNotNull('start_date')
         ->whereNotNull('end_date')
         ->first();
     
@@ -483,7 +483,6 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
 
         return view('inputnilaispc.index', compact('tahunAkademiks','kurs','taon'));
     }
-    
     // public function indexadmin(Request $request)
     // {
     //     $tahunAkademiks = tahunakademik::all();
@@ -522,23 +521,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
     
     public function indexdatasiswa(Request $request)
     {
-        $activePemilihan = buttonnilaisiswa::whereNotNull('start_date')
-            ->whereNotNull('end_date')
-            ->first();
-        
-        if ($activePemilihan) {
-            $activePemilihan->start_date = Carbon::parse($activePemilihan->start_date);
-            $activePemilihan->end_date = Carbon::parse($activePemilihan->end_date);
-            $currentDateTime = Carbon::now();
-            
-            if (!($activePemilihan->start_date <= $currentDateTime && $activePemilihan->end_date >= $currentDateTime)) {
-                return redirect('/SiswaBeranda')->with('error', 'Belum Terbuka.');
-            }
-        } else {
-            if (auth()->user()->hakakses == 'Siswa') {
-                return redirect('/SiswaBeranda')->with('error', 'Belum Terbuka.');
-            }
-        }
+       
 
         $tahunAkademiks = tahunakademik::all();
         $user = Auth::user();
@@ -577,6 +560,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
 
         return view('datanilaisiswa.index', compact('tahunAkademiks','kurs','taon'));
     }
+
     // public function indexdatasiswa(Request $request)
     // {
     //     $activeulr = buttonnilaisiswa::whereNotNull('start_date')
@@ -678,7 +662,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
             $pdf->SetLineWidth(0.2);
 
             $pdf->Line($startX, $lineY, $endX, $lineY);
-            $pdf->Cell(0, 33, 'LAPORAN HASIL PENILAIAN', 0, 1, 'C');
+            $pdf->Cell(0, 33, 'LAPORAN HASIL PENILAIAN GURU', 0, 1, 'C');
             $pdf->SetFont('times', 'B', 11);
             $pdf->SetXY(14, 10);
             $pdf->Cell(0, 10, 'Nama Sekolah     :' . '   SMAK Kesuma Mataram', 0, 1);
@@ -737,7 +721,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
             // Mengatur posisi awal tabel kedua berdasarkan tinggi tabel pertama
           
             $startingY += $tabelPertamaHeight + 5;
-            $pdf->SetXY(28, $startingY);
+            $pdf->SetXY(20, $startingY);
             $pdf->SetFont('times', '', 12);
             $pdf->Cell(0, 10, 'Guru Mata Pelajaran,', 0, 0, 'L');
             $pdf->Cell(0, 10, 'Mataram, ' . date('d-m-Y'), 0, 1, 'R');
@@ -749,7 +733,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
             $tabelKeenamHeight = $pdf->GetY() - $startingY;
             $startingY += $tabelKeenamHeight + 20;
             $pdf->SetFont('times', '', 12);
-            $pdf->SetXY(14, $startingY);
+            $pdf->SetXY(20, $startingY);
             $pdf->Cell(0, 10, $datamengajar->datamengajar->guru->Nama, 0, 0, 'L');
             $tabelKetujuHeight = $pdf->GetY() - $startingY;
             $startingY += $tabelKetujuHeight + 20;
@@ -783,9 +767,9 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
             return redirect()->route('inputnilaiadmin.index')->with('error', 'Terjadi kesalahan. Pesan Kesalahan: ' . $e->getMessage());
         }
     }
-    public function indexnilai1(Request $request)
+   public function indexnilai1(Request $request)
     {
-        $activePemilihan = buttonnilaikurikulum::whereNotNull('start_date')
+        $activePemilihan = buttonnilaiguru::whereNotNull('start_date')
         ->whereNotNull('end_date')
         ->first();
     
@@ -804,7 +788,8 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
     }
     $tahunAkademiks = tahunakademik::all();
     $taon = tahunakademik::where('statusaktif','Aktif')->get();
-        
+    $user = Auth::user();
+    $guruId = $user->guru_id;
     $kurs = Kurikulum::where('Status_Aktif', 'Aktif')->get();
         if ($request->ajax()) {
             $data = siswamengajar::with(['tahunakademik', 'kurikulum', 'siswa', 'datakelas.kelas', 'datamengajar.matpel'])
@@ -819,7 +804,7 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
             $uniqueData = collect([]);
             foreach ($groupedData as $kelasId => $siswaMengajarCollection) {
                 $uniqueItems = $siswaMengajarCollection->unique(function ($item) {
-                    return $item->datamengajar->matpel->MataPelajaran;
+                    return $item->datamengajar->matpel->MataPelajaran;              
                 });
 
                 $uniqueItems->each(function ($item, $key) use ($uniqueData) {
@@ -829,9 +814,10 @@ $siswa_id = tbsiswa::whereHas('kelas', function ($query) use ($kelasIdDatakelas)
             }
 
             return Datatables::of($uniqueData)->addIndexColumn()
-                ->addColumn('action', function ($data) use ($request) {
-                    $currentGuruId = auth()->user()->id;
-                    $isAccessAllowed = $data->datamengajar->guru_id == $currentGuruId;
+                ->addColumn('action', function ($data) use ($request,$user) {
+                    $guruId = $user->guru_id;
+                    // $currentGuruId = auth()->user()->guru_id;
+                    $isAccessAllowed = $data->datamengajar->guru_id == $guruId;
                     $encodedId = base64_encode($data->datamengajar_id);
 
                     if ($isAccessAllowed) {

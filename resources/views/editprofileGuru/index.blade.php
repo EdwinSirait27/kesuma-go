@@ -74,6 +74,7 @@ color: #333; /* Warna teks label */
                         Edit |<small>   Profile</small>
                         <span style="flex-grow: 1;"></span>
                         <a href="/editpassguru" class="btn btn-success">Ganti Password</a>
+                        
                     </h3>
                     <div class="row">
                         <div class="col-md-6 col-12">
@@ -83,6 +84,7 @@ color: #333; /* Warna teks label */
                     </div>
                 </div>
                 <form method="POST" action="{{ route('editprofileGuru.update') }}" enctype="multipart/form-data">
+
                     @csrf
 
                     @if ($errors->any())
@@ -97,17 +99,22 @@ color: #333; /* Warna teks label */
                     <br>
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="username">Username</label>
+                            <label for="username">
+                                <i class="fa fa-lock"></i> Username
+                              </label>
+                              
                             <input type="text" class="form-control" name="username" placeholder="Username"
                                 value="{{ old('username', auth()->user()->akunguru->username) }}" maxlength="50"
-                                readonly>
+                                disabled>
                         </div>
 
 
                         <div class="form-group col-md-6">
-                            <label for="text">Nama Lengkap</label>
+                            <label for="NamaLengkap">
+                                <i class="fa fa-lock"></i> Nama Lengkap
+                              </label>
                             <input type="text" class="form-control" name="NamaLengkap" placeholder="Nama Lengkap"
-                                value="{{ old('Nama', $guru->Nama) }}" maxlength="50" readonly>
+                                value="{{ old('Nama', $guru->Nama) }}" maxlength="50" disabled>
                         </div>
                       
 
@@ -124,52 +131,65 @@ color: #333; /* Warna teks label */
 
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Agama</label>
-                            <select type="Agama" class="form-control form-control select-field" id="Agama"
-                            name="Agama" value="{{ old('Agama', auth()->user()->guru->Agama) }}"readonly>
-                            <option value="Katolik">Katolik</option>
-                            <option value="Kristen Protestan">Kristen Protestan</option>
-                            <option value="Hindu">Hindu</option>
-                            <option value="Budha">Budha</option>
-                            <option value="Konghucu">Konghucu</option>
-                            <option value="Islam">Islam</option>
-                        </select>
+                            <label for="Agama">
+                                <i class="fa fa-lock"></i> Agama
+                              </label>
+                              <select class="form-control select-field" id="Agama" name="Agama" disabled>
+                                <option value="Katolik" {{ $guru->Agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                                <option value="Kristen Protestan" {{ $guru->Agama == 'Kristen Protestan' ? 'selected' : '' }}>Kristen Protestan</option>
+                                <option value="Hindu" {{ $guru->Agama == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                                <option value="Budha" {{ $guru->Agama == 'Budha' ? 'selected' : '' }}>Budha</option>
+                                <option value="Konghucu" {{ $guru->Agama == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                                <option value="Islam" {{ $guru->Agama == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            </select>
+                            
                         </div>
                 
 
                     
                         <div class="form-group col-md-6">
-                            <label for="text">Jenis Kelamin</label>
+                            <label for="JenisKelamin">
+                                <i class="fa fa-lock"></i> Jenis Kelamin
+                              </label>
+                          
                             <select type="JenisKelamin" class="form-control form-control select-field" id="JenisKelamin"
-                            name="JenisKelamin"value="{{ old('JenisKelamin', auth()->user()->guru->JenisKelamin) }}"
-                            readonly>
-                            <option value="L">L</option>
-                            <option value="P">P</option>
+                            name="JenisKelamin"
+                            disabled>
+    <option value="Katolik" {{ $guru->Agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+
+                            <option value="L" {{ $guru->JenisKelamin == 'L' ? 'selected' : '' }}>L</option>      
+                            <option value="P" {{ $guru->JenisKelamin == 'P' ? 'selected' : '' }}>P</option>      
+                         
                         </select>
                         </div>
                         </div>
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Status Pegawai</label>
+                            <label for="StatusPegawai">
+                                <i class="fa fa-lock"></i> Status Pegawai
+                              </label>
+                            
                             <select type="StatusPegawai" class="form-control form-control select-field"
                             id="StatusPegawai"
-                            name="StatusPegawai"value="{{ old('StatusPegawai', auth()->user()->guru->StatusPegawai) }}"
-                            readonly>
-                            <option value="GT">GT</option>
-                            <option value="PNS YDP">PNS YDP</option>
-                            <option value="GTT">GTT</option>
-                            <option value="Honorer">Honorer</option>
-                            <option value="PT">PT</option>
-                            <option value="PTT">PTT</option>
+                            name="StatusPegawai"
+                            disabled>
+                            <option value="GT" {{ $guru->StatusPegawai == 'GT' ? 'selected' : '' }}>GT</option>      
+                            <option value="PNS YDP" {{ $guru->StatusPegawai == 'PNS YDP' ? 'selected' : '' }}>PNS YDP</option>      
+                            <option value="GTT" {{ $guru->StatusPegawai == 'GTT' ? 'selected' : '' }}>GTT</option>      
+                            <option value="Honorer" {{ $guru->StatusPegawai == 'Honorer' ? 'selected' : '' }}>Honorer</option>      
+                            <option value="PT" {{ $guru->StatusPegawai == 'PT' ? 'selected' : '' }}>PT</option>      
+                            <option value="PTT" {{ $guru->StatusPegawai == 'PTT' ? 'selected' : '' }}>PTT</option>      
                         </select>
                         </div>
                    
                   
                         <div class="form-group col-md-6">
-                            <label for="text">NIP/ NIPS </label>
+                            <label for="NipNips">
+                                <i class="fa fa-lock"></i> NIP/NIPS
+                              </label>
                             <input type="NipNips" class="form-control" name="NipNips"
                             placeholder="NIP/NIPS "maxlength="20"
-                            value="{{ old('NipNips', auth()->user()->guru->NipNips) }}"readonly>
+                            value="{{ old('NipNips', auth()->user()->guru->NipNips) }}"disabled>
                         </div>
                         </div>
                         <div class="form-row">
@@ -177,7 +197,7 @@ color: #333; /* Warna teks label */
                             <label for="text">NUPTK</label>
                             <input type="Nuptk" class="form-control" name="Nuptk"
                                     placeholder="NUPTK"maxlength="25"
-                                    value="{{ old('Nuptk', auth()->user()->guru->Nuptk) }}"readonly>
+                                    value="{{ old('Nuptk', auth()->user()->guru->Nuptk) }}"disabled>
                         </div>
 
                     <!-- Continue for other fields similarly -->
@@ -198,42 +218,54 @@ color: #333; /* Warna teks label */
                         </div>
 
                         <div class="form-group col-md-6">
-                            <label for="text">Nomor Sertifikat Pendidik</label>
+                            <label for="NomorSertifikatPendidik">
+                                <i class="fa fa-lock"></i> Nomor Nomor Sertifikat Pendidik
+                              </label>
+                            {{-- <label for="text">Nomor Sertifikat Pendidik</label> --}}
                             <input type="NomorSertifikatPendidik" class="form-control" name="NomorSertifikatPendidik"
                             maxlength="20"placeholder="Nomor Sertifikat Pendidik"
                             value="{{ old('NomorSertifikatPendidik', auth()->user()->guru->NomorSertifikatPendidik) }}"
-                            readonly>
+                            disabled>
 
                         </div>
                         </div>
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Tahun Sertifikasi</label>
+                            <label for="TahunSertifikasi">
+                                <i class="fa fa-lock"></i> Tahun Sertifikasi
+                              </label>
+                            {{-- <label for="text">Tahun Sertifikasi</label> --}}
                             <input type="TahunSertifikasi" class="form-control" name="TahunSertifikasi"
                                     maxlength="4"
                                     placeholder="Tahun Sertifikasi"value="{{ old('TahunSertifikasi', auth()->user()->guru->TahunSertifikasi) }}"
-                                    readonly>
+                                    disabled>
 
                      
                     </div>
                     
                   
                         <div class="form-group col-md-6">
-                            <label for="text">Pangkat Golongan Terakhir</label>
+                            <label for="PangkatGolonganTerakhir">
+                                <i class="fa fa-lock"></i> Pangkat Golonggan Terakhir
+                              </label>
+                            {{-- <label for="text">Pangkat Golongan Terakhir</label> --}}
                             <input type="PangkatGolonganTerakhir" class="form-control"
                                     name="PangkatGolonganTerakhir"maxlength="30"
                                     placeholder="Pangkat Golongan Terakhir"value="{{ old('PangkatGolonganTerakhir', auth()->user()->guru->PangkatGolonganTerakhir) }}"
-                                    readonly>
+                                    disabled>
                         </div>
                         </div>
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Tanggal Mulai Tugas</label>
+                            <label for="TMT">
+                                <i class="fa fa-lock"></i> Tanggal Mulai Tugas
+                              </label>
+                            {{-- <label for="text">Tanggal Mulai Tugas</label> --}}
                             <input id="TMT" class="date-picker form-control" name="TMT" placeholder="TMT"
                                     type="TMT" required="required" type="TMT" onfocus="this.type='date'"
                                     onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'"
                                     onmouseout="timeFunctionLong(this)"
-                                    value="{{ old('TMT', auth()->user()->guru->TMT) }}"readonly>
+                                    value="{{ old('TMT', auth()->user()->guru->TMT) }}"disabled>
                                 <script>
                                     function timeFunctionLong(input) {
                                         setTimeout(function() {
@@ -281,18 +313,24 @@ color: #333; /* Warna teks label */
                         </div>
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Tugas Mengajar</label>
+                            <label for="TugasMengajar">
+                                <i class="fa fa-lock"></i> Tugas Mengajar
+                              </label>
+                            {{-- <label for="text">Tugas Mengajar</label> --}}
                             <input type="TugasMengajar" class="form-control" name="TugasMengajar"
                             maxlength="30"placeholder="Tugas Mengajar"
-                            value="{{ old('TugasMengajar', auth()->user()->guru->TugasMengajar) }}" readonly>
+                            value="{{ old('TugasMengajar', auth()->user()->guru->TugasMengajar) }}" disabled>
                      
 
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="text">Tugas Tambahan</label>
+                            <label for="TugasTambahan">
+                                <i class="fa fa-lock"></i> Tugas Tambahan
+                              </label>
+                            {{-- <label for="text">Tugas Tambahan</label> --}}
                             <input type="TugasTambahan" class="form-control" name="TugasTambahan"
                             maxlength="30"placeholder="Tugas Tambahan"
-                            value="{{ old('TugasTambahan', auth()->user()->guru->TugasTambahan) }}" readonly>
+                            value="{{ old('TugasTambahan', auth()->user()->guru->TugasTambahan) }}" disabled>
                      
 
                         </div>
@@ -302,18 +340,21 @@ color: #333; /* Warna teks label */
                             <label for="text">Jam Per Minggu</label>
                             <input type="JamPerMinggu" class="form-control" name="JamPerMinggu"
                                     maxlength="30"placeholder="Jam Per Minggu"
-                                    value="{{ old('JamPerMinggu', auth()->user()->guru->JamPerMinggu) }}" readonly>
+                                    value="{{ old('JamPerMinggu', auth()->user()->guru->JamPerMinggu) }}" disabled>
                      
 
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="text">Tahun Pensiun</label>
+                            <label for="TahunPensiun">
+                                <i class="fa fa-lock"></i> Tahun Pensiun
+                              </label>
+                            {{-- <label for="text">Tahun Pensiun</label> --}}
                             <input id="TahunPensiun" class="date-picker form-control" name="TahunPensiun"
                                     placeholder="TahunPensiun" type="TahunPensiun" required="required"
                                     type="TahunPensiun" onfocus="this.type='date'" onmouseover="this.type='date'"
                                     onclick="this.type='date'" onblur="this.type='text'"
                                     onmouseout="timeFunctionLong(this)"
-                                    value="{{ old('TahunPensiun', auth()->user()->guru->TahunPensiun) }}"readonly>
+                                    value="{{ old('TahunPensiun', auth()->user()->guru->TahunPensiun) }}"disabled>
                                     <script>
                                         function timeFunctionLong(input) {
                                             setTimeout(function() {
@@ -326,37 +367,49 @@ color: #333; /* Warna teks label */
                         </div>
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Pangkat</label>
+                            <label for="pangkatgt">
+                                <i class="fa fa-lock"></i> Pangkat
+                              </label>
+                            {{-- <label for="text">Pangkat</label> --}}
                             <input type="text" class="form-control" name="pangkatgt"maxlength="30"
                             placeholder="Pangkat"value="{{ old('pangkatgt', auth()->user()->guru->pangkatgt) }}"
-                            readonly>
+                            disabled>
                      
 
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="text">Jadwal Kenaikan Pangkat</label>
+                            <label for="Jadwalkenaikanpangkat">
+                                <i class="fa fa-lock"></i> Jadwal Kenaikan Pangkat
+                              </label>
+                            {{-- <label for="text">Jadwal Kenaikan Pangkat</label> --}}
                             <input type="jadwalkenaikanpangkat" class="form-control" name="jadwalkenaikanpangkat"
                             maxlength="30"placeholder="Jadwal Kenaikan Pangkat"
                             value="{{ old('jadwalkenaikanpangkat', auth()->user()->guru->jadwalkenaikanpangkat) }}"
-                            readonly>
+                            disabled>
                      
 
                         </div>
                         </div>
                         <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label for="text">Jadwal Kenaikan Gaji</label>
+                            <label for="Jadwalkenaikangaji">
+                                <i class="fa fa-lock"></i> Jadwal Kenaikan Gaji
+                              </label>
+                            {{-- <label for="text">Jadwal Kenaikan Gaji</label> --}}
                             <input type="text" class="form-control" name="jadwalkenaikangaji"maxlength="30"
                             placeholder="Jadwal Kenaikan Gaji"value="{{ old('jadwalkenaikangaji', auth()->user()->guru->jadwalkenaikangaji) }}"
-                            readonly>
+                            disabled>
                      
 
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="text">Jabatan</label>
+                            <label for="Jabatan">
+                                <i class="fa fa-lock"></i> Jabatan
+                              </label>
+                            {{-- <label for="text">Jabatan</label> --}}
                             <input type="jabatan" class="form-control" name="jabatan"
                                     maxlength="30"placeholder="Jabatan"
-                                    value="{{ old('jabatan', auth()->user()->guru->jabatan) }}" readonly>
+                                    value="{{ old('jabatan', auth()->user()->guru->jabatan) }}" disabled>
                      
 
                         </div>
@@ -429,24 +482,30 @@ color: #333; /* Warna teks label */
                         Update
                     </button>
                     
-                    {{-- <button type="button" onclick="goBack()" class="btn btn-danger">Kembali</button> --}}
-                    {{-- <button type="button" onclick="goBack()" class="btn btn-danger btn-back">Kembali</button> --}}
-                    <a href="/GuruBeranda" class="btn btn-danger">Kembali</a>
                    
+                    <a href="/AdminBeranda" class="btn btn-danger">Kembali</a>
                         </div>
                        
-                    
+                        <div class="alert alert-dark">
+                            <ul>
+                                Keterangan
+                               <li><i class="fa fa-lock">   Input Tidak Bisa Diganti</i></li>
+                                
+                            </ul>
+                        </div>
+
                     <br>
                     
-                    {{-- <button type="submit" class="btn btn-primary">Update</button> --}}
 
                 </form>
                 <br>
+            
             </div>
             <br>
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -483,327 +542,4 @@ this.querySelector('span').classList.remove('d-none');
 </script>
 @endsection
 
-    {{-- <div class="col-md-12 col-sm-12">
-        <div class="dashboard_graph">
-            <h1><i class="fa fa-cogs" style="margin-right: 10px;"></i>Edit<small>Profile</small></h1>
-            <hr>
-            <form method="POST" action="{{ route('editprofile.update') }}" enctype="multipart/form-data">
-                @csrf
-
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-               
-                       
-
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td><label for="username" class="col-form-label">Username</label></td>
-                            <td><input type="text" class="form-control" name="username" placeholder="username"
-                                    value="{{ old('username', auth()->user()->akunguru->username) }}" maxlength="50"
-                                    readonly></td>
-                           
-                                    <td>
-                                      
-                                    </td>
-                                    <td>
-                                      
-                                    </td>
-                   
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="nama">Nama Lengkap:</label></td>
-                            <td>
-                                <input type="text" class="form-control" name="Nama" placeholder="Nama" readonly
-                                    value="{{ old('Nama', $guru->Nama) }}" maxlength="50" requiredreadonly>
-                            </td>
-                            <td><label class="col-form-label" for="TempatLahir">Tempat Lahir:</label></td>
-                            <td>
-                                <input type="TempatLahir" class="form-control" name="TempatLahir" placeholder="Tempat Lahir"
-                                    maxlength="30"
-                                    value="{{ old('TempatLahir', auth()->user()->guru->TempatLahir) }}"oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="nama">Agama:</label></td>
-                            <td>
-                                <select type="Agama" class="form-control form-control select-field" id="Agama"
-                                    name="Agama" value="{{ old('Agama', auth()->user()->guru->Agama) }}"readonly>
-                                    <option value="Katolik">Katolik</option>
-                                    <option value="Kristen Protestan">Kristen Protestan</option>
-                                    <option value="Hindu">Hindu</option>
-                                    <option value="Budha">Budha</option>
-                                    <option value="Konghucu">Konghucu</option>
-                                    <option value="Islam">Islam</option>
-                                </select>
-                            </td>
-                            <td><label class="col-form-label" for="JenisKelamin">Jenis Kelamin:</label></td>
-                            <td>
-                                <select type="JenisKelamin" class="form-control form-control select-field" id="JenisKelamin"
-                                    name="JenisKelamin"value="{{ old('JenisKelamin', auth()->user()->guru->JenisKelamin) }}"
-                                    readonly>
-                                    <option value="L">L</option>
-                                    <option value="P">P</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="StatusPegawai">Status Pegawai:</label></td>
-                            <td>
-                                <select type="StatusPegawai" class="form-control form-control select-field"
-                                    id="StatusPegawai"
-                                    name="StatusPegawai"value="{{ old('StatusPegawai', auth()->user()->guru->StatusPegawai) }}"
-                                    readonly>
-                                    <option value="GT">GT</option>
-                                    <option value="PNS YDP">PNS YDP</option>
-                                    <option value="GTT">GTT</option>
-                                    <option value="Honorer">Honorer</option>
-                                    <option value="PT">PT</option>
-                                    <option value="PTT">PTT</option>
-                                </select>
-                            </td>
-                            <td><label class="col-form-label" for="NipNips">NIP / NIPS:</label></td>
-                            <td>
-                                <input type="NipNips" class="form-control" name="NipNips"
-                                    placeholder="NIP/NIPS "maxlength="20"
-                                    value="{{ old('NipNips', auth()->user()->guru->NipNips) }}"readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="NUPTK">NUPTK:</label></td>
-                            <td>
-                                <input type="Nuptk" class="form-control" name="Nuptk"
-                                    placeholder="NUPTK"maxlength="25"
-                                    value="{{ old('Nuptk', auth()->user()->guru->Nuptk) }}"readonly>
-                            </td>
-                            <td><label class="col-form-label" for="NIK">NIK:</label></td>
-                            <td>
-                                <input type="Nik" class="form-control" name="Nik" placeholder="NIK"
-                                    maxlength="16"value="{{ old('Nik', auth()->user()->guru->Nik) }}"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="Npwp">NPWP:</label></td>
-                            <td>
-                                <input type="Npwp" class="form-control" name="Npwp"
-                                    placeholder="NPWP"maxlength="20"
-                                    value="{{ old('Npwp', auth()->user()->guru->Npwp) }}">
-                            </td>
-                            <td><label class="col-form-label" for="NomorSertifikatPendidik">Nomor Sertifikat
-                                    Pendidik:</label></td>
-                            <td>
-                                <input type="NomorSertifikatPendidik" class="form-control" name="NomorSertifikatPendidik"
-                                    maxlength="20"placeholder="Nomor Sertifikat Pendidik"
-                                    value="{{ old('NomorSertifikatPendidik', auth()->user()->guru->NomorSertifikatPendidik) }}"
-                                    readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="TahunSertifikasi">Tahun Sertifikasi:</label></td>
-                            <td>
-                                <input type="TahunSertifikasi" class="form-control" name="TahunSertifikasi"
-                                    maxlength="4"
-                                    placeholder="Tahun Sertifikasi"value="{{ old('TahunSertifikasi', auth()->user()->guru->TahunSertifikasi) }}"
-                                    readonly>
-                            </td>
-                            <td><label class="col-form-label" for="PangkatGolonganTerakhit">Pangkat Golongan
-                                    Terakhir:</label></td>
-                            <td>
-                                <input type="PangkatGolonganTerakhir" class="form-control"
-                                    name="PangkatGolonganTerakhir"maxlength="30"
-                                    placeholder="Pangkat Golongan Terakhir"value="{{ old('PangkatGolonganTerakhir', auth()->user()->guru->PangkatGolonganTerakhir) }}"
-                                    readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="TMT">Tanggal Mulai Tugas:</label></td>
-                            <td>
-                                <input id="TMT" class="date-picker form-control" name="TMT" placeholder="TMT"
-                                    type="TMT" required="required" type="TMT" onfocus="this.type='date'"
-                                    onmouseover="this.type='date'" onclick="this.type='date'" onblur="this.type='text'"
-                                    onmouseout="timeFunctionLong(this)"
-                                    value="{{ old('TMT', auth()->user()->guru->TMT) }}"readonly>
-                                <script>
-                                    function timeFunctionLong(input) {
-                                        setTimeout(function() {
-                                            input.type = 'TMT';
-                                        }, 60000);
-                                    }
-                                </script>
-                            </td>
-                            <td><label class="col-form-label" for="PendidikanAkhir">Pendidikan Akhir:</label></td>
-                            <td>
-                                <input type="PendidikanAkhir" class="form-control" name="PendidikanAkhir"maxlength="30"
-                                    placeholder="Pendidikan Akhir"value="{{ old('PendidikanAkhir', auth()->user()->guru->PendidikanAkhir) }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="TahunTamat">Tahun Tamat:</label></td>
-                            <td>
-                                <input id="TahunTamat" class="date-picker form-control" name="TahunTamat"
-                                    placeholder="TahunTamat" type="TahunTamat" required="required" type="TahunTamat"
-                                    onfocus="this.type='date'" onmouseover="this.type='date'" onclick="this.type='date'"
-                                    onblur="this.type='text'" onmouseout="timeFunctionLong(this)"
-                                    value="{{ old('TahunTamat', auth()->user()->guru->TahunTamat) }}">
-                                <script>
-                                    function timeFunctionLong(input) {
-                                        setTimeout(function() {
-                                            input.type = 'TahunTamat';
-                                        }, 60000);
-                                    }
-                                </script>
-                            </td>
-                            <td><label class="col-form-label" for="Jurusan">Jurusan:</label></td>
-                            <td>
-                                <input type="Jurusan" class="form-control" name="Jurusan"
-                                    maxlength="30"placeholder="Jurusan"
-                                    value="{{ old('Jurusan', auth()->user()->guru->Jurusan) }}"oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="TugasMengajar">Tugas Mengajar:</label></td>
-                            <td>
-                                <input type="TugasMengajar" class="form-control" name="TugasMengajar"
-                                    maxlength="30"placeholder="Tugas Mengajar"
-                                    value="{{ old('TugasMengajar', auth()->user()->guru->TugasMengajar) }}" readonly>
-                            </td>
-                            <td><label class="col-form-label" for="TugasTambahan">Tugas Tambahan:</label></td>
-                            <td>
-                                <input type="TugasTambahan" class="form-control" name="TugasTambahan"
-                                    maxlength="30"placeholder="Tugas Tambahan"
-                                    value="{{ old('TugasTambahan', auth()->user()->guru->TugasTambahan) }}" readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="JamPerMinggu">Jam Per Minggu:</label></td>
-                            <td>
-                                <input type="JamPerMinggu" class="form-control" name="JamPerMinggu"
-                                    maxlength="30"placeholder="Jam Per Minggu"
-                                    value="{{ old('JamPerMinggu', auth()->user()->guru->JamPerMinggu) }}" readonly>
-                            </td>
-                            <td><label class="col-form-label" for="TahunPensiun">Tahun Pensiun:</label></td>
-                            <td>
-                                <input id="TahunPensiun" class="date-picker form-control" name="TahunPensiun"
-                                    placeholder="TahunPensiun" type="TahunPensiun" required="required"
-                                    type="TahunPensiun" onfocus="this.type='date'" onmouseover="this.type='date'"
-                                    onclick="this.type='date'" onblur="this.type='text'"
-                                    onmouseout="timeFunctionLong(this)"
-                                    value="{{ old('TahunPensiun', auth()->user()->guru->TahunPensiun) }}"readonly>
-                                <script>
-                                    function timeFunctionLong(input) {
-                                        setTimeout(function() {
-                                            input.type = 'TahunPensiun';
-                                        }, 60000);
-                                    }
-                                </script>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="Pangkatgt">Pangkat:</label></td>
-                            <td>
-                                <input type="text" class="form-control" name="pangkatgt"maxlength="30"
-                                    placeholder="Pangkat"value="{{ old('pangkatgt', auth()->user()->guru->pangkatgt) }}"
-                                    readonly>
-                            </td>
-                            <td><label class="col-form-label" for="jadwalkenaikanpangkat">Jadwal Kenaikan Pangkat:</label>
-                            </td>
-                            <td>
-                                <input type="jadwalkenaikanpangkat" class="form-control" name="jadwalkenaikanpangkat"
-                                    maxlength="30"placeholder="Jadwal Kenaikan Pangkat"
-                                    value="{{ old('jadwalkenaikanpangkat', auth()->user()->guru->jadwalkenaikanpangkat) }}"
-                                    readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="jadwalkenaikangaji">Jadwal Kenaikan Gaji:</label></td>
-                            <td>
-                                <input type="text" class="form-control" name="jadwalkenaikangaji"maxlength="30"
-                                    placeholder="Jadwal Kenaikan Gaji"value="{{ old('jadwalkenaikangaji', auth()->user()->guru->jadwalkenaikangaji) }}"
-                                    readonly>
-                            </td>
-                            <td><label class="col-form-label" for="jabatan">Jabatan:</label></td>
-                            <td>
-                                <input type="jabatan" class="form-control" name="jabatan"
-                                    maxlength="30"placeholder="Jabatan"
-                                    value="{{ old('jabatan', auth()->user()->guru->jabatan) }}" readonly>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="NomorTelephone">Nomor Telephone:</label></td>
-                            <td>
-                                <input type="text" class="form-control" name="NomorTelephone"
-                                    oninput="this.value = this.value.replace(/[^0-9]/g, '');"maxlength="13"
-                                    placeholder="Nomor Telephone"value="{{ old('NomorTelephone', auth()->user()->guru->NomorTelephone) }}">
-                                <div class="row">
-                                    <h8 style="color: red;">*Diawali dengan 08xx</h8>
-                                </div>
-                            </td>
-                            <td><label class="col-form-label" for="Alamat">Alamat:</label></td>
-                            <td>
-                                <input type="text" class="form-control" name="Alamat"
-                                    maxlength="50"placeholder="Alamat"
-                                    value="{{ old('Alamat', auth()->user()->guru->Alamat) }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="Email">Email:</label></td>
-                            <td>
-                                <input type="text" class="form-control" name="Email"maxlength="30"
-                                    placeholder="Email"value="{{ old('Email', auth()->user()->guru->Email) }}" >
-                            </td>
-                            <td><label class="col-form-label" for="foto">Upload Foto:</label></td>
-                            <td>
-                                <input type="file" class="form-control" id="foto" name="foto">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><label class="col-form-label" for="hakakses">Role:</label></td>
-                            <td>
-                                <select name="role" id="role" class="form-control">
-                                    @foreach ($availableRoles as $role)
-                                        <option value="{{ $role }}"
-                                            {{ $akunguru->hakakses == $role ? 'selected' : '' }}>
-                                            {{ $role }}</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <label for="foto" class="col-sm-2 col-form-label">Foto</label>
-                            </td>
-                            <td>
-                                @if ($guru->foto)
-                                <img src="{{ asset('storage/fotoguru/' . $guru->foto) }}" alt="Foto Profil" width="200" height="300">
-                            @else
-                                <h2>Belum ada foto profil</h2>
-                            @endif
-                                <div class="row">
-                                    <h8 style="color: red;">*Type File Gambar JPEG, Max 2MB </h8>
-
-                                </div>
-                            </td>
-                        </tr>
-                      
-                    </tbody>
-                </table>
-                <button type="submit" class="btn btn-primary">Update</button>
-                <a href="/editpassadmin" class="btn btn-dark">Edit Pass</a>
-                <button type="button" onclick="window.location.href = '/AdminBeranda'"
-                class="btn btn-danger">Kembali</button>
-                <script>
-                    function goBack() {
-                        window.history.back();
-                    }
-                </script>
-            </form>
-        </div>
-        <hr>
-    </div>
-@endsection --}}
+   

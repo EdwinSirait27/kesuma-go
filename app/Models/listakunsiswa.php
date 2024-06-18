@@ -10,7 +10,7 @@ class listakunsiswa extends Model
     use HasFactory;
     protected $table   = 'users';
     
-     protected $fillable = ['id','username', 'password', 'hakakses', 'remember_token','no_pdf'];
+     protected $fillable = ['id','username', 'password', 'hakakses', 'remember_token','no_pdf','tahundaftar'];
     public $timestamps = true;
     protected $primaryKey = 'id';
     

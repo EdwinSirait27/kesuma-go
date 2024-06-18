@@ -2,7 +2,7 @@
 
 
 @extends('index')
-@section('title', 'Kesuma-GO | List Kelas')
+@section('title', 'Kesuma-GO | Prestasi')
 @section('content')
 <style>
     /* Hover effect for buttons */
@@ -61,16 +61,13 @@
                         }
                   
 </style>
-<div class="col-md-12 col-sm-12">
-  <h3><i class="fa fa-users" style="margin-right: 10px; margin-top: 15px;"></i>List Prestasi <small>Siswa </small></h3>
-  <hr>
-</div>
+
 <div class="container">
   <div class="row mt-4">
       <div class="col-md-12">
               <div class="card">
                   <div class="card-header bg-dark text-white">
-                      <h3><i class="fa fa-calculator" style="margin-right: 10px;"></i>Prestasi <small>siswa</small></h3>
+                      <h3><i class="fa fa-users" style="margin-right: 10px;"></i>Prestasi <small>siswa</small></h3>
                       <div class="row">
                         <div class="col-md-6">
                             @foreach($prestasis->unique('siswa_id') as $prestasi)
@@ -102,13 +99,14 @@
                         </div>
                         <div class="form-group">
                             <label for="keterangan">Keterangan:</label>
-                            <input type="text" id="keterangan" name="keterangan" class="form-control" mixlength="175" maxlength="180">
+                            <input type="text" id="keterangan" name="keterangan" class="form-control" minlength="175" maxlength="180">
                             @error('keterangan')
                                 <div class="text-danger">{{ $message }}</div>
                             @enderror
                         </div>
                         
                         <button type="submit" class="btn btn-primary">Simpan</button>
+                        
                     </form>
                     
                  
@@ -118,6 +116,14 @@
                    
                              
                   </div>
+                  <div class="alert alert-dark">
+                    <ul>
+                        Keterangan
+                       <li>Jikalau ingin menambahkan prestasi kepada siswa, untuk keterangannya diisi dengan minimum 175 huruf dan maximal 180 huruf agar rapi di raport siswa</li>
+                       <li>Jikalau terjadi kendala saat penambahan prestasi siswa, coba menekan menu daftaar siswa kembali dan menekan tombol prestasi dari siswa yang akan diinput prestasinya</li>
+                        
+                    </ul>
+                </div>
               </div>
           </div>
       </div>

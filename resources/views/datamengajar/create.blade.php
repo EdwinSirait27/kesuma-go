@@ -1,7 +1,7 @@
 <div class="row" id="hal_edit" style="display: none;">
     <div class="col-md-12 col-sm-12">
         <div class="dashboard_graph">
-            <h3><i class="fa fa-bar-chart" style="margin-right: 10px; margin-top: 15px;"></i>Edit Data <small>Mengajar</small></h3>
+            <h2><i class="fa fa-futbol-o" style="margin-right: 10px;"></i>Edit Data Mengajar</h2>
             <hr>
             <form method="POST" action="/datamengajar-update" onsubmit="return simpan()">
                 @csrf

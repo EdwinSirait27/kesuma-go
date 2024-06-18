@@ -266,9 +266,9 @@
                                         <li><a href="/buttonppdb">Button Ppdb </a></li>
                                         <li><a href="/buttonosis">Button Osis </a></li>
                                         <li><a href="/editdata">Button Edit Data </a></li>
-                                        <li><a href="/buttonnilaisiswa">Button Nilai Siswa </a></li>
-                                        <li><a href="/buttoninputnilaiguru">Button Nilai Kurikulum </a></li>
-                                        <li><a href="/buttoninputnilaikurikulum">Button Nilai Guru </a></li>
+                                        {{-- <li><a href="/buttonnilaisiswa">Button Nilai Siswa </a></li> --}}
+                                        <li><a href="/buttoninputnilaiguru">Button Nilai Guru </a></li>
+                                        <li><a href="/buttoninputnilaikurikulum">Button Nilai Kurikulum </a></li>
                                      
                                        
                                     </ul>
@@ -327,6 +327,7 @@
                             @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah')
                    
                             <li><a href="/goodbye">Daftar Siswa Lulus</a></li>
+                            <li><a href="/arsip">Data Arsip</a></li>
                             @endif
                         </ul>
                     </li>

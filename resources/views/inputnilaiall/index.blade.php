@@ -12,6 +12,7 @@
     table:hover {
         box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     }
+    
     .input-list {
         list-style-type: none;
         padding-left: 0;
@@ -78,10 +79,17 @@
         color: #666;
     }
 </style>
-
     <div class="container">
         <div class="row mt-4">
             <div class="col-md-12">
+                <div class="alert alert-dark">
+                    <ul>
+                        Keterangan
+                       <li><i >Penambahan Capaian kompetensi, keterangan data ekstrakulikuler, dan catatan wali kelas minimal 176 karakter dan maksimal 180 karakter agar rapi pada laporan nilai siswa</i></li>
+                        
+                    </ul>
+                </div>
+                
                 <div class="card">
                     <div class="card-header bg-dark text-white">
                         <h3><i class="fa fa-calculator" style="margin-right: 10px;"></i>Data <small>Nilai</small></h3>
@@ -92,7 +100,6 @@
                                 <h2>Kelas : {{ $siswa->datakelas->kelas->namakelas }}</h2>
                                 <h2>Wali Kelas : {{ $siswa->datakelas->guru->Nama }}</h2>
                                 <h2>Nama : {{ $siswa->siswa->NamaLengkap }}</h2>
-
                             </div>
                             <div class="col-md-6 col-12 text-md-right text-right mt-2 mt-md-0">
                                 @if (auth()->user()->hakakses == 'Admin' ||
@@ -112,7 +119,6 @@
                             </div>
                         @endif
                         <form method="POST" action="{{ route('simpan.nilai', $siswa->siswa_id) }}">
-
                             @csrf
                             @method('PUT')
                             <div class="table-responsive">
@@ -351,14 +357,14 @@
                                                                         @foreach ($nilai1['keterangann'] as $keterangann)
                                                                             <input type="text" name="keterangann[]"
                                                                                 value="{{ $keterangann }}"
-                                                                                placeholder="Input nilai"
+                                                                                placeholder="input"
                                                                                 class="input-field"><br>
                                                                         @endforeach
                                                                     @else
                                                                         <input type="text" name="keterangann[]"
                                                                             id="inputNilai"
                                                                             value="{{ $nilai1['keterangann'] }}"
-                                                                            placeholder="Inpur Nilai"
+                                                                            placeholder="input"
                                                                             class="input-field1"minlength="176"
                                                                             maxlength="180" required><br>
                                                                     @endif
@@ -445,7 +451,7 @@
                                                                     <input type="text" name="tk[]"
                                                                         id="inputNilaiaa" value="{{ $nilai2['tk'] }}"
                                                                         placeholder="Inpur Nilai"
-                                                                        class="input-field"maxlength="10"><br>
+                                                                        class="input-field"maxlength="1"><br>
                                                                     <script>
                                                                         var inputNilaiaa = document.getElementById('inputNilaiaa');
                                                                         inputNilaiaa.addEventListener('input', function() {
@@ -464,14 +470,14 @@
                                                                             <input type="text" name="catatan[]"
                                                                                 value="{{ $catatan }}"
                                                                                 placeholder="Input nilai"
-                                                                                class="input-field1"><br>
+                                                                                class="input-field1"maxlength="115"><br>
                                                                         @endforeach
                                                                     @else
                                                                         <input type="text" name="catatan[]"
                                                                             id="inputNilai"
                                                                             value="{{ $nilai2['catatan'] }}"
                                                                             placeholder="Catatan"
-                                                                            class="input-field1"><br>
+                                                                            class="input-field1"maxlength="115"><br>
                                                                     @endif
                                                                 </td>
 

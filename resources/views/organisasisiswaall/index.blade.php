@@ -36,12 +36,13 @@
 
     </style>
         @if (auth()->user()->hakakses == 'Admin' || auth()->user()->hakakses == 'KepalaSekolah')
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-calculator" style="margin-right: 10px; margin-top: 15px;"></i>Data  <small>Organisasi</small></h3>
-            <hr>
+        <div class="row" id="hal_index">
+            <div class="card-header bg-dark text-white">
+                <h3><i class="fa fa-book"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Organisasi Siswa</small></h3>
+               
         </div>
-    </div>
+        </div>
+        <hr>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="row g-3 align-items-center">

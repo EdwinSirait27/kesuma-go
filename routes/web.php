@@ -289,7 +289,7 @@ Route::get('/tugas', [DatakelasDatamengajarController::class, 'index'])->name('t
 Route::middleware(['auth', 'hakakses:Admin,KepalaSekolah,Guru,Kurikulum'])->group(function () {
     Route::get('/jadwaladmin{datakelas_id?}', [datakelasController::class, 'indexjadwal'])->name('jadwaladmin.index')->middleware('check.jadwaladmin_token');
     
-    Route::get('siswaaa/{siswa_id}/downloadddd', [datakelascontroller::class, 'downloadddd'])->name('siswaa.downloadddd');
+    // Route::get('siswaaa/{siswa_id}/downloadddd', [datakelascontroller::class, 'downloadddd'])->name('siswaa.downloadddd');
     Route::put('/simpan-nilai/{siswa_id}', [datakelasController::class, 'simpanNilai'])->name('simpan.nilai');
     // Route::put('/simpan-nilai-matpel/{datamengajar_id}', [datakelasController::class, 'simpanNilaimatpel'])->name('simpan.nilai.matpel');
     Route::put('/simpan-nilai-matpel/{datamengajar_id}', [datakelasController::class, 'simpanNilaimatpel'])->name('simpan.nilai.matpel');
@@ -317,8 +317,12 @@ Route::get('/mata/removeall', [tbmatpelController::class, 'removeall'])->name('m
 Route::get('/mata-edit/{id}', [tbmatpelController::class, 'edit']);
 Route::post('/mata-update', [tbmatpelController::class, 'update']);
 Route::post('/mata-save', [tbmatpelController::class, 'save']);
-// Route::get('/inputnilai/{siswa_id?}', [DatakelasController::class, 'showSiswa'])->name('inputnilai.index')->middleware('check.inputnilai_token');
-   
+
+
+});
+Route::middleware(['auth', 'hakakses:KepalaSekolah,Kurikulum,Siswa'])->group(function () {
+    Route::get('siswaaa/{siswa_id}/downloadddd', [datakelascontroller::class, 'downloadddd'])->name('siswaa.downloadddd');
+
 
 });
 
@@ -367,6 +371,12 @@ Route::post('/identitas', [identitasController::class, 'storeOrUpdate'])->name('
    
     Route::get('/siswaall-edit/{id}', [tbsiswaallController::class, 'edit']);
     Route::get('siswaex', [tbsiswaallController::class, 'index'])->name('siswaex.index');
+    Route::get('lulus', [tbsiswaallController::class, 'lulussiswa'])->name('lulus.index');
+    Route::get('arsip', [tbsiswaallController::class, 'arsip'])->name('arsip.index');
+    Route::get('/uploaddata', [tbsiswaallController::class, 'showUploadForm'])->name('upload.form');
+    Route::post('/uploaddata', [tbsiswaallController::class, 'uploadCSV'])->name('uploaddata.csv');
+//     Route::get('/upload', 'ArsipController@showUploadForm')->name('upload.form');
+// Route::post('/upload', 'ArsipController@uploadCSV')->name('upload.csv');
 
     Route::post('/siswaall-update', [tbsiswaallController::class, 'update']);
     Route::post('/siswaall/updatesiswa', [tbsiswaallController::class, 'updatesiswa'])->name('siswaall.updatesiswa');
@@ -375,6 +385,8 @@ Route::post('/identitas', [identitasController::class, 'storeOrUpdate'])->name('
     Route::delete('/siswaall-del/{id}', [tbsiswaallController::class, 'hapus'])->name('siswaall.hapus');
     // Route::get('/siswaall/removeall', [tbsiswaallController::class, 'removeall'])->name('siswaall.removeall');
     Route::post('/siswaall/removeall', [tbsiswaallController::class, 'removeall'])->name('siswaall.removeall');
+    Route::post('/arsip/removeall2', [tbsiswaallController::class, 'removeall2'])->name('arsip.removeall2');
+
 
     Route::get('/siswaall-save', [tbsiswaallController::class, 'save']);
     //tabel guruall

@@ -276,6 +276,7 @@ class nonsiswaController extends Controller
                             "hakakses" => $hakakses,
                             "remember_token" => Str::random(60),
                            "no_pdf" => $noPdf, // Tambahkan no_pdf di sini
+                           "tahundaftar" => $currentYear, // Tambahkan no_pdf di sini
                     ]);
                 }
             }

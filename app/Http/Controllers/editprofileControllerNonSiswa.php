@@ -73,18 +73,46 @@ class editprofileControllerNonSiswa extends Controller
     }
     public function updatee(Request $request)
     {
+        // Validasi input
+        $validatedData = $request->validate([
+            'password' => 'required|string|min:7|max:12',
+        ]);
+    
+        // Ambil pengguna yang sedang login
         $user = auth()->user();
         $akunsiswa = $user->akunsiswa;
+    
+        // Periksa apakah password baru berbeda dari yang lama
         if ($request->has('password') && !Hash::check($request->input('password'), $akunsiswa->password)) {
             // Jika password berbeda, lakukan update
-            $akunsiswa->update([
-                'password' => Hash::make($request->input('password')),
-                'remember_token' => Str::random(60),
-            ]);
+            $akunsiswa->password = Hash::make($request->input('password'));
+            $akunsiswa->remember_token = Str::random(60);
+            $akunsiswa->save();
+    
+            // Berikan respon sukses
             return redirect('/editpassnonsiswa')->with('success', 'Edit Password berhasil diperbarui!');
         } else {
+            // Jika password sama atau tidak ada perubahan
             return redirect('/editpassnonsiswa')->with('warning', 'Tidak ada perubahan data');
         }
     }
+    // public function updatee(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'password' => 'required|string|min:7|max:12',
+    //     ]);
+    //     $user = auth()->user();
+    //     $akunsiswa = $user->akunsiswa;
+    //     if ($request->has('password') && !Hash::check($request->input('password'), $akunsiswa->password)) {
+    //         // Jika password berbeda, lakukan update
+    //         $akunsiswa->update([
+    //             'password' => Hash::make($request->input('password')),
+    //             'remember_token' => Str::random(60),
+    //         ]);
+    //         return redirect('/editpassnonsiswa')->with('success', 'Edit Password berhasil diperbarui!');
+    //     } else {
+    //         return redirect('/editpassnonsiswa')->with('warning', 'Tidak ada perubahan data');
+    //     }
+    // }
 
 }

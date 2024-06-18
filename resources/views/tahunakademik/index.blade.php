@@ -43,13 +43,13 @@
             /* Sudut bulat untuk estetika */
         }
     </style>
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-book" style="margin-right: 10px; margin-top: 15px;"></i>Data Tahun <small>Akademik</small>
-            </h3>
-            <hr>
-        </div>
+       <div class="row" id="hal_index">
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-book"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Tahun Akademik</small></h3>
+           
     </div>
+    </div>
+    <hr>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="x_panel">
@@ -248,7 +248,7 @@
                     {
                         data: 'kurikulum.Nama_Kurikulum',
                         name: 'kurikulum.Nama_Kurikulum'
-                        defaultContent: 'Belum ada'
+                      
                     },
                     {
                         data: 'semester',

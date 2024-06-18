@@ -24,7 +24,7 @@
                         <h2 class="text-danger">   Anda hanya dapat memilih maksimal 3 Organisasi.</h2>
                         <div class="text-center">
                             <button type="submit" class="btn btn-success btn-lg px-5">Daftar</button>
-                            <a href="/organisasisiswa" class="btn btn-danger btn-lg ml-3 px-5">Kembali</a>
+                            <a href="/organisasisiswa" class="btn btn-danger btn-lg px-5">Kembali</a>
                         </div>
                     </form>
                 </div>

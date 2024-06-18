@@ -298,6 +298,9 @@ class editprofilesiswaController extends Controller
     }
     public function updatee(Request $request)
     {
+        $validatedData = $request->validate([
+            'password' => 'string|min:7|max:12',
+        ]);
         $user = auth()->user();
         $akunsiswa = $user->akunsiswa;
         if ($request->has('password') && !Hash::check($request->input('password'), $akunsiswa->password)) {

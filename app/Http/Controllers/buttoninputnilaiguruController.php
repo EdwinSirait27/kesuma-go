@@ -83,6 +83,6 @@ class buttoninputnilaiguruController extends Controller
             buttonnilaiguru::create($val);
         }
         DB::commit();
-        return redirect('/buttoninputnilaiguru')->with('success', 'tanggal ppdb Berhasil Ditambahkan!');
+        return redirect('/buttoninputnilaiguru')->with('success', 'tanggal pembukaan menu nilai Berhasil Ditambahkan!');
     }
 }

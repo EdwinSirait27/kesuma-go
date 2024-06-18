@@ -86,6 +86,9 @@ class editprofileControllerGuru extends Controller
     }
     public function updatee(Request $request)
     {
+        $validatedData = $request->validate([
+            'password' => 'string|min:7|max:12',
+        ]);
         $user = auth()->user();
         $akunguru = $user->akunguru;
         if ($request->has('password') && !Hash::check($request->input('password'), $akunguru->password)) {

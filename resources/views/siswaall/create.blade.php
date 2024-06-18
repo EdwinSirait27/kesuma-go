@@ -7,7 +7,7 @@
                     /* Ganti dengan ukuran font yang Anda inginkan */
                 }
             </style>
-            <h3><i class="fa fa-male" style="margin-right: 4px; margin-top: 15px;"></i>Edit <small>Siswa</small></h3>
+            <h3><i class="fa fa-male" style="margin-right: 4px; margin-top: 15px;"></i>Tambah <small>Siswa</small></h3>
 
             <hr>
             <form method="POST" action="/siswaall-update"enctype="multipart/form-data" onsubmit="return simpan()">
@@ -753,7 +753,7 @@
             </div>
         </div>
         <div class="row">
-            <h2 style="color: red;">*Kalau Mengedit Data, Jangan Lupa Untuk Mengisi CheckBox dan Mengganti Password, password default: 2000000
+            <h2 style="color: red;">*diisi semua
             </h2>
         </div>
         <br>

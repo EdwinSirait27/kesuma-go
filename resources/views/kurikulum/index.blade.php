@@ -35,12 +35,13 @@
 
 
     </style>
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-calculator" style="margin-right: 10px; margin-top: 15px;"></i>Data Kurikulum <small>Sekolah</small></h3>
-            <hr>
-        </div>
-    </div>
+   <div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-calculator"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Kurikulum</small></h3>
+       
+</div>
+</div>
+<hr>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="row g-3 align-items-center">

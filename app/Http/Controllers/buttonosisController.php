@@ -81,6 +81,6 @@ class buttonosisController extends Controller
             buttonosis::create($val);
         }
         DB::commit();
-        return redirect('/buttonosis')->with('success', 'tanggal ppdb Berhasil Ditambahkan!');
+        return redirect('/buttonosis')->with('success', 'tanggal pemilihan Berhasil Ditambahkan!');
     }
 }

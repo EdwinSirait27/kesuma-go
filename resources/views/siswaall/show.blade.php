@@ -148,10 +148,10 @@
 
                     <div class="col-sm-4">
                         <select class="form-control form-control select-field" id="JenisKelamin" name="JenisKelamin"
-                        value="{{ $siswa->JenisKelamin }}"required>
-
-                        <option value="Laki-Laki">Laki-Laki</option>
-                        <option value="Perempuan">Perempuan</option>
+                        required>
+                        <option value="Laki-Laki" {{ $siswa->JenisKelamin == 'Laki-Laki' ? 'selected' : '' }}>Laki-Laki</option>
+                        <option value="Perempuan" {{ $siswa->JenisKelamin == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                        
                     </select>
 
 
@@ -195,13 +195,16 @@
 
                 <div class="col-sm-4">
                     <select class="form-control select-field" id="Agama" name="Agama"
-                    value="{{ $siswa->Agama }}"required>
-                    <option value="Katolik">Katolik</option>
-                    <option value="Kristen Protestan">Kristen Protestan</option>
-                    <option value="Hindu">Hindu</option>
-                    <option value="Buddha">Buddha</option>
-                    <option value="Konghucu">Konghucu</option>
-                    <option value="Islam">Islam</option>
+                    required>
+                    <option value="Katolik" {{ $siswa->Agama == 'Katolik' ? 'selected' : '' }}>Katolik</option>
+                    <option value="Kristen Protestan" {{ $siswa->Agama == 'Kristen Protestan' ? 'selected' : '' }}>
+                        Kristen Protestan</option>
+                    <option value="Hindu" {{ $siswa->Agama == 'Hindu' ? 'selected' : '' }}>Hindu</option>
+                    <option value="Buddha" {{ $siswa->Agama == 'Buddha' ? 'selected' : '' }}>Buddha</option>
+                    <option value="Konghucu" {{ $siswa->Agama == 'Konghucu' ? 'selected' : '' }}>Konghucu</option>
+                    <option value="Islam" {{ $siswa->Agama == 'Islam' ? 'selected' : '' }}>Islam</option>
+         
+                   
                 </select>
 
 
@@ -522,11 +525,12 @@
 
                 <div class="col-sm-4">
                     <select class="form-control form-control select-field" id="DiterimaDiKelas"
-                    name="DiterimaDiKelas"required value="{{ $siswa->DiterimaDiKelas }}">
+                    name="DiterimaDiKelas"required >
+                    <option value="10" {{ $siswa->DiterimaDiKelas == '10' ? 'selected' : '' }}>10</option>
+                    <option value="11" {{ $siswa->DiterimaDiKelas == '11' ? 'selected' : '' }}>11</option>
+                    <option value="12" {{ $siswa->DiterimaDiKelas == '12' ? 'selected' : '' }}>12</option>
                     
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
+                 
 
                 </select>
 
@@ -535,12 +539,10 @@
 
                 <div class="col-sm-4">
                     <select class="form-control form-control select-field" id="DiterimaSemester"
-                    name="DiterimaSemester" value="{{ $siswa->DiterimaSemester }}" required>
-                  
-                    <option value="Ganjil">Ganjil</option>
-                    <option value="Genap">Genap</option>
-
-
+                    name="DiterimaSemester"  required>
+                    <option value="Ganjil" {{ $siswa->DiterimaSemester == 'Ganjil' ? 'selected' : '' }}>11</option>
+                    <option value="Genap" {{ $siswa->DiterimaSemester == 'Genap' ? 'selected' : '' }}>11</option>
+                 
                 </select>
                     </div>
                     </div>
@@ -893,11 +895,11 @@
                 <label for="status" class="col-sm-2 col-form-label">Status Aktif</label>
                 <div class="col-sm-4">
                     <select class="form-control form-control select-field" id="status" name="status"
-                    value="{{ $siswa->status }}"required>
+                   required>
+                   <option value="Aktif" {{ $siswa->status == 'Aktif' ? 'selected' : '' }}>Aktif</option>
+                   <option value="Tidak Aktif" {{ $siswa->status == 'Tidak Aktif' ? 'selected' : '' }}>Tidak Aktif</option>
+                   <option value="Lulus" {{ $siswa->status == 'Lulus' ? 'selected' : '' }}>Lulus</option>
 
-                    <option value="Aktif">Aktif</option>
-                    <option value="Tidak Aktif">Tidak Aktif</option>
-                    <option value="Lulus">Lulus</option>
                 </select>
                 </div>
                 <label for="foto" class="col-sm-2 col-form-label">Upload Foto</label>
@@ -933,7 +935,7 @@
             <div class="form-group row">
                 <div class="col-sm-12">
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <button type="button" onclick="window.location.href = '/guruall'"
+                    <button type="button" onclick="window.location.href = '/siswaall'"
                     class="btn btn-danger">Kembali</button>
                 </div>
             </div>

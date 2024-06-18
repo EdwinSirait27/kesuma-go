@@ -11,20 +11,19 @@
             background-color: lightyellow;
         }
     </style>
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h1><i class="fa fa-book" style="margin-right: 10px;"></i>Button Tanggal</h1>
-            <hr>
-        </div>
-    </div>
+  <div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-book"style="margin-right: 10px; margin-top: 15px;"></i>Button <small> Osis</small></h3>
+       
+</div>
+</div>
+<hr>
     <div class="row">
         <div class="col-md-12 col-sm-12 ">
             <div class="row g-3 align-items-center">
                 <div class="row g-3 align-items-center">
                     <div class="col-auto">
 
-                        <hr
-                            style="height: 0px; border: none; background-color: #ccc; margin-top: 10px; margin-bottom: 30px;">
                     </div>
                 </div>
             </div>

@@ -2,7 +2,43 @@
 @section('title', 'Kesuma-GO | Data PPDB')
 @section('content')
 @include('ppdb.create')
-    <style>
+
+<style>
+    .table th,
+    .table td {
+
+        text-align: center;
+
+    }
+    .user_datatable tbody tr:hover {
+        background-color: lightyellow;
+    }
+    .col-form-label {
+                    font-size: 18px;
+                    /* Ganti dengan ukuran font yang Anda inginkan */
+                }
+                .text-success {
+color: rgb(255, 0, 0); /* Warna teks putih untuk kontras */
+background-color: rgb(0, 0, 0); /* Warna latar belakang hitam (tanpa opasitas) */
+padding: 5px 10px; /* Padding untuk estetika */
+border-radius: 5px; /* Sudut bulat untuk estetika */
+}
+
+
+.text-danger {
+background-color: rgb(0, 0, 0); /* Warna latar belakang merah (tanpa opasitas) */
+color: rgb(255, 0, 0); /* Warna teks untuk kontras */
+padding: 5px 10px; /* Padding untuk estetika */
+border-radius: 5px; /* Sudut bulat untuk estetika */
+}
+h3{
+    color: white
+}
+
+
+
+</style>
+    {{-- <style>
         .table th,
         .table td {
 
@@ -40,17 +76,28 @@
             border-radius: 5px;
             /* Sudut bulat untuk estetika */
         }
-    </style>
+    </style> --}}
+>
 
-        <div class="row" id="hal_index">
-            <div class="col-md-12 col-sm-12">
-                <h3><i class="fa fa-male" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>PPDB</small></h3>
-                <hr>
-            </div>
-        </div>
+<div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-male"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> PPDB</small></h3>
+       
+</div>
+</div>
+<hr>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div
+@endif
         <div class="x_panel">
             <div class="x_title">
-                <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Data Diri<small>Siswa</small></h2>
+                <h2><i class="fa fa-male" style="margin-right: 10px; "></i>List Calon<small>Siswa</small></h2>
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -378,10 +425,137 @@
                 }
             }
         </script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        // Hentikan inisialisasi DataTable sebelumnya jika sudah ada
+        if ($.fn.DataTable.isDataTable('#myDataTable')) {
+            $('#user').DataTable().destroy();
+        }
+    
+        // Sekarang Anda dapat menginisialisasi DataTable yang baru
+        var table = $('#myDataTable').DataTable({
+            dom: 'lBfrtip', // 'l' will show "Show Entries" option
+            lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Semua"]],
+            buttons: ['copy', 'csv', 'excel',  {
+            
+        }],
+            processing: true,
+            serverSide: true,
+            ajax: {
+                url: "{{ route('ppdb.index') }}",
+                method: "GET"
+            },
+            columns: [{
+                            data: 'siswa_id',
+                            name: 'siswa_id',
+                            render: function(data, type, row, meta) {
+                                return meta.row + meta.settings._iDisplayStart + 1;
+                            }
+                        },
+                        {
+    data: 'foto',
+    name: 'foto',
+    render: function(data, type, full, meta) {
+        if (data) {
+            return '<img src="{{ asset('storage/fotosiswa/') }}/' + data + '" width="100" />';
+        } else {
+            return 'Tidak Ada Foto';
+        }
+    }
+},
+                        
+                        {
+                            data: 'NamaLengkap',
+                            name: 'NamaLengkap'
+                        },
+                       
+                        {
+                            data: 'JenisKelamin',
+                            name: 'JenisKelamin'
+                        },
+                        {
+                            data: 'TanggalLahir',
+                            name: 'TanggalLahir'
+                        },
+                        {
+                            data: 'Agama',
+                            name: 'Agama'
+                        },
+                        {
+                            data: 'NomorTelephone',
+                            name: 'NomorTelephone'
+                        },
+                        {
+                            data: 'Email',
+                            name: 'Email'
+                        },
+                        {
+                            data: 'Alamat',
+                            name: 'Alamat'
+                        },
+                        {
+                            data: 'AsalSMP',
+                            name: 'AsalSMP'
+                        },
+                        {
+                            data: 'NomorTelephoneAyah',
+                            name: 'NomorTelephoneAyah'
+                        },
+                        {
+                            data: 'NamaAyah',
+                            name: 'NamaAyah'
+                        },
+                        {
+                            data: 'listakunsiswa.username',
+                            name: 'listakunsiswa.username'
+                        },
+                        
+                        {
+    data: 'listakunsiswa.created_at',
+    name: 'listakunsiswa.created_at',
+    render: function(data, type, row) {
+        // Ubah string ISO 8601 menjadi objek Date
+        var date = new Date(data);
+
+        // Ambil komponen tanggal yang diinginkan
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Perhatikan bahwa bulan dimulai dari 0 (Januari) hingga 11 (Desember)
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        // Format tanggal dan waktu sesuai keinginan Anda
+        var formattedDate = day + '-' + month + '-' + year + ' ' + hours + ':' + minutes + ':' + seconds;
+
+        return formattedDate;
+    }
+},
+                        {
+                            data: 'listakunsiswa.no_pdf',
+                            name: 'listakunsiswa.no_pdf'
+                        },
+
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false
+                        },
+                        {
+                            data: 'checkbox',
+                            name: 'checkbox',
+                            orderable: false,
+                            searchable: false
+                        }
+                    ]
+                });
+            });
+    </script>
+    
 
 
-
-        <script type="text/javascript">
+        {{-- <script type="text/javascript">
             $(document).ready(function() {
                 var table = $('.user_datatable').DataTable({
                     processing: true,
@@ -495,9 +669,9 @@
                         }
                     ]
                 });
-            });
+            }); --}}
 
-
+<script>
             $(document).on('click', '#bulk_delete', function() {
                 var id = [];
                 Swal.fire({

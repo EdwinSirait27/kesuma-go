@@ -1,10 +1,9 @@
 <div class="row" id="hal_edit" style="display: none;">
     <div class="col-md-12 col-sm-12">
         <div class="dashboard_graph">
-            <h3><i class="fa fa-bar-chart" style="margin-right: 10px; margin-top: 15px;"></i>Edit Dataaaaaa
-                <small>Kelas</small>
-            </h3>
+            <h2><i class="fa fa-futbol-o" style="margin-right: 10px;"></i> Edit Datakelas</h2>
             <hr>
+            
             <form method="POST" action="/datakelas-update" onsubmit="return simpan()">
                 @csrf
                 <input type="hidden" name="txt_id" id="txt_id" />
@@ -153,18 +152,44 @@
                         checkKapasitasKelas();
                     }
 
+                    // function displaySelectedNames() {
+                    //     var selectedNames = [];
+                    //     var totalSelected = 0;
+                    //     $('.select-checkbox:checked').each(function() {
+                    //         var rowIndex = $(this).closest('tr').index();
+                    //         var name = $('#siswaTable').DataTable().cell(rowIndex, 1).data();
+                    //         selectedNames.push(name);
+                    //         totalSelected++;
+                    //     });
+                    //     $('#selectedNames').html('<strong>Nama yang dicentang:</strong><br>' + selectedNames.join('<br>'));
+                    //     $('#totalSelected').text('Total Siswa yang Dicentang: ' + totalSelected);
+                    // }
                     function displaySelectedNames() {
-                        var selectedNames = [];
-                        var totalSelected = 0;
-                        $('.select-checkbox:checked').each(function() {
-                            var rowIndex = $(this).closest('tr').index();
-                            var name = $('#siswaTable').DataTable().cell(rowIndex, 1).data();
-                            selectedNames.push(name);
-                            totalSelected++;
-                        });
-                        $('#selectedNames').html('<strong>Nama yang dicentang:</strong><br>' + selectedNames.join('<br>'));
-                        $('#totalSelected').text('Total Siswa yang Dicentang: ' + totalSelected);
-                    }
+    var selectedNames = [];
+    var totalSelected = 0;
+
+    // Loop through each checkbox that is checked
+    $('.select-checkbox:checked').each(function() {
+        // Get the row index of the checkbox
+        var rowIndex = $(this).closest('tr').index();
+
+        // Get the data from the second column of the row
+        var name = $('#siswaTable').DataTable().cell(rowIndex, 1).data();
+
+        // Add the name to the array of selected names
+        selectedNames.push(name);
+
+        // Increment the total selected count
+        totalSelected++;
+    });
+
+    // Update the HTML of the element with the id 'selectedNames' with the selected names
+    $('#selectedNames').html('<strong>Nama yang dicentang:</strong><br>' + selectedNames.join('<br>'));
+
+    // Update the text of the element with the id 'totalSelected' with the total selected count
+    $('#totalSelected').text('Total Siswa yang Dicentang: ' + totalSelected);
+}
+
 
                     function submitForm() {
                         // Update kembali selected siswa sebelum submit form

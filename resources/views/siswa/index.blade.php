@@ -24,11 +24,12 @@
         }
     </style>
     <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-users" style="margin-right: 10px; margin-top: 15px;"></i>Daftar <small>Siswa</small></h3>
-            <hr>
-        </div>
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-users"style="margin-right: 10px; margin-top: 15px;"></i>Laporan Data <small> Siswa</small></h3>
+           
     </div>
+    </div>
+    <hr>
             <div class="x_panel">
                 <div class="x_title">
                     <h2><i class="fa fa-users" style="margin-right: 10px; "></i>Daftar Data Diri<small>Siswa</small></h2>

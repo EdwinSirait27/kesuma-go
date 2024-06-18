@@ -1,8 +1,8 @@
 <div class="row" id="hal_edit" style="display: none;">
     <div class="col-md-12 col-sm-12">
         <div class="dashboard_graph">
-            <h1><i class="fa fa-futbol-o" style="margin-right: 10px;"></i>Edit Button Tanggal</h1>
-            <hr>
+            <h2><i class="fa fa-futbol-o" style="margin-right: 10px;"></i>Edit Button Data Siswa</h1>
+            
             <hr>
             <form method="POST" action="/editdata-update3" onsubmit="return simpan()">
                 @csrf

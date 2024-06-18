@@ -31,16 +31,25 @@
 }
     </style>
     @if (auth()->user()->hakakses == 'Admin'||auth()->user()->hakakses == 'KepalaSekolah')
-    <div class="row" id="hal_indx">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-eyedropper" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Guru</small></h3>
-            <hr>
-        </div>
+    <div class="row" id="hal_index">
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-eyedropper"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Tenaga Pengajar</small></h3>
+           
     </div>
-
+    </div>
+    <hr>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
     <div class="x_panel">
         <div class="x_title">
-            <h2><i class="fa fa-eyedropper" style="margin-right: 10px; "></i>Data <small>Guru</small></h2>
+            <h2><i class="fa fa-eyedropper" style="margin-right: 10px; "></i>Data Tenaga Pengajar <small> </small></h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">
@@ -527,16 +536,17 @@
     </script>
 @endif
 @if (auth()->user()->hakakses == 'Siswa'||auth()->user()->hakakses == 'Guru'||auth()->user()->hakakses == 'Kurikulum')
-    <div class="row" id="hal_indx">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-eyedropper" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Guru</small></h3>
-            <hr>
-        </div>
-    </div>
+<div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-eyedropper"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Tenaga Pengajar</small></h3>
+       
+</div>
+</div>
+<hr>
 
     <div class="x_panel">
         <div class="x_title">
-            <h2><i class="fa fa-eyedropper" style="margin-right: 10px; "></i>Data <small>Guru</small></h2>
+            <h2><i class="fa fa-eyedropper" style="margin-right: 10px; "></i>Data <small>Tenaga Pengajar</small></h2>
             <div class="clearfix"></div>
         </div>
         <div class="x_content">

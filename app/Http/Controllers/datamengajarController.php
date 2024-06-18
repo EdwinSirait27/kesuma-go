@@ -36,12 +36,12 @@ class datamengajarController extends Controller
             return Datatables::of($data)->addIndexColumn()
             ->addColumn('action', function ($data) {
                 // $button = '<button onclick="editAndShow(\'hal_edit\', ' . $data->datamengajar_id . ');" class="btn btn-primary">Edit</button>';
-                $encodedId = base64_encode($data->datamengajar_id);
+                // $encodedId = base64_encode($data->datamengajar_id);
                    
-                $button1 = '<a href="' . route('datamengajar.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
+                // $button1 = '<a href="' . route('datamengajar.show' , ['encodedId' => $encodedId]) .  '" class="btn btn-primary">Edit </a>';
 
 
-                return $button1;
+                // return $button1;
             })
             
                 ->addColumn('checkbox', '<input type="checkbox" name="users_checkbox[]" class="users_checkbox" value="{{$datamengajar_id}}" />')

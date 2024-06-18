@@ -33,11 +33,12 @@
 }
     </style>
     <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-futbol" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Ekstrakulikuler</small></h3>
-            <hr>
-        </div>
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-futbol"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Ekstrakulikuler</small></h3>
+           
     </div>
+    </div>
+    <hr>
     
             <div class="x_panel">
                 <div class="x_title">

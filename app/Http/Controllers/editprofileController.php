@@ -82,16 +82,26 @@ class editprofileController extends Controller
     }
     public function update1(Request $request)
     {
+        // Validasi input
+        $validatedData = $request->validate([
+            'password' => 'string|min:7|max:12',
+        ]);
+    
+        // Ambil pengguna yang sedang login
         $user = auth()->user();
         $akunguru = $user->akunguru;
+    
+        // Periksa apakah password baru berbeda dari yang lama
         if ($request->has('password') && !Hash::check($request->input('password'), $akunguru->password)) {
             // Jika password berbeda, lakukan update
-            $akunguru->update([
-                'password' => Hash::make($request->input('password')),
-                'remember_token' => Str::random(60),
-            ]);
+            $akunguru->password = Hash::make($request->input('password'));
+            $akunguru->remember_token = Str::random(60);
+            $akunguru->save();
+    
+            // Berikan respon sukses
             return redirect('/editpassadmin')->with('success', 'Edit Password berhasil diperbarui!');
         } else {
+            // Jika password sama atau tidak ada perubahan
             return redirect('/editpassadmin')->with('warning', 'Tidak ada perubahan data');
         }
     }

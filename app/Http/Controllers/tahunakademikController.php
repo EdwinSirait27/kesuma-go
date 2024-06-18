@@ -15,7 +15,7 @@ class tahunakademikController extends Controller
     public function index(Request $request)
     {
         // $kurs = kurikulum::all();
-        $kurs = kurikulum::where('Status_Aktif', 'aktif')->get();
+        $kurs = kurikulum::where('Status_Aktif', 'Aktif')->get();
 
         if ($request->ajax()) {
             $data = tahunakademik::with(['kurikulum'])
@@ -30,13 +30,9 @@ class tahunakademikController extends Controller
                     'keterangan'
                 )->get();
     
-            // Iterasi setiap tahun akademik
             foreach ($data as $tahun) {
-                // Ambil tanggal dan waktu sekarang
                 $now = Carbon::now();
-    
-                // Konversi tahun1 dan tahun2 menjadi objek Carbon
-                $tahun1 = Carbon::parse($tahun->tahun1);
+         $tahun1 = Carbon::parse($tahun->tahun1);
                 $tahun2 = Carbon::parse($tahun->tahun2)->endOfDay(); // Akhiri hari
     
                 // Jika tanggal dan waktu sekarang di antara tahun1 dan tahun2, set statusaktif menjadi Aktif

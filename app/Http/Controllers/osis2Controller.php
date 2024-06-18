@@ -15,7 +15,8 @@ class osis2Controller extends Controller
 {
     public function index(Request $request)
     {
-        $siswas = tbsiswa::all();
+        $siswas = tbsiswa::where('status', 'Aktif')->get();
+        // $taon = tahunakademik::where('statusaktif', 'Aktif')->get();
 
         if ($request->ajax()) {
             $data = osis::with(['siswa.kelas'])

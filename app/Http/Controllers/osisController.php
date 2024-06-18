@@ -143,30 +143,41 @@ public function hapus(Request $request)
 //     return view('pemilihan.index', compact('calonn','votingg','hasilvotingg'));
 // }
 
-    public function vote(Request $request)
+public function vote(Request $request)
 {
-  
-
+    // Validasi input dari request
     $request->validate([
         'calon_id.*' => 'required|exists:osis,calon_id',
     ]);
 
+    // Ambil ID pengguna yang sedang login
     $id = Auth::id();
 
-    // Cek apakah pengguna sudah memberikan suara
+    // Cek apakah pengguna sudah pernah melakukan voting
     $already_voted = voting::where('id', $id)->exists();
     if ($already_voted) {
+        // Jika sudah pernah voting, kembalikan ke halaman sebelumnya dengan pesan error
         return back()->withErrors(['error' => 'Anda sudah memberikan suara.']);
     }
 
-    // Cek apakah ada calon_id yang dipilih
+    // Ambil input 'osis_id' dari request
     $osis_ids = $request->input('osis_id');
+
+    // Pastikan 'osis_id' adalah array
     if (!is_array($osis_ids)) {
+        // Jika bukan array, kembalikan ke halaman sebelumnya dengan pesan error
         return back()->withErrors(['error' => 'Anda harus memilih calon sebelum memberikan suara.']);
     }
 
-    // Proses penghitungan suara
+    // Validasi agar hanya bisa memilih satu osis_id
+    if (count($osis_ids) > 1) {
+        // Jika lebih dari satu, kembalikan ke halaman sebelumnya dengan pesan error
+        return back()->withErrors(['error' => 'Anda hanya bisa memilih satu calon.']);
+    }
+
+    // Loop melalui setiap 'osis_id' yang dipilih (dalam kasus ini hanya satu)
     foreach ($osis_ids as $osis_id) {
+        // Buat instance baru dari model voting dan simpan ke database
         $voting = new voting([
             'id' => $id,
             'osis_id' => $osis_id,
@@ -174,16 +185,16 @@ public function hapus(Request $request)
         ]);
         $voting->save();
 
-        // Update atau tambahkan hasil voting
+        // Update atau buat baru jumlah suara pada model hasilvoting
         $hasil_voting = hasilvoting::updateOrCreate(
             ['osis_id' => $osis_id],
             ['jumlahsuara' => hasilvoting::where('osis_id', $osis_id)->count() + 1]
         );
     }
 
+    // Redirect ke route 'pemilihan.index' dengan pesan sukses
     return redirect()->route('pemilihan.index')->with('success', 'Suara Anda telah tercatat.');
 }
-
     
     
 }

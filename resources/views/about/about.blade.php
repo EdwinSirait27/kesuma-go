@@ -43,7 +43,7 @@
     <div class="container">
         <div class="center-content">
             <div class="profile-view">
-                <h2 class="brief text-center"><i>Web Developer</i></h2>
+                <h2 class="brief text-center"><i>Full Stack Developer</i></h2>
                 <hr>
                 <div class="text-center">
                     <img src="{{ asset('images/Screenshot 2023-06-22 104103.jpg_341x340.jpg') }}" alt="" class="img-fluid">

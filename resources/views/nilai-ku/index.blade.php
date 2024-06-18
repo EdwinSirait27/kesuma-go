@@ -130,23 +130,25 @@
                                         <td>{{ $nilai['MataPelajaran'] }}</td>
                                         <td>{{ $nilai['KKM'] }}</td>
                                         <input type="hidden" name="datamengajar_id[]" value="{{ $datamengajar_id }}">
-                                        <td><input type="text" name="nilaitugas1[]" value="{{ $nilai['nilaitugas1'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaitugas2[]" value="{{ $nilai['nilaitugas2'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaitugas3[]" value="{{ $nilai['nilaitugas3'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaitugas4[]" value="{{ $nilai['nilaitugas4'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaitugas5[]" value="{{ $nilai['nilaitugas5'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaitugas[]" value="{{ $nilai['nilaitugas'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaiuts[]" value="{{ $nilai['nilaiuts'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaiuas[]" value="{{ $nilai['nilaiuas'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaikeaktifan[]" value="{{ $nilai['nilaikeaktifan'] }}" class="input-field" readonly></td>
-                                        <td><input type="text" name="nilaitotal[]" value="{{ $nilai['nilaitotal'] }}" class="input-field" readonly></td>
+                                        <td><input type="text" name="nilaitugas1[]" value="{{ $nilai['nilaitugas1'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaitugas2[]" value="{{ $nilai['nilaitugas2'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaitugas3[]" value="{{ $nilai['nilaitugas3'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaitugas4[]" value="{{ $nilai['nilaitugas4'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaitugas5[]" value="{{ $nilai['nilaitugas5'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaitugas[]" value="{{ $nilai['nilaitugas'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaiuts[]" value="{{ $nilai['nilaiuts'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaiuas[]" value="{{ $nilai['nilaiuas'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaikeaktifan[]" value="{{ $nilai['nilaikeaktifan'] }}" class="input-field" disabled></td>
+                                        <td><input type="text" name="nilaitotal[]" value="{{ $nilai['nilaitotal'] }}" class="input-field" disabled></td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                </div>
+                <a href="{{ route('siswaa.downloadddd', ['siswa_id' => $siswa->siswa_id]) }}"
+                    class="btn btn-dark">Unduh Nilai</a>
             </div>
+                </div>
         </div>
     </div>
 </div>
@@ -326,55 +328,55 @@
                                             <td>
                                                 <input type="text" name="nilaitugas1[]" id="inputNilai"
                                                     value="{{ $nilai['nilaitugas1'] }}" placeholder="input"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaitugas2[]" id="inputNilai"
                                                     value="{{ $nilai['nilaitugas2'] }}" placeholder="input"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaitugas3[]" id="inputNilai"
                                                     value="{{ $nilai['nilaitugas3'] }}" placeholder="input"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaitugas4[]" id="inputNilai"
                                                     value="{{ $nilai['nilaitugas4'] }}" placeholder="input"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
 
                                                 <input type="text" name="nilaitugas5[]" id="inputNilai"
                                                     value="{{ $nilai['nilaitugas5'] }}" placeholder="input"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaitugas[]" id="inputNilai"
                                                     value="{{ $nilai['nilaitugas'] }}" placeholder="input"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaiuts[]"id="inputNilai1"
                                                     value="{{ $nilai['nilaiuts'] }}" placeholder="Input nilai"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaiuas[]"
                                                     value="{{ $nilai['nilaiuas'] }}"id="inputNilai2"
-                                                    placeholder="Input nilai" class="input-field"maxlength="5" readonly><br>
+                                                    placeholder="Input nilai" class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaikeaktifan[]"
                                                     value="{{ $nilai['nilaikeaktifan'] }}"
                                                     id="inputNilai3"placeholder="Input nilai"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                             <td>
                                                 <input type="text" name="nilaitotal[]"
                                                     value="{{ $nilai['nilaitotal'] }}"
                                                     id="inputNilai4"placeholder="Input nilai"
-                                                    class="input-field"maxlength="5" readonly><br>
+                                                    class="input-field"maxlength="5" disabled><br>
                                             </td>
                                         </tr>
                                     @endforeach

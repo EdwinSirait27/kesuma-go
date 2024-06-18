@@ -331,6 +331,47 @@
                         @php
                             $user = auth()->user();
                             $displayName = $user->hakakses == 'Siswa' || $user->hakakses == 'NonSiswa' ? $user->siswa->NamaLengkap : $user->guru->Nama;
+                            $additionalInfo = in_array($user->hakakses, ['Admin', 'Guru', 'KepalaSekolah', 'Kurikulum', 'SU']) ? ($user->guru->TugasMengajar ?? '') : '';
+                            $kelas = $user->hakakses == 'Siswa' ? ($user->siswa->kelas->namakelas ?? 'empty') : '';
+                            $hakAkses = $user->hakakses;
+                        @endphp
+    
+                        <a href="#" class="user-profile dropdown-toggle" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i> <span>{{ $displayName }}</span> 
+                            @if ($kelas) | <span>Kelas: {{ $kelas }}</span> @endif
+                            <span>{{ $additionalInfo }}</span>
+                        </a>
+    
+                        <div class="dropdown-menu dropdown-usermenu animated fadeInDown" aria-labelledby="navbarDropdown">
+                            @unless (request()->is('ekstrakulikulersiswa/list', 'organisasisiswa/list'))
+                                <a class="dropdown-item" href="{{ $hakAkses }}Beranda"><i class="fas fa-home" style="margin-right: 5px;"></i> Dashboard</a>
+                            @endunless
+                            @if ($hakAkses == 'Admin')
+                                <a class="dropdown-item" href="/editprofile"><i class="fas fa-male" style="margin-right: 5px;"></i> Edit Profile</a>
+                            @else
+                                <a class="dropdown-item" href="/editprofile{{ $hakAkses }}"><i class="fas fa-male" style="margin-right: 5px;"></i> Edit Profile</a>
+                            @endif
+                            @unless (request()->is('ekstrakulikulersiswa/list', 'organisasisiswa/list'))
+                                <a class="dropdown-item" href="{{ route('logout') }}"><i class="fas fa-sign-out-alt" style="margin-right: 5px;"></i> Log Out</a>
+                            @endunless
+                        </div>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    {{-- <div class="top_nav">
+        <div class="nav_menu">
+            <div class="nav toggle">
+                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+            </div>
+            <nav class="nav navbar-nav">
+                <ul class="navbar-right">
+                    <li class="nav-item dropdown open">
+                        @php
+                            $user = auth()->user();
+                            $displayName = $user->hakakses == 'Siswa' || $user->hakakses == 'NonSiswa' ? $user->siswa->NamaLengkap : $user->guru->Nama;
                             $additionalInfo = '';
                             if (in_array($user->hakakses, ['Admin', 'Guru', 'KepalaSekolah', 'Kurikulum', 'SU'])) {
                                 $additionalInfo = $user->guru->TugasMengajar ?? '';
@@ -360,7 +401,7 @@
                 </ul>
             </nav>
         </div>
-    </div>
+    </div> --}}
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script>
         $(document).ready(function() {

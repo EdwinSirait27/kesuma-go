@@ -1,5 +1,5 @@
 @extends('index')
-@section('title', 'Kesuma-GO | Detail Data Siswa')
+@section('title', 'Kesuma-GO | Detail Data Siswa Lulus')
 @section('content')
   
     <style>
@@ -18,15 +18,25 @@
             display: none;
         }
     </style>
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-male" style="margin-right: 10px; margin-top: 15px;"></i>Detail Data <small>Siswa</small></h3>
-            <hr>
-        </div>
-    </div>
+   <div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-male"style="margin-right: 10px; margin-top: 15px;"></i>Detail Data <small> Siswa Lulus</small></h3>
+       
+</div>
+</div>
+<hr>
+@if ($errors->any())
+<div class="alert alert-danger">
+    <ul>
+        @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+        @endforeach
+    </ul>
+</div>
+@endif
             <div class="x_panel">
                 <div class="x_title">
-                    <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Detail Data<small>Siswa</small></h2>
+                    <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Detail Data<small>Siswa Lulus</small></h2>
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -366,15 +376,7 @@
                                         Nomor Pendaftaran Baru
                                     </th>
                                   
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="200">
-                                        Username
-                                    </th>
-                                  
-                                    <th scope="col" style="text-align: center; font-size: 13px;" class="lebar-kolom"
-                                        width="200">
-                                        Hak Akses
-                                    </th>
+                              
                                   
                                     </tr>
                                     </thead>
@@ -384,7 +386,7 @@
                             <div class="form-group row">
                                 <div class="col-sm-10">
                                 
-                                    <button type="button" onclick="window.location.href = '/siswaall'"
+                                    <button type="button" onclick="window.location.href = '/goodbye'"
                                         class="btn btn-danger">Kembali</button>
                                 </div>
                             </div>
@@ -423,7 +425,7 @@
             processing: true,
             serverSide: true,
             ajax: {
-                url: "{{ route('siswaex.index') }}",
+                url: "{{ route('lulus.index') }}",
                 method: "GET"
             },
             columns: [{
@@ -764,18 +766,9 @@
                     {
                         data: 'no_pdf',
                         name: 'no_pdf'
-                    },
-                   
-                    {
-                        data: 'listakunsiswa.username',
-                        name: 'listakunsiswa.username'
-                    },
-                  
-                    {
-                        data: 'listakunsiswa.hakakses',
-                        name: 'listakunsiswa.hakakses'
                     }
-
+                   
+                 
 
                     
                 ]

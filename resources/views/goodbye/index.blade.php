@@ -41,15 +41,25 @@
         }
     </style>
     @if (auth()->user()->hakakses == 'Admin' || auth()->user()->hakakses == 'KepalaSekolah')
-        <div class="row" id="hal_index">
-            <div class="col-md-12 col-sm-12">
-                <h3><i class="fa fa-male" style="margin-right: 10px; margin-top: 15px;"></i>Data <small>Siswa</small></h3>
-                <hr>
-            </div>
-        </div>
+    <div class="row" id="hal_index">
+        <div class="card-header bg-dark text-white">
+            <h3><i class="fa fa-male"style="margin-right: 10px; margin-top: 15px;"></i>Data <small> Siswa Lulus</small></h3>
+           
+    </div>
+    </div>
+    <hr>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
         <div class="x_panel">
             <div class="x_title">
-                <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Data Diri<small>Siswa</small></h2>
+                <h2><i class="fa fa-male" style="margin-right: 10px; "></i>Data Siswa<small>Lulus</small></h2>
                 <div class="clearfix"></div>
             </div>
           
@@ -121,7 +131,9 @@
                         </div>
                         <div class="form-group row">
                             <div class="col-sm-10">
-                               
+                                <button type="button" onclick="window.location.href = '/lulus'"
+                                class="btn btn-dark">Lihat Detail</button>
+                                
                                     @if (auth()->user()->hakakses == 'Admin')
                                     <button type="button" onclick="window.location.href = '/AdminBeranda'"
                                     class="btn btn-danger">Kembali</button>

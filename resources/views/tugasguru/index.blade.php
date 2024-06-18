@@ -42,12 +42,13 @@
             /* Sudut bulat untuk estetika */
         }
     </style>
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-bar-chart" style="margin-right: 10px; margin-top: 15px;"></i>Tugas <small>Guru</small></h3>
-            <hr>
-        </div>
-    </div>
+  <div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-book"style="margin-right: 10px; margin-top: 15px;"></i>Pemberian <small> Tugas</small></h3>
+       
+</div>
+</div>
+<hr>
     <div class="x_panel">
         <div class="x_title">
             <h2><i class="fa fa-bar-chart" style="margin-right: 10px; "></i>Tugas<small>Guru</small></h2>

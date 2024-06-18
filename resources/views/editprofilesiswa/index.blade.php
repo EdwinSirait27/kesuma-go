@@ -97,7 +97,10 @@ label {
                         <br>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="username">Username</label>
+                                <label for="username">
+                                    <i class="fa fa-lock"></i> Username
+                                  </label>
+                                {{-- <label for="username">Username</label> --}}
                                 <input type="text" class="form-control" name="username" placeholder="Username"
                                     value="{{ old('username', auth()->user()->akunsiswa->username) }}" maxlength="50"
                                     readonly>
@@ -105,12 +108,18 @@ label {
 
 
                             <div class="form-group col-md-6">
-                                <label for="NamaLengkap">Nama Lengkap</label>
+                                <label for="NamaLengkap">
+                                    <i class="fa fa-lock"></i> Nama Lengkap
+                                  </label>
+                                {{-- <label for="NamaLengkap">Nama Lengkap</label> --}}
                                 <input type="text" class="form-control" name="NamaLengkap" placeholder="Nama Lengkap"
                                     value="{{ old('NamaLengkap', $siswa->NamaLengkap) }}" maxlength="50" readonly>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="NamaPanggilan">Nama Panggilan</label>
+                                <label for="NamaPanggilan">
+                                    <i class="fa fa-lock"></i> Nama Panggilan
+                                  </label>
+                                {{-- <label for="NamaPanggilan">Nama Panggilan</label> --}}
                                 <input type="text" class="form-control" name="NamaPanggilan" placeholder="Nama Panggilan"
                                     maxlength="30" value="{{ old('NamaPanggilan', auth()->user()->siswa->NamaPanggilan) }}"
                                     oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');" disabled>
@@ -121,13 +130,19 @@ label {
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="NomorInduk">Nomor Induk</label>
+                                <label for="NomorInduk">
+                                    <i class="fa fa-lock"></i> Nomor Induk
+                                  </label>
+                                {{-- <label for="NomorInduk">Nomor Induk</label> --}}
                                 <input type="text" class="form-control" name="NomorInduk" placeholder="Nomor Induk"
                                     maxlength="30" value="{{ old('NomorInduk', auth()->user()->siswa->NomorInduk) }}"
                                     oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');" disabled>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="NISN">NISN</label>
+                                <label for="NISN">
+                                    <i class="fa fa-lock"></i> NISN
+                                  </label>
+                                {{-- <label for="NISN">NISN</label> --}}
                                 <input type="text" class="form-control" name="NISN" placeholder="NISN" maxlength="30"
                                     value="{{ old('NISN', auth()->user()->siswa->NISN) }}"
                                     oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');" disabled>
@@ -136,13 +151,19 @@ label {
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="TempatLahir">Tempat Lahir</label>
+                                <label for="TempatLahir">
+                                    <i class="fa fa-lock"></i> Tempat Lahir
+                                  </label>
+                                {{-- <label for="TempatLahir">Tempat Lahir</label> --}}
                                 <input type="text" class="form-control" name="TempatLahir" placeholder="Tempat Lahir"
                                     maxlength="30" value="{{ old('TempatLahir', auth()->user()->siswa->TempatLahir) }}"
                                     oninput="this.value = this.value.replace(/[^A-Za-z\s]/g, '');" disabled>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="TanggalLahir">Tanggal Lahir</label>
+                                <label for="TanggalLahir">
+                                    <i class="fa fa-lock"></i> Tanggal Lahir
+                                  </label>
+                                {{-- <label for="TanggalLahir">Tanggal Lahir</label> --}}
                                 <input id="TanggalLahir" class="form-control" name="TanggalLahir"
                                     placeholder="Tanggal Lahir" type="date"
                                     value="{{ old('TanggalLahir', auth()->user()->siswa->TanggalLahir) }}" disabled>
@@ -153,7 +174,10 @@ label {
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="JenisKelamin">Jenis Kelamin</label>
+                                <label for="JenisKelamin">
+                                    <i class="fa fa-lock"></i> Jenis Kelamin
+                                  </label>
+                                {{-- <label for="JenisKelamin">Jenis Kelamin</label> --}}
                                 <select class="form-control" id="JenisKelamin" name="JenisKelamin" readonly>
                                     <option value="Laki-Laki"
                                         {{ old('JenisKelamin', auth()->user()->siswa->JenisKelamin) == 'Laki-Laki' ? 'selected' : '' }}>
@@ -164,7 +188,10 @@ label {
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="Agama">Agama</label>
+                                <label for="Agama">
+                                    <i class="fa fa-lock"></i> Agama
+                                  </label>
+                                {{-- <label for="Agama">Agama</label> --}}
                                 <select class="form-control" id="Agama" name="Agama" readonly>
                                     <option value="Katolik"
                                         {{ old('Agama', auth()->user()->siswa->Agama) == 'Katolik' ? 'selected' : '' }}>
@@ -192,12 +219,18 @@ label {
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="text">Alamat</label>
+                                <label for="Alamat">
+                                    <i class="fa fa-lock"></i> Alamat
+                                  </label>
+                                {{-- <label for="text">Alamat</label> --}}
                                 <input type="text" class="form-control" name="Alamat" placeholder="Alamat"
                                     maxlength="50" value="{{ old('Alamat', auth()->user()->siswa->Alamat) }}" disabled>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="Email">Email</label>
+                                <label for="Email">
+                                    <i class="fa fa-lock"></i> Email
+                                  </label>
+                                {{-- <label for="Email">Email</label> --}}
                                 <input type="text" class="form-control" name="Email" placeholder="Email"
                                     maxlength="30" value="{{ old('Email', auth()->user()->siswa->Email) }}" readonly>
                             </div>
@@ -205,14 +238,20 @@ label {
 
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="text">Kewarganegaraan</label>
+                                <label for="Kewarganegaraan">
+                                    <i class="fa fa-lock"></i> Kewarganegaraan
+                                  </label>
+                                {{-- <label for="text">Kewarganegaraan</label> --}}
                                 <input type="text" class="form-control" name="Kewarganegaraan"
                                 maxlength="50"placeholder="Kewarganegaraan"
                                 value="{{ old('Kewarganegaraan', auth()->user()->siswa->Kewarganegaraan) }}"disabled>
 
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="text">Golongan Darah</label>
+                                <label for="GolDarah">
+                                    <i class="fa fa-lock"></i> Golongan Darah
+                                  </label>
+                                {{-- <label for="text">Golongan Darah</label> --}}
                                 <input type="text" class="form-control" name="GolDarah"maxlength="30"
                                 placeholder="Golongan Darah"value="{{ old('GolDarah', auth()->user()->siswa->GolDarah) }}" readonly>
 
@@ -228,14 +267,20 @@ label {
 
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="text">Kelas</label>
+                                <label for="kelas">
+                                    <i class="fa fa-lock"></i> Kelas
+                                  </label>
+                                {{-- <label for="text">Kelas</label> --}}
                                 <input type="text" class="form-control" value="{{ $kelas }}" readonly>
 
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="text">Organisasi</label>
+                                <label for="Organisasi">
+                                    <i class="fa fa-lock"></i> Organisasi
+                                  </label>
+                                {{-- <label for="text">Organisasi</label> --}}
                                 <select name="organisasi" class="form-control"readonly>
                             
                                     @foreach($siswaOrganisasiGurus as $organisasi)
@@ -245,7 +290,10 @@ label {
 
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="text">Ekstrakulikuler</label>
+                                <label for="Ekstrakulikuler">
+                                    <i class="fa fa-lock"></i> Ekstrakulikuler
+                                  </label>
+                                {{-- <label for="text">Ekstrakulikuler</label> --}}
                                 <select name="organisasi" class="form-control"readonly>
                             
                                     @foreach($siswaEkstraGurus as $ekstra)
@@ -258,7 +306,10 @@ label {
                         
                         <div class="form-row">
                             <div class="form-group col-md-6">
-                                <label for="text">Nomor Telephone</label>
+                                <label for="NomorTelephone">
+                                    <i class="fa fa-lock"></i> Nomor Telephone
+                                  </label>
+                                {{-- <label for="text">Nomor Telephone</label> --}}
                                 <input type="text" class="form-control" name="NomorTelephone"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '');"maxlength="13"
                                 placeholder="Nomor Telephone"value="{{ old('NomorTelephone', auth()->user()->siswa->NomorTelephone) }}" readonly>
@@ -280,7 +331,7 @@ label {
                                 <h2>Belum ada foto profil</h2>
                             @endif
                                 <div class="row">
-                                    <h8 style="color: red;">*Type File Gambar JPEG, Max 1MB </h8>
+                                    <h8 style="color: red;">*Type File Gambar JPEG, Max 512 Kb </h8>
 
                                 </div>
 
@@ -290,16 +341,19 @@ label {
                         
                         <br>
                         
-                        {{-- <button type="submit" class="btn btn-primary">Update</button> --}}
                         <button type="submit" class="btn btn-primary" id="submitBtn">
                             <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             Update
                         </button>
                         
-                        {{-- <button type="button" onclick="goBack()" class="btn btn-danger">Kembali</button> --}}
-                        {{-- <button type="button" onclick="goBack()" class="btn btn-danger btn-back">Kembali</button> --}}
                         <a href="/SiswaBeranda" class="btn btn-danger">Kembali</a>
-
+                        <div class="alert alert-dark">
+                            <ul>
+                                Keterangan
+                               <li><i class="fa fa-lock">   Input Tidak Bisa Diganti</i></li>
+                                
+                            </ul>
+                        </div>
                     </form>
                     <br>
                 </div>

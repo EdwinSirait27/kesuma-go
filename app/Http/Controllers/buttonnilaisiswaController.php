@@ -82,6 +82,6 @@ class buttonnilaisiswaController extends Controller
             buttonnilaisiswa::create($val);
         }
         DB::commit();
-        return redirect('/buttonnilaisiswa')->with('success', 'tanggal ppdb Berhasil Ditambahkan!');
+        return redirect('/buttonnilaisiswa')->with('success', 'tanggal pembukaan menu nilai Berhasil Ditambahkan!');
     }
 }

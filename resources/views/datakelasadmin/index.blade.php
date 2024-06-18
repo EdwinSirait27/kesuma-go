@@ -155,7 +155,15 @@
                                                 class="btn btn-danger">Kembali</button>
                                                 @endif
                                     </div>
-                                </div>
+                                    </div>
+                                        <div class="alert alert-dark">
+                                            <ul>
+                                                Keterangan
+                                               <li>Jikalau ada perubahan guru mengajar pada menu jadwal mata pelajaran, akan mempengaruhi openilaian kepada guru kepada siswa, maka dari itu jika ada perubahan pada masing" jadwal pelajaran di masing" kelas, dianjurkan untuk menghapus jadwal mata pelajaran terlebih dahulu, dan mendaftarkan kembali dengan yang sudah di set di menu mengajar</li>
+                                               {{-- <li>Jikalau terjadi kendala saat penambahan prestasi siswa, coba menekan menu daftaar siswa kembali dan menekan tombol prestasi dari siswa yang akan diinput prestasinya</li> --}}
+                                                
+                                            </ul>
+                                        </div>
                             </div>
                         </div>
                     </div>

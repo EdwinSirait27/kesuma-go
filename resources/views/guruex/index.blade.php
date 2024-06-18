@@ -16,12 +16,13 @@
             display: none;
         }
     </style>
-    <div class="row" id="hal_index">
-        <div class="col-md-12 col-sm-12">
-            <h3><i class="fa fa-eyedropper" style="margin-right: 10px; margin-top: 15px;"></i>Data Lengkap <small>Guru</small></h3>
-            <hr>
-        </div>
-    </div>
+  <div class="row" id="hal_index">
+    <div class="card-header bg-dark text-white">
+        <h3><i class="fa fa-book"style="margin-right: 10px; margin-top: 15px;"></i>Data Lengkap <small> Tenaga Pengajar</small></h3>
+       
+</div>
+</div>
+<hr>
             <div class="x_panel">
                 <div class="x_title">
                     <h2><i class="fa fa-eyedropper" style="margin-right: 10px; "></i>Data Lengkap<small>Guru</small></h2>
@@ -31,7 +32,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="card-box table-responsive">
-                                <table id="myDataTable"
+                                <table id="datatable-buttons"
                                     class="table table-striped table-bordered dt-responsive nowrap user_datatable"
                                     cellspacing="0" width="100%">
                                     <thead>
@@ -53,6 +54,31 @@
                                                 class="lebar-kolom"width="60" ;>
                                                 Tanggal Lahir
                                             </th>
+                                            <th scope="col" style="text-align: center; font-size: 13px;"
+                                            class="lebar-kolom"width="60" ;>
+                                            Agama
+                                        </th>
+                                        <th scope="col" style="text-align: center; font-size: 13px;"
+                                            class="lebar-kolom"width="60" ;>
+                                            Jenis Kelamin
+                                        </th>
+                                    
+                                        <th scope="col" style="text-align: center; font-size: 13px;"
+                                            class="lebar-kolom"width="60" ;>
+                                            Tugas Mengajar
+                                        </th>
+                                        <th scope="col" style="text-align: center; font-size: 13px;"
+                                            class="lebar-kolom"width="60" ;>
+                                            Nomor Telephone
+                                        </th>
+                                        <th scope="col" style="text-align: center; font-size: 13px;"
+                                            class="lebar-kolom"width="60" ;>
+                                            Alamat
+                                        </th>
+                                        <th scope="col" style="text-align: center; font-size: 13px;"
+                                            class="lebar-kolom"width="60" ;>
+                                            Email
+                                        </th>
                                             <th scope="col" style="text-align: center; font-size: 13px;"
                                                 class="lebar-kolom"width="60" ;>
                                                 Status Pegawai
@@ -166,9 +192,18 @@
     </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
- <script type="text/javascript">
+    <script type="text/javascript">
         $(document).ready(function() {
-            var table = $('.user_datatable').DataTable({
+            // Hentikan inisialisasi DataTable sebelumnya jika sudah ada
+            if ($.fn.DataTable.isDataTable('#datatable-buttons')) {
+                $('#datatable-buttons').DataTable().destroy();
+            }
+        
+            // Sekarang Anda dapat menginisialisasi DataTable yang baru
+            var table = $('#datatable-buttons').DataTable({
+                dom: 'lBfrtip', // 'l' will show "Show Entries" option
+                lengthMenu: [[10, 25, 50, -1], [10, 25, 50, "Semua"]],
+                buttons: ['copy', 'csv', 'excel'],
                 processing: true,
                 serverSide: true,
                 ajax: {
@@ -194,6 +229,32 @@
                     {
                         data: 'TanggalLahir',
                         name: 'TanggalLahir'
+                    },
+                    {
+                        data: 'Agama',
+                        name: 'Agama'
+                    },
+                    {
+                        data: 'JenisKelamin',
+                        name: 'JenisKelamin'
+                    },
+                 
+                    {
+                        data: 'TugasMengajar',
+                        name: 'TugasMengajar'
+                    },
+                   
+                    {
+                        data: 'NomorTelephone',
+                        name: 'NomorTelephone'
+                    },
+                    {
+                        data: 'Alamat',
+                        name: 'Alamat'
+                    },
+                    {
+                        data: 'Email',
+                        name: 'Email'
                     },
                     {
                         data: 'StatusPegawai',
@@ -290,25 +351,5 @@
         });
      
     </script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            var table = $('myDataTable').DataTable({
-                "pageLength": 10,
-                "lengthMenu": [
-                    [10, 25, 50, 100, -1],
-                    [10, 25, 50, 100, "Semua"]
-                ]
-            });
-            $('.dataTables_length select').append('<option value="-1">Semua</option>');
-            $('.dataTables_length select option[value="-1"]').text('Semua');
-            $('.dataTables_length select').change(function() {
-                var selectedValue = $(this).val();
-                if (selectedValue == -1) {
-                    table.page.len(-1).draw();
-                } else {
-                    table.page.len(selectedValue).draw();
-                }
-            });
-        });
-    </script>
+  
 @endsection
